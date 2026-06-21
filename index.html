@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handmade Crochet by Mayuri</title>
+<meta name="description" content="Handmade Crochet by Mayuri — cozy, one-of-a-kind crochet pieces made with love. Browse the gallery and request your own custom order.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:#FBF6EE;
+    --cream-2:#F4ECDD;
+    --plum:#3D2C3A;
+    --plum-soft:#6B5566;
+    --blush:#F2B8C6;
+    --blush-deep:#E58FA3;
+    --sage:#93AC8B;
+    --sage-deep:#6F8C68;
+    --mustard:#E8B23D;
+    --thread:#D96C5F;
+    --radius:22px;
+    --shadow: 0 14px 30px -12px rgba(61,44,58,0.25);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--plum);
+    font-family:'Quicksand',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.script{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    line-height:1.05;
+  }
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+
+  /* subtle yarn-fleck texture */
+  .texture{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      radial-gradient(circle at 12% 20%, rgba(232,178,61,0.08) 0, transparent 9%),
+      radial-gradient(circle at 80% 10%, rgba(242,184,198,0.10) 0, transparent 10%),
+      radial-gradient(circle at 60% 80%, rgba(147,172,139,0.08) 0, transparent 12%),
+      radial-gradient(circle at 20% 85%, rgba(217,108,95,0.07) 0, transparent 10%);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 6vw;
+    background:rgba(251,246,238,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(61,44,58,0.08);
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Caveat',cursive; font-size:1.9rem; font-weight:700;
+    color:var(--plum);
+  }
+  .logo .dot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--thread);
+    box-shadow:0 0 0 4px rgba(217,108,95,0.18);
+  }
+  nav ul{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
+  nav a{
+    font-weight:600; font-size:0.95rem; color:var(--plum-soft);
+    position:relative; padding-bottom:4px;
+  }
+  nav a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:2px;
+    background:var(--thread); transition:width .25s ease;
+  }
+  nav a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--thread); color:#fff !important; padding:10px 20px;
+    border-radius:30px; font-weight:700;
+    box-shadow:0 8px 18px -6px rgba(217,108,95,0.55);
+    transition:transform .2s ease;
+  }
+  .nav-cta:hover{transform:translateY(-2px);}
+  .nav-cta::after{display:none;}
+  .menu-btn{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--plum);}
+
+  @media (max-width:760px){
+    nav ul{
+      position:absolute; top:72px; right:0; left:0;
+      flex-direction:column; background:var(--cream);
+      padding:18px 6vw; gap:16px;
+      box-shadow:var(--shadow);
+      display:none;
+    }
+    nav ul.open{display:flex;}
+    .menu-btn{display:block;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center;
+    gap:40px;
+    padding:70px 6vw 90px;
+    max-width:1300px; margin:0 auto;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--sage-deep);
+    background:rgba(147,172,139,0.14);
+    padding:7px 14px; border-radius:30px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.8rem,6vw,4.6rem);
+    margin:0 0 18px;
+    color:var(--plum);
+  }
+  .hero h1 .swirl{color:var(--thread);}
+  .hero p.lead{
+    font-size:1.15rem; color:var(--plum-soft); max-width:480px; margin:0 0 30px;
+    line-height:1.6;
+  }
+  .hero-actions{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px; border-radius:30px; font-weight:700; font-size:1rem;
+    cursor:pointer; border:none; transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-primary{
+    background:var(--thread); color:#fff;
+    box-shadow:0 10px 22px -8px rgba(217,108,95,0.6);
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 16px 26px -8px rgba(217,108,95,0.7);}
+  .btn-outline{
+    background:transparent; color:var(--plum); border:2px solid var(--plum);
+  }
+  .btn-outline:hover{background:var(--plum); color:var(--cream);}
+
+  /* stitching heart animation */
+  .stitch-wrap{
+    position:relative; display:flex; justify-content:center; align-items:center;
+  }
+  .stitch-wrap svg{ width:100%; max-width:420px; }
+  .stitch-path{
+    fill:none;
+    stroke:var(--thread);
+    stroke-width:3.5;
+    stroke-linecap:round;
+    stroke-dasharray:14 10;
+    stroke-dashoffset:2000;
+    animation:stitchDraw 3.2s ease-in-out forwards;
+  }
+  .stitch-fill{
+    fill:var(--blush);
+    opacity:0;
+    animation:fillIn 1.2s ease forwards;
+    animation-delay:2.6s;
+  }
+  @keyframes stitchDraw{ to{ stroke-dashoffset:0; } }
+  @keyframes fillIn{ to{ opacity:0.55; } }
+
+  .yarn-ball{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(0px);
+  }
+  .yb1{width:70px;height:70px; background:var(--mustard); top:8%; left:4%; animation:float 6s ease-in-out infinite;}
+  .yb2{width:46px;height:46px; background:var(--sage); bottom:4%; right:8%; animation:float 7s ease-in-out infinite reverse;}
+  .yb3{width:30px;height:30px; background:var(--blush-deep); top:46%; right:0%; animation:float 5s ease-in-out infinite;}
+  @keyframes float{
+    0%,100%{transform:translateY(0px) rotate(0deg);}
+    50%{transform:translateY(-16px) rotate(12deg);}
+  }
+
+  section{padding:90px 6vw; max-width:1300px; margin:0 auto;}
+  .section-head{text-align:center; max-width:640px; margin:0 auto 50px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:clamp(2.2rem,4vw,3.2rem); margin:0 0 14px;}
+  .section-head p{color:var(--plum-soft); font-size:1.05rem; line-height:1.6; margin:0;}
+
+  /* ---------- GALLERY ---------- */
+  .filter-row{
+    display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:44px;
+  }
+  .filter-btn{
+    padding:10px 20px; border-radius:30px; border:2px solid rgba(61,44,58,0.15);
+    background:#fff; font-weight:600; font-size:0.9rem; cursor:pointer;
+    color:var(--plum-soft); transition:all .2s ease;
+  }
+  .filter-btn:hover{border-color:var(--thread); color:var(--thread);}
+  .filter-btn.active{background:var(--plum); color:var(--cream); border-color:var(--plum);}
+
+  .gallery{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:28px;
+  }
+  .card{
+    background:#fff; border-radius:var(--radius); overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:transform .35s ease, box-shadow .35s ease;
+    opacity:0; transform:translateY(24px);
+    animation:rise .6s ease forwards;
+  }
+  .card:hover{transform:translateY(-8px) rotate(-0.4deg); box-shadow:0 22px 40px -14px rgba(61,44,58,0.35);}
+  @keyframes rise{ to{opacity:1; transform:translateY(0);} }
+
+  .card-art{
+    height:220px; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .card-art img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .card:hover .card-art img{transform:scale(1.07);}
+  .card-art::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.12));
+  }
+  .card-body{padding:20px 22px 24px;}
+  .card-tag{
+    font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--thread); margin-bottom:6px; display:block;
+  }
+  .card h3{font-size:1.5rem; margin:0 0 6px; color:var(--plum);}
+  .card p{font-size:0.92rem; color:var(--plum-soft); margin:0; line-height:1.5;}
+
+  /* ---------- ABOUT STRIP ---------- */
+  .about{
+    display:grid; grid-template-columns:0.8fr 1.2fr; gap:50px; align-items:center;
+  }
+  .about-art{
+    aspect-ratio:1/1; border-radius:var(--radius);
+    background:linear-gradient(135deg,var(--blush) 0%, var(--mustard) 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow);
+    position:relative; overflow:hidden;
+  }
+  .about-art img{ width:100%; height:100%; object-fit:cover; }
+  .about-art .ring{
+    position:absolute; border:3px dashed rgba(255,255,255,0.5); border-radius:50%;
+    animation:spin 18s linear infinite;
+  }
+  .ring.r1{width:70%; height:70%;}
+  .ring.r2{width:90%; height:90%;}
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .about h2{font-size:clamp(2rem,4vw,2.8rem); margin:0 0 16px;}
+  .about p{color:var(--plum-soft); line-height:1.75; font-size:1.05rem; margin:0 0 16px;}
+  .stats{display:flex; gap:36px; margin-top:24px; flex-wrap:wrap;}
+  .stat strong{font-family:'Caveat',cursive; font-size:2.4rem; color:var(--thread); display:block; line-height:1;}
+  .stat span{font-size:0.85rem; color:var(--plum-soft); font-weight:600;}
+
+  /* ---------- CUSTOM ORDER ---------- */
+  .order{
+    background:var(--plum);
+    border-radius:36px;
+    padding:70px 6vw;
+    color:var(--cream);
+    position:relative;
+    overflow:hidden;
+  }
+  .order::before{
+    content:""; position:absolute; width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, rgba(232,178,61,0.18), transparent 70%);
+    top:-150px; right:-120px;
+  }
+  .order::after{
+    content:""; position:absolute; width:380px; height:380px; border-radius:50%;
+    background:radial-gradient(circle, rgba(242,184,198,0.14), transparent 70%);
+    bottom:-160px; left:-100px;
+  }
+  .order-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:50px; position:relative; z-index:1;}
+  .order h2{font-size:clamp(2.2rem,4vw,3rem); margin:0 0 16px; color:var(--cream);}
+  .order p.lead{color:rgba(251,246,238,0.78); line-height:1.7; margin:0 0 26px;}
+  .order-points{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px;}
+  .order-points li{display:flex; gap:12px; align-items:flex-start; font-size:0.95rem; color:rgba(251,246,238,0.85);}
+  .order-points .ico{
+    width:30px; height:30px; border-radius:50%; flex-shrink:0;
+    background:rgba(232,178,61,0.22); display:flex; align-items:center; justify-content:center;
+    font-size:0.95rem;
+  }
+
+  form{
+    background:var(--cream); border-radius:24px; padding:34px;
+    box-shadow:0 20px 50px -16px rgba(0,0,0,0.45);
+  }
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block; font-size:0.82rem; font-weight:700; color:var(--plum);
+    margin-bottom:7px; letter-spacing:0.02em;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; padding:13px 16px; border-radius:14px;
+    border:2px solid rgba(61,44,58,0.14); background:#fff;
+    font-family:'Quicksand',sans-serif; font-size:0.95rem; color:var(--plum);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--thread); box-shadow:0 0 0 4px rgba(217,108,95,0.12);
+  }
+  .field textarea{resize:vertical; min-height:100px;}
+  .submit-btn{
+    width:100%; padding:15px; border-radius:30px; border:none;
+    background:var(--thread); color:#fff; font-weight:700; font-size:1.02rem;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .submit-btn:hover{transform:translateY(-2px); box-shadow:0 14px 26px -8px rgba(217,108,95,0.55);}
+  .submit-btn:disabled{opacity:0.6; cursor:not-allowed; transform:none;}
+  .form-note{
+    font-size:0.78rem; color:var(--plum-soft); margin-top:10px; text-align:center;
+  }
+  .form-status{
+    margin-top:14px; padding:12px 16px; border-radius:12px; font-size:0.9rem; font-weight:600;
+    display:none;
+  }
+  .form-status.show{display:block;}
+  .form-status.ok{background:rgba(147,172,139,0.22); color:var(--sage-deep);}
+  .form-status.err{background:rgba(217,108,95,0.16); color:var(--thread);}
+
+  @media (max-width:760px){
+    .form-row{grid-template-columns:1fr;}
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:50px 6vw 36px;
+    text-align:center;
+    color:var(--plum-soft);
+    font-size:0.88rem;
+  }
+  footer .logo{justify-content:center; margin-bottom:10px;}
+  .footer-links{display:flex; gap:22px; justify-content:center; margin:14px 0; flex-wrap:wrap;}
+  .footer-links a{font-weight:600; color:var(--plum);}
+  .footer-links a:hover{color:var(--thread);}
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr; text-align:center; padding-top:50px;}
+    .hero p.lead{margin:0 auto 30px;}
+    .hero-actions{justify-content:center;}
+    .about, .order-grid{grid-template-columns:1fr;}
+    .about-art{max-width:340px; margin:0 auto;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001s !important; animation-iteration-count:1 !important; transition-duration:0.001s !important;}
+  }
+
+  /* scroll reveal */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="texture"></div>
+
+<header>
+  <a href="#top" class="logo"><span class="dot"></span>Handmade Crochet <span class="script" style="font-size:1.3rem;">by Mayuri</span></a>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  <nav>
+    <ul id="navList">
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#order" class="nav-cta">Custom Order</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ---------- HERO ---------- -->
+<section class="hero" id="top" style="padding-top:60px;">
+  <div class="yarn-ball yb1"></div>
+  <div class="yarn-ball yb2"></div>
+  <div class="yarn-ball yb3"></div>
+
+  <div>
+    <span class="eyebrow">🧶 Stitched by hand, one loop at a time</span>
+    <h1>Cozy crochet, <br><span class="swirl">made with love.</span></h1>
+    <p class="lead">Welcome to Mayuri's little yarn world — scrunchies, flower hair clips, bows and claw clips, each one hooked stitch by stitch, just for you.</p>
+    <div class="hero-actions">
+      <a href="#gallery" class="btn btn-primary">🧺 Browse the gallery</a>
+      <a href="#order" class="btn btn-outline">✏️ Request a custom piece</a>
+    </div>
+  </div>
+
+  <div class="stitch-wrap">
+    <svg viewBox="0 0 400 400">
+      <path class="stitch-fill" d="M200,330 C90,260 40,190 40,125 C40,70 85,35 135,35 C170,35 195,60 200,90 C205,60 230,35 265,35 C315,35 360,70 360,125 C360,190 310,260 200,330 Z"></path>
+      <path class="stitch-path" d="M200,330 C90,260 40,190 40,125 C40,70 85,35 135,35 C170,35 195,60 200,90 C205,60 230,35 265,35 C315,35 360,70 360,125 C360,190 310,260 200,330 Z"></path>
+    </svg>
+  </div>
+</section>
+
+<!-- ---------- GALLERY ---------- -->
+<section id="gallery">
+  <div class="section-head reveal">
+    <span class="eyebrow">The Collection</span>
+    <h2>Projects made with care</h2>
+    <p>A peek into the basket — every piece below was designed and hooked by hand. Tap a category to filter, or just scroll and fall in love.</p>
+  </div>
+
+  <div class="filter-row reveal">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="scrunchies">Scrunchies</button>
+    <button class="filter-btn" data-filter="clips">Hair Clips</button>
+    <button class="filter-btn" data-filter="bows">Bows & Hearts</button>
+    <button class="filter-btn" data-filter="flowers">Flower Sets</button>
+  </div>
+
+  <div class="gallery" id="galleryGrid">
+    <div class="card" data-cat="scrunchies" style="animation-delay:.05s">
+      <div class="card-art"><img src="images/scrunchie-teal.jpg" alt="Teal crochet scrunchie with scalloped edge"></div>
+      <div class="card-body">
+        <span class="card-tag">Scrunchies</span>
+        <h3>Scalloped Edge Scrunchie</h3>
+        <p>A soft, stretchy scrunchie finished with a frilly scalloped border — gentle on hair.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="clips" style="animation-delay:.1s">
+      <div class="card-art"><img src="images/daisy-clips.jpg" alt="White crochet daisy hair clips pair"></div>
+      <div class="card-body">
+        <span class="card-tag">Hair Clips</span>
+        <h3>Daisy Duo Hair Clips</h3>
+        <p>A cheerful pair of daisy clips with pearl centres, snapped onto sleek metal clips.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="bows" style="animation-delay:.15s">
+      <div class="card-art"><img src="images/bow-trio.jpg" alt="Crochet hair bows on a display card"></div>
+      <div class="card-body">
+        <span class="card-tag">Bows</span>
+        <h3>Classic Crochet Bows</h3>
+        <p>Neat little bows in soft neutrals — ready to clip in for an everyday touch of cute.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="bows" style="animation-delay:.2s">
+      <div class="card-art"><img src="images/heart-clips.jpg" alt="Red and white crochet heart hair clips"></div>
+      <div class="card-body">
+        <span class="card-tag">Hearts</span>
+        <h3>Sweetheart Hair Clips</h3>
+        <p>Tiny crocheted hearts in red and white, clipped onto snap clips two at a time.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="flowers" style="animation-delay:.25s">
+      <div class="card-art"><img src="images/sunflower-clip.jpg" alt="Crochet sunflower hair clip"></div>
+      <div class="card-body">
+        <span class="card-tag">Sunflowers</span>
+        <h3>Little Sunflower Clip</h3>
+        <p>A sunny little sunflower, hooked petal by petal with a deep brown centre.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="clips" style="animation-delay:.3s">
+      <div class="card-art"><img src="images/claw-clip.jpg" alt="Crochet flower claw hair clips in orange and purple"></div>
+      <div class="card-body">
+        <span class="card-tag">Claw Clips</span>
+        <h3>Bloom Claw Clips</h3>
+        <p>Layered crochet petals built onto sturdy claw clips for an easy half-up style.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="scrunchies" style="animation-delay:.35s">
+      <div class="card-art"><img src="images/scrunchie-set.jpg" alt="Set of four colourful crochet scrunchies"></div>
+      <div class="card-body">
+        <span class="card-tag">Scrunchies</span>
+        <h3>Pick-a-Colour Scrunchie Set</h3>
+        <p>The same scalloped design made up in a set of colourways — pick your favourites.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="flowers" style="animation-delay:.4s">
+      <div class="card-art"><img src="images/tray-overview.jpg" alt="Tray of assorted crochet flower hair clips"></div>
+      <div class="card-body">
+        <span class="card-tag">Flower Sets</span>
+        <h3>Mixed Flower Clip Tray</h3>
+        <p>A little of everything — daisies, claws and bows laid out and ready to gift.</p>
+      </div>
+    </div>
+
+    <div class="card" data-cat="flowers" style="animation-delay:.45s">
+      <div class="card-art"><img src="images/lifestyle-outdoor.jpg" alt="A customer wearing a crochet flower hair clip outdoors"></div>
+      <div class="card-body">
+        <span class="card-tag">Styled</span>
+        <h3>Worn & Loved</h3>
+        <p>Real pieces, really worn — one of Mayuri's flower clips out in the sunshine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- ABOUT ---------- -->
+<section id="about">
+  <div class="about reveal">
+    <div class="about-art">
+      <img src="images/lifestyle-building.jpg" alt="Mayuri's crochet flower hair clips styled in hair">
+    </div>
+    <div>
+      <span class="eyebrow">Hi, I'm Mayuri</span>
+      <h2>Every stitch is made by hand, just for you</h2>
+      <p>What started as a quiet hobby with a hook and a ball of yarn has grown into a little craft of its own. I design and make every piece myself — choosing yarns, planning patterns, and finishing each item with care before it reaches you.</p>
+      <p>No two pieces are ever quite the same, and that's the part I love most. If you have something in mind, I'd be happy to make it real.</p>
+      <div class="stats">
+        <div class="stat"><strong>100%</strong><span>Handmade</span></div>
+        <div class="stat"><strong>∞</strong><span>Colour options</span></div>
+        <div class="stat"><strong>1:1</strong><span>Custom pieces</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- CUSTOM ORDER ---------- -->
+<section id="order">
+  <div class="order reveal">
+    <div class="order-grid">
+      <div>
+        <span class="eyebrow" style="background:rgba(232,178,61,0.18); color:var(--mustard);">✏️ Custom Order</span>
+        <h2>Have something in mind?</h2>
+        <p class="lead">Tell me what you're picturing — the yarn, the colours, who it's for — and I'll get back to you with ideas, timeline and pricing.</p>
+        <ul class="order-points">
+          <li><span class="ico">🎨</span> Pick any colour palette or yarn type</li>
+          <li><span class="ico">📏</span> Sized to fit — for a baby, a friend, or yourself</li>
+          <li><span class="ico">⏱️</span> I'll reply with a timeline and quote by email</li>
+          <li><span class="ico">💌</span> Every request lands straight in my inbox</li>
+        </ul>
+      </div>
+
+      <form id="orderForm">
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Ananya Sharma" required>
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210">
+          </div>
+          <div class="field">
+            <label for="category">Project type</label>
+            <select id="category" name="category">
+              <option>Scrunchie</option>
+              <option>Hair clip</option>
+              <option>Bow</option>
+              <option>Heart clip</option>
+              <option>Flower / claw clip set</option>
+              <option>Something else</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="details">Tell me about your idea</label>
+          <textarea id="details" name="details" placeholder="Colours, size, occasion, reference photos, deadline..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">🧶 Send my request</button>
+        <div class="form-status" id="formStatus"></div>
+        <p class="form-note">Your request is sent directly to Mayuri's email — you'll hear back personally.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#top" class="logo" style="display:inline-flex;"><span class="dot"></span>Handmade Crochet by Mayuri</a>
+  <div class="footer-links">
+    <a href="#gallery">Gallery</a>
+    <a href="#about">About</a>
+    <a href="#order">Custom Order</a>
+    <a href="mailto:mayurighoshblg@gmail.com">mayurighoshblg@gmail.com</a>
+  </div>
+  <p>© <span id="year"></span> Handmade Crochet by Mayuri. Made with 🧶 and a lot of patience.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const navList = document.getElementById('navList');
+  menuBtn.addEventListener('click', () => navList.classList.toggle('open'));
+  navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navList.classList.remove('open')));
+
+  // gallery filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('#galleryGrid .card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        const show = filter === 'all' || card.dataset.cat === filter;
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---------- ORDER FORM SUBMISSION ----------
+  // Sends the custom request to Mayuri's email via Formspree.
+  // IMPORTANT SETUP STEP: replace YOUR_FORM_ID below with your real Formspree form ID
+  // (sign up free at https://formspree.io with mayurighoshblg@gmail.com, create a form,
+  // and it will give you an endpoint like https://formspree.io/f/abcd1234).
+  const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+  const orderForm = document.getElementById('orderForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formStatus = document.getElementById('formStatus');
+
+  orderForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    formStatus.className = 'form-status';
+    submitBtn.disabled = true;
+    submitBtn.textContent = '🧶 Sending...';
+
+    const formData = new FormData(orderForm);
+
+    if (FORM_ENDPOINT.includes('YOUR_FORM_ID')) {
+      // Fallback while Formspree isn't configured yet: open a pre-filled email.
+      const subject = encodeURIComponent('New custom crochet request from ' + (formData.get('name') || ''));
+      const body = encodeURIComponent(
+        'Name: ' + formData.get('name') +
+        '\nEmail: ' + formData.get('email') +
+        '\nPhone: ' + formData.get('phone') +
+        '\nProject type: ' + formData.get('category') +
+        '\nDetails: ' + formData.get('details')
+      );
+      window.location.href = `mailto:mayurighoshblg@gmail.com?subject=${subject}&body=${body}`;
+      formStatus.textContent = "Opening your email app to send this request...";
+      formStatus.classList.add('show', 'ok');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🧶 Send my request';
+      return;
+    }
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        formStatus.textContent = "Thank you! Your request has been sent — Mayuri will email you back soon. 💌";
+        formStatus.classList.add('show', 'ok');
+        orderForm.reset();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    } catch (err) {
+      formStatus.textContent = "Something went wrong sending your request. Please email mayurighoshblg@gmail.com directly.";
+      formStatus.classList.add('show', 'err');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🧶 Send my request';
+    }
+  });
+</script>
+
+</body>
+</html>
