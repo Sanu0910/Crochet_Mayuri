@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Handmade Crochet by Mayuri</title>
-<meta name="description" content="Handmade Crochet by Mayuri — cozy, one-of-a-kind crochet pieces made with love. Browse the gallery and request your own custom order.">
+<meta name="description" content="Handmade Crochet by Mayuri — cozy, one-of-a-kind crochet scrunchies, hair clips, bows and flower vines made with love. Browse the gallery and request your own custom order.">
+<meta name="theme-color" content="#FBF6EE">
+
+<!-- Social preview -->
+<meta property="og:title" content="Handmade Crochet by Mayuri">
+<meta property="og:description" content="Cozy, one-of-a-kind crochet scrunchies, hair clips, bows and flower vines — made with love, stitch by stitch.">
+<meta property="og:image" content="images/hair-vine-daisy-worn.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B6%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +36,7 @@
     --shadow: 0 14px 30px -12px rgba(61,44,58,0.25);
   }
 
-  *{box-sizing:border-box;}
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
@@ -35,6 +45,7 @@
     font-family:'Quicksand',sans-serif;
     overflow-x:hidden;
   }
+  body.lock{overflow:hidden;}
   h1,h2,h3,.script{
     font-family:'Caveat',cursive;
     font-weight:700;
@@ -42,6 +53,7 @@
   }
   a{text-decoration:none;color:inherit;}
   img{max-width:100%;display:block;}
+  button{font-family:inherit;}
 
   /* subtle yarn-fleck texture */
   .texture{
@@ -55,23 +67,36 @@
 
   /* ---------- NAV ---------- */
   header{
-    position:sticky; top:0; z-index:50;
+    position:sticky; top:0; z-index:60;
+  }
+  /* header-bar carries the frosted background/blur so that backdrop-filter
+     (which creates a containing block for fixed descendants) never touches
+     the fixed-position nav overlay/drawer below — otherwise they'd clip to
+     the header's own box instead of the full viewport. */
+  .header-bar{
     display:flex; align-items:center; justify-content:space-between;
-    padding:18px 6vw;
-    background:rgba(251,246,238,0.85);
+    padding:16px 6vw;
+    background:rgba(251,246,238,0.9);
     backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(61,44,58,0.08);
   }
   .logo{
     display:flex; align-items:center; gap:10px;
-    font-family:'Caveat',cursive; font-size:1.9rem; font-weight:700;
+    font-family:'Caveat',cursive; font-size:1.7rem; font-weight:700;
     color:var(--plum);
   }
   .logo .dot{
     width:14px;height:14px;border-radius:50%;
     background:var(--thread);
     box-shadow:0 0 0 4px rgba(217,108,95,0.18);
+    flex-shrink:0;
   }
+  /* nav sits absolutely within header (which is the containing block via
+     position:sticky) so it lines up beside the logo on the same row,
+     without living inside .header-bar — keeping it out from under
+     header-bar's backdrop-filter, which would otherwise break its fixed-
+     position mobile drawer (see header-bar comment above). */
+  nav{position:absolute; top:0; right:6vw; height:100%; display:flex; align-items:center;}
   nav ul{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
   nav a{
     font-weight:600; font-size:0.95rem; color:var(--plum-soft);
@@ -90,18 +115,31 @@
   }
   .nav-cta:hover{transform:translateY(-2px);}
   .nav-cta::after{display:none;}
-  .menu-btn{display:none; background:none; border:none; font-size:1.6rem; cursor:pointer; color:var(--plum);}
+  .menu-btn{
+    display:none; background:none; border:none; font-size:1.7rem; cursor:pointer;
+    color:var(--plum); width:44px; height:44px; align-items:center; justify-content:center;
+    position:relative; z-index:61;
+  }
+
+  .nav-overlay{
+    display:none; position:fixed; inset:0; z-index:55;
+    background:rgba(61,44,58,0.4); opacity:0; transition:opacity .3s ease;
+  }
+  .nav-overlay.show{display:block; opacity:1;}
 
   @media (max-width:760px){
     nav ul{
-      position:absolute; top:72px; right:0; left:0;
+      position:fixed; top:0; right:0; height:100dvh; width:min(78vw,320px); z-index:56;
       flex-direction:column; background:var(--cream);
-      padding:18px 6vw; gap:16px;
-      box-shadow:var(--shadow);
-      display:none;
+      padding:100px 32px 32px; gap:8px;
+      box-shadow:-14px 0 40px -14px rgba(61,44,58,0.35);
+      transform:translateX(100%); transition:transform .32s ease;
     }
-    nav ul.open{display:flex;}
-    .menu-btn{display:block;}
+    nav ul.open{transform:translateX(0);}
+    nav ul li{width:100%;}
+    nav a{display:block; font-size:1.15rem; padding:12px 4px;}
+    nav .nav-cta{display:inline-block; text-align:center; margin-top:10px;}
+    .menu-btn{display:flex;}
   }
 
   /* ---------- HERO ---------- */
@@ -109,7 +147,7 @@
     position:relative;
     display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center;
     gap:40px;
-    padding:70px 6vw 90px;
+    padding:60px 6vw 80px;
     max-width:1300px; margin:0 auto;
   }
   .eyebrow{
@@ -121,13 +159,13 @@
     margin-bottom:18px;
   }
   .hero h1{
-    font-size:clamp(2.8rem,6vw,4.6rem);
+    font-size:clamp(2.6rem,7vw,4.6rem);
     margin:0 0 18px;
     color:var(--plum);
   }
   .hero h1 .swirl{color:var(--thread);}
   .hero p.lead{
-    font-size:1.15rem; color:var(--plum-soft); max-width:480px; margin:0 0 30px;
+    font-size:1.1rem; color:var(--plum-soft); max-width:480px; margin:0 0 30px;
     line-height:1.6;
   }
   .hero-actions{display:flex; gap:16px; flex-wrap:wrap;}
@@ -172,7 +210,6 @@
   .yarn-ball{
     position:absolute;
     border-radius:50%;
-    filter:blur(0px);
   }
   .yb1{width:70px;height:70px; background:var(--mustard); top:8%; left:4%; animation:float 6s ease-in-out infinite;}
   .yb2{width:46px;height:46px; background:var(--sage); bottom:4%; right:8%; animation:float 7s ease-in-out infinite reverse;}
@@ -182,26 +219,27 @@
     50%{transform:translateY(-16px) rotate(12deg);}
   }
 
-  section{padding:90px 6vw; max-width:1300px; margin:0 auto;}
-  .section-head{text-align:center; max-width:640px; margin:0 auto 50px;}
+  section{padding:80px 6vw; max-width:1300px; margin:0 auto;}
+  .section-head{text-align:center; max-width:640px; margin:0 auto 46px;}
   .section-head .eyebrow{margin-bottom:14px;}
-  .section-head h2{font-size:clamp(2.2rem,4vw,3.2rem); margin:0 0 14px;}
+  .section-head h2{font-size:clamp(2.1rem,5vw,3.2rem); margin:0 0 14px;}
   .section-head p{color:var(--plum-soft); font-size:1.05rem; line-height:1.6; margin:0;}
 
   /* ---------- GALLERY ---------- */
   .filter-row{
-    display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:44px;
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px;
+    overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch;
   }
   .filter-btn{
     padding:10px 20px; border-radius:30px; border:2px solid rgba(61,44,58,0.15);
     background:#fff; font-weight:600; font-size:0.9rem; cursor:pointer;
-    color:var(--plum-soft); transition:all .2s ease;
+    color:var(--plum-soft); transition:all .2s ease; white-space:nowrap; flex-shrink:0;
   }
   .filter-btn:hover{border-color:var(--thread); color:var(--thread);}
   .filter-btn.active{background:var(--plum); color:var(--cream); border-color:var(--plum);}
 
   .gallery{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:28px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:26px;
   }
   .card{
     background:#fff; border-radius:var(--radius); overflow:hidden;
@@ -214,8 +252,9 @@
   @keyframes rise{ to{opacity:1; transform:translateY(0);} }
 
   .card-art{
-    height:220px; position:relative; overflow:hidden;
+    height:260px; position:relative; overflow:hidden; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
+    background:var(--cream-2);
   }
   .card-art img{
     width:100%; height:100%; object-fit:cover;
@@ -224,15 +263,73 @@
   .card:hover .card-art img{transform:scale(1.07);}
   .card-art::after{
     content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.12));
+    background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.14));
   }
-  .card-body{padding:20px 22px 24px;}
+  .card-art .zoom-hint{
+    position:absolute; bottom:10px; right:10px; z-index:2;
+    background:rgba(61,44,58,0.55); color:#fff; font-size:0.72rem; font-weight:700;
+    padding:5px 10px; border-radius:20px; display:flex; align-items:center; gap:4px;
+    backdrop-filter:blur(3px);
+  }
+  .card-body{padding:18px 20px 22px;}
   .card-tag{
     font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
     color:var(--thread); margin-bottom:6px; display:block;
   }
-  .card h3{font-size:1.5rem; margin:0 0 6px; color:var(--plum);}
-  .card p{font-size:0.92rem; color:var(--plum-soft); margin:0; line-height:1.5;}
+  .card h3{font-size:1.45rem; margin:0 0 6px; color:var(--plum);}
+  .card p{font-size:0.92rem; color:var(--plum-soft); margin:0 0 14px; line-height:1.5;}
+  .card-order-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(217,108,95,0.1); color:var(--thread);
+    font-weight:700; font-size:0.85rem; padding:9px 16px; border-radius:20px;
+    border:none; cursor:pointer; transition:background .2s ease;
+  }
+  .card-order-btn:hover{background:var(--thread); color:#fff;}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(29,20,26,0.94);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; transition:opacity .25s ease;
+    padding:24px;
+  }
+  .lightbox.open{opacity:1; visibility:visible;}
+  .lb-stage{position:relative; max-width:min(92vw,720px); width:100%; text-align:center;}
+  .lb-stage img{
+    max-width:100%; max-height:78vh; margin:0 auto; border-radius:16px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+    -webkit-user-select:none; user-select:none;
+    touch-action:pan-y;
+  }
+  .lb-caption{color:var(--cream); font-size:0.95rem; margin-top:16px; font-weight:600;}
+  .lb-counter{color:rgba(251,246,238,0.6); font-size:0.8rem; margin-top:4px;}
+  .lb-dots{display:flex; gap:8px; justify-content:center; margin-top:14px;}
+  .lb-dot{
+    width:9px; height:9px; border-radius:50%; background:rgba(251,246,238,0.35);
+    border:none; cursor:pointer; padding:0;
+  }
+  .lb-dot.active{background:var(--thread); width:22px; border-radius:6px; transition:width .2s ease;}
+  .lb-close{
+    position:absolute; top:18px; right:18px; z-index:2;
+    background:rgba(255,255,255,0.12); color:#fff; border:none; border-radius:50%;
+    width:44px; height:44px; font-size:1.3rem; cursor:pointer;
+  }
+  .lb-nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+    background:rgba(255,255,255,0.14); color:#fff; border:none; border-radius:50%;
+    width:48px; height:48px; font-size:1.6rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lb-nav:hover, .lb-close:hover{background:rgba(255,255,255,0.28);}
+  .lb-prev{left:0;}
+  .lb-next{right:0;}
+  @media (max-width:640px){
+    .lb-nav{width:40px; height:40px; font-size:1.3rem;}
+    .lb-prev{left:-4px;}
+    .lb-next{right:-4px;}
+    .lb-close{top:8px; right:8px;}
+  }
 
   /* ---------- ABOUT STRIP ---------- */
   .about{
@@ -253,17 +350,17 @@
   .ring.r1{width:70%; height:70%;}
   .ring.r2{width:90%; height:90%;}
   @keyframes spin{ to{ transform:rotate(360deg); } }
-  .about h2{font-size:clamp(2rem,4vw,2.8rem); margin:0 0 16px;}
+  .about h2{font-size:clamp(2rem,5vw,2.8rem); margin:0 0 16px;}
   .about p{color:var(--plum-soft); line-height:1.75; font-size:1.05rem; margin:0 0 16px;}
-  .stats{display:flex; gap:36px; margin-top:24px; flex-wrap:wrap;}
+  .stats{display:flex; gap:32px; margin-top:24px; flex-wrap:wrap;}
   .stat strong{font-family:'Caveat',cursive; font-size:2.4rem; color:var(--thread); display:block; line-height:1;}
   .stat span{font-size:0.85rem; color:var(--plum-soft); font-weight:600;}
 
   /* ---------- CUSTOM ORDER ---------- */
   .order{
     background:var(--plum);
-    border-radius:36px;
-    padding:70px 6vw;
+    border-radius:28px;
+    padding:60px 6vw;
     color:var(--cream);
     position:relative;
     overflow:hidden;
@@ -279,7 +376,7 @@
     bottom:-160px; left:-100px;
   }
   .order-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:50px; position:relative; z-index:1;}
-  .order h2{font-size:clamp(2.2rem,4vw,3rem); margin:0 0 16px; color:var(--cream);}
+  .order h2{font-size:clamp(2.1rem,5vw,3rem); margin:0 0 16px; color:var(--cream);}
   .order p.lead{color:rgba(251,246,238,0.78); line-height:1.7; margin:0 0 26px;}
   .order-points{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px;}
   .order-points li{display:flex; gap:12px; align-items:flex-start; font-size:0.95rem; color:rgba(251,246,238,0.85);}
@@ -290,11 +387,20 @@
   }
 
   form{
-    background:var(--cream); border-radius:24px; padding:34px;
+    background:var(--cream); border-radius:24px; padding:28px;
     box-shadow:0 20px 50px -16px rgba(0,0,0,0.45);
   }
+  .order-context{
+    display:none; background:rgba(232,178,61,0.18); color:var(--plum);
+    border-radius:14px; padding:12px 16px; font-size:0.88rem; font-weight:600;
+    margin-bottom:18px; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .order-context.show{display:flex;}
+  .order-context button{
+    background:none; border:none; color:var(--thread); font-weight:700; cursor:pointer; font-size:0.82rem;
+  }
   .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
-  .field{margin-bottom:18px;}
+  .field{margin-bottom:16px;}
   .field label{
     display:block; font-size:0.82rem; font-weight:700; color:var(--plum);
     margin-bottom:7px; letter-spacing:0.02em;
@@ -302,7 +408,7 @@
   .field input, .field select, .field textarea{
     width:100%; padding:13px 16px; border-radius:14px;
     border:2px solid rgba(61,44,58,0.14); background:#fff;
-    font-family:'Quicksand',sans-serif; font-size:0.95rem; color:var(--plum);
+    font-family:'Quicksand',sans-serif; font-size:16px; color:var(--plum);
     transition:border-color .2s ease, box-shadow .2s ease;
   }
   .field input:focus, .field select:focus, .field textarea:focus{
@@ -310,7 +416,7 @@
   }
   .field textarea{resize:vertical; min-height:100px;}
   .submit-btn{
-    width:100%; padding:15px; border-radius:30px; border:none;
+    width:100%; padding:16px; border-radius:30px; border:none;
     background:var(--thread); color:#fff; font-weight:700; font-size:1.02rem;
     cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;
     transition:transform .2s ease, box-shadow .2s ease;
@@ -332,6 +438,18 @@
     .form-row{grid-template-columns:1fr;}
   }
 
+  /* ---------- FLOATING MOBILE CTA ---------- */
+  .float-cta{
+    position:fixed; right:18px; bottom:18px; z-index:70;
+    background:var(--thread); color:#fff; font-weight:700; font-size:0.92rem;
+    padding:14px 20px; border-radius:30px; display:none; align-items:center; gap:8px;
+    box-shadow:0 12px 26px -8px rgba(217,108,95,0.6);
+    transform:translateY(0); transition:transform .25s ease, opacity .25s ease;
+    padding-bottom:calc(14px + env(safe-area-inset-bottom));
+  }
+  .float-cta.hide{transform:translateY(140%); opacity:0;}
+  @media (max-width:760px){ .float-cta{display:inline-flex;} }
+
   /* ---------- FOOTER ---------- */
   footer{
     padding:50px 6vw 36px;
@@ -345,11 +463,20 @@
   .footer-links a:hover{color:var(--thread);}
 
   @media (max-width:900px){
-    .hero{grid-template-columns:1fr; text-align:center; padding-top:50px;}
+    .hero{grid-template-columns:1fr; text-align:center; padding-top:40px;}
     .hero p.lead{margin:0 auto 30px;}
     .hero-actions{justify-content:center;}
     .about, .order-grid{grid-template-columns:1fr;}
     .about-art{max-width:340px; margin:0 auto;}
+    .stitch-wrap svg{max-width:280px;}
+  }
+
+  @media (max-width:600px){
+    section{padding:56px 6vw;}
+    .hero{padding:36px 6vw 56px;}
+    .order{padding:44px 6vw; border-radius:20px;}
+    form{padding:22px;}
+    .card-art{height:230px;}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -366,8 +493,11 @@
 <div class="texture"></div>
 
 <header>
-  <a href="#top" class="logo"><span class="dot"></span>Handmade Crochet <span class="script" style="font-size:1.3rem;">by Mayuri</span></a>
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  <div class="header-bar">
+    <a href="#top" class="logo"><span class="dot"></span>Handmade Crochet <span class="script" style="font-size:1.2rem;">by Mayuri</span></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+  <div class="nav-overlay" id="navOverlay"></div>
   <nav>
     <ul id="navList">
       <li><a href="#gallery">Gallery</a></li>
@@ -378,7 +508,7 @@
 </header>
 
 <!-- ---------- HERO ---------- -->
-<section class="hero" id="top" style="padding-top:60px;">
+<section class="hero" id="top" style="padding-top:50px;">
   <div class="yarn-ball yb1"></div>
   <div class="yarn-ball yb2"></div>
   <div class="yarn-ball yb3"></div>
@@ -386,10 +516,10 @@
   <div>
     <span class="eyebrow">🧶 Stitched by hand, one loop at a time</span>
     <h1>Cozy crochet, <br><span class="swirl">made with love.</span></h1>
-    <p class="lead">Welcome to Mayuri's little yarn world — scrunchies, flower hair clips, bows and claw clips, each one hooked stitch by stitch, just for you.</p>
+    <p class="lead">Welcome to Mayuri's little yarn world — scrunchies, flower hair clips, bows and hair vines, each one hooked stitch by stitch, just for you.</p>
     <div class="hero-actions">
       <a href="#gallery" class="btn btn-primary">🧺 Browse the gallery</a>
-      <a href="#order" class="btn btn-outline">✏️ Request a custom piece</a>
+      <a href="#order" class="btn btn-outline" id="customOrderLink">✏️ Request a custom piece</a>
     </div>
   </div>
 
@@ -406,106 +536,32 @@
   <div class="section-head reveal">
     <span class="eyebrow">The Collection</span>
     <h2>Projects made with care</h2>
-    <p>A peek into the basket — every piece below was designed and hooked by hand. Tap a category to filter, or just scroll and fall in love.</p>
+    <p>A peek into the basket — every piece below was designed and hooked by hand. Tap a category to filter, tap a photo to see it up close, or tap "Order this" to ask about one.</p>
   </div>
 
-  <div class="filter-row reveal">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="scrunchies">Scrunchies</button>
-    <button class="filter-btn" data-filter="clips">Hair Clips</button>
-    <button class="filter-btn" data-filter="bows">Bows & Hearts</button>
-    <button class="filter-btn" data-filter="flowers">Flower Sets</button>
-  </div>
+  <div class="filter-row reveal" id="filterRow"></div>
 
-  <div class="gallery" id="galleryGrid">
-    <div class="card" data-cat="scrunchies" style="animation-delay:.05s">
-      <div class="card-art"><img src="images/scrunchie-teal.jpg" alt="Teal crochet scrunchie with scalloped edge"></div>
-      <div class="card-body">
-        <span class="card-tag">Scrunchies</span>
-        <h3>Scalloped Edge Scrunchie</h3>
-        <p>A soft, stretchy scrunchie finished with a frilly scalloped border — gentle on hair.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="clips" style="animation-delay:.1s">
-      <div class="card-art"><img src="images/daisy-clips.jpg" alt="White crochet daisy hair clips pair"></div>
-      <div class="card-body">
-        <span class="card-tag">Hair Clips</span>
-        <h3>Daisy Duo Hair Clips</h3>
-        <p>A cheerful pair of daisy clips with pearl centres, snapped onto sleek metal clips.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="bows" style="animation-delay:.15s">
-      <div class="card-art"><img src="images/bow-trio.jpg" alt="Crochet hair bows on a display card"></div>
-      <div class="card-body">
-        <span class="card-tag">Bows</span>
-        <h3>Classic Crochet Bows</h3>
-        <p>Neat little bows in soft neutrals — ready to clip in for an everyday touch of cute.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="bows" style="animation-delay:.2s">
-      <div class="card-art"><img src="images/heart-clips.jpg" alt="Red and white crochet heart hair clips"></div>
-      <div class="card-body">
-        <span class="card-tag">Hearts</span>
-        <h3>Sweetheart Hair Clips</h3>
-        <p>Tiny crocheted hearts in red and white, clipped onto snap clips two at a time.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="flowers" style="animation-delay:.25s">
-      <div class="card-art"><img src="images/sunflower-clip.jpg" alt="Crochet sunflower hair clip"></div>
-      <div class="card-body">
-        <span class="card-tag">Sunflowers</span>
-        <h3>Little Sunflower Clip</h3>
-        <p>A sunny little sunflower, hooked petal by petal with a deep brown centre.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="clips" style="animation-delay:.3s">
-      <div class="card-art"><img src="images/claw-clip.jpg" alt="Crochet flower claw hair clips in orange and purple"></div>
-      <div class="card-body">
-        <span class="card-tag">Claw Clips</span>
-        <h3>Bloom Claw Clips</h3>
-        <p>Layered crochet petals built onto sturdy claw clips for an easy half-up style.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="scrunchies" style="animation-delay:.35s">
-      <div class="card-art"><img src="images/scrunchie-set.jpg" alt="Set of four colourful crochet scrunchies"></div>
-      <div class="card-body">
-        <span class="card-tag">Scrunchies</span>
-        <h3>Pick-a-Colour Scrunchie Set</h3>
-        <p>The same scalloped design made up in a set of colourways — pick your favourites.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="flowers" style="animation-delay:.4s">
-      <div class="card-art"><img src="images/tray-overview.jpg" alt="Tray of assorted crochet flower hair clips"></div>
-      <div class="card-body">
-        <span class="card-tag">Flower Sets</span>
-        <h3>Mixed Flower Clip Tray</h3>
-        <p>A little of everything — daisies, claws and bows laid out and ready to gift.</p>
-      </div>
-    </div>
-
-    <div class="card" data-cat="flowers" style="animation-delay:.45s">
-      <div class="card-art"><img src="images/lifestyle-outdoor.jpg" alt="A customer wearing a crochet flower hair clip outdoors"></div>
-      <div class="card-body">
-        <span class="card-tag">Styled</span>
-        <h3>Worn & Loved</h3>
-        <p>Real pieces, really worn — one of Mayuri's flower clips out in the sunshine.</p>
-      </div>
-    </div>
-  </div>
+  <div class="gallery" id="galleryGrid"></div>
 </section>
+
+<!-- ---------- LIGHTBOX ---------- -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close photo viewer">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous photo">‹</button>
+  <div class="lb-stage">
+    <img id="lbImage" src="" alt="">
+    <div class="lb-caption" id="lbCaption"></div>
+    <div class="lb-counter" id="lbCounter"></div>
+    <div class="lb-dots" id="lbDots"></div>
+  </div>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next photo">›</button>
+</div>
 
 <!-- ---------- ABOUT ---------- -->
 <section id="about">
   <div class="about reveal">
     <div class="about-art">
-      <img src="images/lifestyle-building.jpg" alt="Mayuri's crochet flower hair clips styled in hair">
+      <img src="images/hair-vine-daisy-worn.jpg" alt="Mayuri's crochet daisy hair vine styled in hair" loading="lazy">
     </div>
     <div>
       <span class="eyebrow">Hi, I'm Mayuri</span>
@@ -538,6 +594,10 @@
       </div>
 
       <form id="orderForm">
+        <div class="order-context" id="orderContext">
+          <span id="orderContextText"></span>
+          <button type="button" id="clearOrderContext">Clear</button>
+        </div>
         <div class="form-row">
           <div class="field">
             <label for="name">Your name</label>
@@ -557,10 +617,9 @@
             <label for="category">Project type</label>
             <select id="category" name="category">
               <option>Scrunchie</option>
-              <option>Hair clip</option>
+              <option>Hair clip / Claw clip</option>
               <option>Bow</option>
-              <option>Heart clip</option>
-              <option>Flower / claw clip set</option>
+              <option>Flower / Hair vine</option>
               <option>Something else</option>
             </select>
           </div>
@@ -569,13 +628,17 @@
           <label for="details">Tell me about your idea</label>
           <textarea id="details" name="details" placeholder="Colours, size, occasion, reference photos, deadline..." required></textarea>
         </div>
+        <input type="hidden" id="orderType" name="order_type" value="Custom enquiry">
+        <input type="hidden" id="productName" name="product" value="">
         <button type="submit" class="submit-btn" id="submitBtn">🧶 Send my request</button>
         <div class="form-status" id="formStatus"></div>
-        <p class="form-note">Your request is sent directly to Mayuri's email — you'll hear back personally.</p>
+        <p class="form-note">Your request goes straight to Mayuri — you'll hear back personally.</p>
       </form>
     </div>
   </div>
 </section>
+
+<a href="#order" class="float-cta" id="floatCta">🧶 Order Now</a>
 
 <footer>
   <a href="#top" class="logo" style="display:inline-flex;"><span class="dot"></span>Handmade Crochet by Mayuri</a>
@@ -588,16 +651,107 @@
   <p>© <span id="year"></span> Handmade Crochet by Mayuri. Made with 🧶 and a lot of patience.</p>
 </footer>
 
+<!-- EmailJS: powers automatic order/enquiry email notifications. See SETUP.md -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // mobile menu
-  const menuBtn = document.getElementById('menuBtn');
-  const navList = document.getElementById('navList');
-  menuBtn.addEventListener('click', () => navList.classList.toggle('open'));
-  navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navList.classList.remove('open')));
+  /* ============ PRODUCT DATA ============
+     Add more photos later by pushing extra file paths into an item's
+     "images" array — the gallery card, filter and lightbox slider all
+     pick it up automatically, no other code changes needed. */
+  const PRODUCTS = [
+    {
+      id: 'mono-scrunchie',
+      name: 'Monochrome Bloom Scrunchie',
+      cat: 'scrunchies',
+      tag: 'Scrunchies',
+      desc: 'A ruffled black & cream scrunchie with a scalloped petal edge — soft on hair, bold on style.',
+      images: ['images/scrunchie-mono-floral.jpg']
+    },
+    {
+      id: 'teal-scrunchie',
+      name: 'Teal Bloom Scrunchie',
+      cat: 'scrunchies',
+      tag: 'Scrunchies',
+      desc: 'A cheerful teal-and-cream scrunchie hooked in a soft flower silhouette.',
+      images: ['images/scrunchie-teal-bloom.jpg']
+    },
+    {
+      id: 'maroon-bow',
+      name: 'Maroon Scallop Bow Clip',
+      cat: 'bows',
+      tag: 'Bows',
+      desc: 'A neat cream bow finished with a delicate maroon scalloped trim, snapped onto a clip.',
+      images: ['images/bow-maroon-scallop.jpg']
+    },
+    {
+      id: 'wine-bow',
+      name: 'Wine & Cream Bow Clip',
+      cat: 'bows',
+      tag: 'Bows',
+      desc: 'A classic four-loop bow in wine and cream — an everyday touch of cute for any hairstyle.',
+      images: ['images/bow-wine-cream.jpg']
+    },
+    {
+      id: 'blossom-claw',
+      name: 'Blossom Duo Claw Clip',
+      cat: 'clips',
+      tag: 'Claw Clips',
+      desc: 'Layered crochet petals in blush and cream, built onto a sturdy claw clip for easy half-up styles.',
+      images: ['images/claw-clip-blossom-duo.jpg']
+    },
+    {
+      id: 'daisy-vine',
+      name: 'Daisy Hair Vine',
+      cat: 'flowers',
+      tag: 'Hair Vines',
+      desc: 'A trailing daisy vine with a sunny orange centre — pinned in and worn flowing down the hair.',
+      images: ['images/hair-vine-daisy-worn.jpg']
+    }
+  ];
 
-  // gallery filter
+  const CATEGORIES = [
+    { key: 'all', label: 'All' },
+    { key: 'scrunchies', label: 'Scrunchies' },
+    { key: 'clips', label: 'Claw & Hair Clips' },
+    { key: 'bows', label: 'Bows' },
+    { key: 'flowers', label: 'Flowers & Vines' }
+  ];
+
+  // ---------- render filter buttons ----------
+  const filterRow = document.getElementById('filterRow');
+  CATEGORIES.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.filter = c.key;
+    btn.textContent = c.label;
+    filterRow.appendChild(btn);
+  });
+
+  // ---------- render gallery cards ----------
+  const galleryGrid = document.getElementById('galleryGrid');
+  PRODUCTS.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.cat = p.cat;
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.innerHTML = `
+      <div class="card-art" data-product="${p.id}">
+        <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+        ${p.images.length > 1 ? `<span class="zoom-hint">📷 ${p.images.length} photos</span>` : `<span class="zoom-hint">🔍 View</span>`}
+      </div>
+      <div class="card-body">
+        <span class="card-tag">${p.tag}</span>
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <button class="card-order-btn" data-order="${p.id}">💌 Order this</button>
+      </div>
+    `;
+    galleryGrid.appendChild(card);
+  });
+
+  // ---------- gallery filter ----------
   const filterBtns = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('#galleryGrid .card');
   filterBtns.forEach(btn => {
@@ -612,21 +766,196 @@
     });
   });
 
-  // scroll reveal
+  // ---------- mobile nav drawer ----------
+  const menuBtn = document.getElementById('menuBtn');
+  const navList = document.getElementById('navList');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function openMenu(){
+    navList.classList.add('open');
+    navOverlay.classList.add('show');
+    document.body.classList.add('lock');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    floatCta.classList.add('hide');
+  }
+  function closeMenu(){
+    navList.classList.remove('open');
+    navOverlay.classList.remove('show');
+    document.body.classList.remove('lock');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    const orderInView = orderSection.getBoundingClientRect().top < window.innerHeight;
+    floatCta.classList.toggle('hide', orderInView);
+  }
+  menuBtn.addEventListener('click', () => {
+    navList.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  navOverlay.addEventListener('click', closeMenu);
+  navList.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // ---------- scroll reveal ----------
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
 
-  // ---------- ORDER FORM SUBMISSION ----------
-  // Sends the custom request to Mayuri's email via Formspree.
-  // IMPORTANT SETUP STEP: replace YOUR_FORM_ID below with your real Formspree form ID
-  // (sign up free at https://formspree.io with mayurighoshblg@gmail.com, create a form,
-  // and it will give you an endpoint like https://formspree.io/f/abcd1234).
-  const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+  // ---------- lightbox / photo slider ----------
+  const lightbox = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lbImage');
+  const lbCaption = document.getElementById('lbCaption');
+  const lbCounter = document.getElementById('lbCounter');
+  const lbDots = document.getElementById('lbDots');
+  const lbClose = document.getElementById('lbClose');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
 
+  let activeProduct = null;
+  let activeIndex = 0;
+
+  function renderLightbox(){
+    const p = activeProduct;
+    lbImage.src = p.images[activeIndex];
+    lbImage.alt = p.name;
+    lbCaption.textContent = p.name;
+    lbCounter.textContent = p.images.length > 1 ? `${activeIndex + 1} / ${p.images.length}` : '';
+    lbDots.innerHTML = '';
+    if (p.images.length > 1) {
+      p.images.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'lb-dot' + (i === activeIndex ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+        dot.addEventListener('click', () => { activeIndex = i; renderLightbox(); });
+        lbDots.appendChild(dot);
+      });
+    }
+    lbPrev.style.display = p.images.length > 1 ? 'flex' : 'none';
+    lbNext.style.display = p.images.length > 1 ? 'flex' : 'none';
+  }
+
+  function openLightbox(productId, index){
+    activeProduct = PRODUCTS.find(p => p.id === productId);
+    activeIndex = index || 0;
+    renderLightbox();
+    lightbox.classList.add('open');
+    document.body.classList.add('lock');
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.classList.remove('lock');
+  }
+  function nextPhoto(){
+    if (!activeProduct) return;
+    activeIndex = (activeIndex + 1) % activeProduct.images.length;
+    renderLightbox();
+  }
+  function prevPhoto(){
+    if (!activeProduct) return;
+    activeIndex = (activeIndex - 1 + activeProduct.images.length) % activeProduct.images.length;
+    renderLightbox();
+  }
+
+  galleryGrid.addEventListener('click', (e) => {
+    const art = e.target.closest('.card-art');
+    if (art) { openLightbox(art.dataset.product, 0); return; }
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  lbNext.addEventListener('click', nextPhoto);
+  lbPrev.addEventListener('click', prevPhoto);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextPhoto();
+    if (e.key === 'ArrowLeft') prevPhoto();
+  });
+
+  // swipe support
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 45) { dx < 0 ? nextPhoto() : prevPhoto(); }
+  }, { passive: true });
+
+  // ---------- "Order this" wiring from gallery cards ----------
   const orderForm = document.getElementById('orderForm');
+  const categorySelect = document.getElementById('category');
+  const detailsField = document.getElementById('details');
+  const orderTypeField = document.getElementById('orderType');
+  const productNameField = document.getElementById('productName');
+  const orderContext = document.getElementById('orderContext');
+  const orderContextText = document.getElementById('orderContextText');
+  const clearOrderContext = document.getElementById('clearOrderContext');
+
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Hair vine' };
+
+  function fillOrderContext(product){
+    categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';
+    detailsField.value = `Hi Mayuri! I'd love to order the "${product.name}". Could you share colour options, sizing and price?`;
+    orderTypeField.value = 'Order — existing item';
+    productNameField.value = product.name;
+    orderContextText.textContent = `Ordering: ${product.name}`;
+    orderContext.classList.add('show');
+  }
+
+  galleryGrid.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-order]');
+    if (!btn) return;
+    const product = PRODUCTS.find(p => p.id === btn.dataset.order);
+    if (product) {
+      fillOrderContext(product);
+      document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => document.getElementById('name').focus(), 500);
+    }
+  });
+
+  clearOrderContext.addEventListener('click', () => {
+    orderTypeField.value = 'Custom enquiry';
+    productNameField.value = '';
+    detailsField.value = '';
+    orderContext.classList.remove('show');
+  });
+
+  document.getElementById('customOrderLink').addEventListener('click', () => {
+    orderTypeField.value = 'Custom enquiry';
+    productNameField.value = '';
+    orderContext.classList.remove('show');
+  });
+
+  // ---------- floating mobile CTA (hides once the order form is on screen) ----------
+  const floatCta = document.getElementById('floatCta');
+  const orderSection = document.getElementById('order');
+  const ctaObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => floatCta.classList.toggle('hide', e.isIntersecting));
+  }, { threshold: 0.1 });
+  ctaObserver.observe(orderSection);
+
+  // ============================================================
+  // ORDER / ENQUIRY EMAIL NOTIFICATIONS
+  //
+  // Every submission should reach BOTH mayurighoshblg@gmail.com and
+  // sanuroybhs@gmail.com automatically. Because this is a static site
+  // with no server, that automatic send is powered by EmailJS (free
+  // tier: emailjs.com) — a one-time setup by whoever owns those inboxes.
+  //
+  // >>> SEE SETUP.md IN THE REPO ROOT FOR STEP-BY-STEP INSTRUCTIONS <<<
+  //
+  // Until the three placeholders below are filled in, the form falls
+  // back to opening the visitor's email app pre-addressed to both
+  // recipients, so the site keeps working meanwhile.
+  // ============================================================
+  const EMAILJS_PUBLIC_KEY  = "YOUR_EMAILJS_PUBLIC_KEY";
+  const EMAILJS_SERVICE_ID  = "YOUR_EMAILJS_SERVICE_ID";
+  const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID";
+  const NOTIFY_EMAILS = ["mayurighoshblg@gmail.com", "sanuroybhs@gmail.com"];
+
+  const emailjsReady = typeof emailjs !== 'undefined' &&
+    ![EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID].some(v => v.startsWith('YOUR_'));
+
+  if (emailjsReady) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+
   const submitBtn = document.getElementById('submitBtn');
   const formStatus = document.getElementById('formStatus');
 
@@ -637,45 +966,49 @@
     submitBtn.textContent = '🧶 Sending...';
 
     const formData = new FormData(orderForm);
+    const params = {
+      from_name: formData.get('name'),
+      from_email: formData.get('email'),
+      phone: formData.get('phone') || 'Not provided',
+      category: formData.get('category'),
+      order_type: formData.get('order_type'),
+      product: formData.get('product') || 'Custom enquiry (no specific gallery item)',
+      details: formData.get('details'),
+      to_emails: NOTIFY_EMAILS.join(', ')
+    };
 
-    if (FORM_ENDPOINT.includes('YOUR_FORM_ID')) {
-      // Fallback while Formspree isn't configured yet: open a pre-filled email.
-      const subject = encodeURIComponent('New custom crochet request from ' + (formData.get('name') || ''));
-      const body = encodeURIComponent(
-        'Name: ' + formData.get('name') +
-        '\nEmail: ' + formData.get('email') +
-        '\nPhone: ' + formData.get('phone') +
-        '\nProject type: ' + formData.get('category') +
-        '\nDetails: ' + formData.get('details')
-      );
-      window.location.href = `mailto:mayurighoshblg@gmail.com?subject=${subject}&body=${body}`;
-      formStatus.textContent = "Opening your email app to send this request...";
-      formStatus.classList.add('show', 'ok');
-      submitBtn.disabled = false;
-      submitBtn.textContent = '🧶 Send my request';
-      return;
-    }
-
-    try {
-      const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
+    if (emailjsReady) {
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
         formStatus.textContent = "Thank you! Your request has been sent — Mayuri will email you back soon. 💌";
         formStatus.classList.add('show', 'ok');
         orderForm.reset();
-      } else {
-        throw new Error('Network response was not ok');
+        clearOrderContext.click();
+      } catch (err) {
+        formStatus.textContent = "Something went wrong sending your request. Please email mayurighoshblg@gmail.com directly.";
+        formStatus.classList.add('show', 'err');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🧶 Send my request';
       }
-    } catch (err) {
-      formStatus.textContent = "Something went wrong sending your request. Please email mayurighoshblg@gmail.com directly.";
-      formStatus.classList.add('show', 'err');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = '🧶 Send my request';
+      return;
     }
+
+    // Fallback while EmailJS isn't configured yet: open a pre-filled email to both inboxes.
+    const subject = encodeURIComponent(`New ${params.order_type} — ${params.product}`);
+    const body = encodeURIComponent(
+      'Name: ' + params.from_name +
+      '\nEmail: ' + params.from_email +
+      '\nPhone: ' + params.phone +
+      '\nProject type: ' + params.category +
+      '\nItem: ' + params.product +
+      '\nDetails: ' + params.details
+    );
+    window.location.href = `mailto:${NOTIFY_EMAILS.join(',')}?subject=${subject}&body=${body}`;
+    formStatus.textContent = "Opening your email app to send this request to Mayuri...";
+    formStatus.classList.add('show', 'ok');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '🧶 Send my request';
   });
 </script>
 

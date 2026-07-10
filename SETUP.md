@@ -1,0 +1,85 @@
+# Getting order & enquiry emails into both inboxes
+
+This site has no server, so sending an automatic email when someone submits
+the order/enquiry form needs a small free service called **EmailJS**. It
+lets the page send an email straight from the visitor's browser, without
+you running any backend.
+
+Until you finish this setup, the form still works — it opens the visitor's
+own email app pre-addressed to both `mayurighoshblg@gmail.com` and
+`sanuroybhs@gmail.com`. Once EmailJS is configured, submissions send
+automatically and silently to both addresses instead.
+
+## One-time setup (~10 minutes)
+
+1. **Create a free account** at [emailjs.com](https://www.emailjs.com/) using `mayurighoshblg@gmail.com`.
+
+2. **Add an Email Service** (Email Services → Add New Service → Gmail) and
+   connect the `mayurighoshblg@gmail.com` Gmail account. Note the **Service ID**
+   it gives you.
+
+3. **Create an Email Template** (Email Templates → Create New Template).
+   - Set the **"To email"** field to:
+     ```
+     mayurighoshblg@gmail.com, sanuroybhs@gmail.com
+     ```
+   - In the template body, use these variables (they match what the site sends):
+     `{{from_name}}`, `{{from_email}}`, `{{phone}}`, `{{category}}`,
+     `{{order_type}}`, `{{product}}`, `{{details}}`
+   - A simple template body works well:
+     ```
+     New {{order_type}} from the website!
+
+     Name: {{from_name}}
+     Email: {{from_email}}
+     Phone: {{phone}}
+     Item / project type: {{category}}
+     Product: {{product}}
+
+     Details:
+     {{details}}
+     ```
+   - Note the **Template ID**.
+
+4. **Get your Public Key** (Account → General → Public Key).
+
+5. Open `index.html`, find this block near the bottom of the `<script>` tag:
+   ```js
+   const EMAILJS_PUBLIC_KEY  = "YOUR_EMAILJS_PUBLIC_KEY";
+   const EMAILJS_SERVICE_ID  = "YOUR_EMAILJS_SERVICE_ID";
+   const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID";
+   ```
+   Replace the three placeholder strings with the real Public Key, Service ID
+   and Template ID from steps 2–4, save, and re-publish the site.
+
+6. Submit a test order on the live site and confirm the email lands in both
+   `mayurighoshblg@gmail.com` and `sanuroybhs@gmail.com`.
+
+That's it — every future order or custom enquiry will email both addresses
+automatically. The free EmailJS plan covers 200 emails/month, which is
+comfortably enough for a small shop; you can upgrade later if needed.
+
+## Adding more product photos
+
+In `index.html`, each gallery item lives in the `PRODUCTS` array inside the
+`<script>` tag, for example:
+
+```js
+{
+  id: 'mono-scrunchie',
+  name: 'Monochrome Bloom Scrunchie',
+  cat: 'scrunchies',
+  tag: 'Scrunchies',
+  desc: 'A ruffled black & cream scrunchie with a scalloped petal edge...',
+  images: ['images/scrunchie-mono-floral.jpg']
+}
+```
+
+To add more angles/photos of the same item, just add more file paths to its
+`images` array — the gallery photo slider (lightbox) will automatically show
+next/previous arrows and dots for however many photos are listed. Drop the
+new image files into the `images/` folder first.
+
+To add a brand-new product, copy one of the objects, give it a unique `id`,
+and pick `cat` from: `scrunchies`, `clips`, `bows`, `flowers` (or ask for a
+new category to be added to the filter row).
