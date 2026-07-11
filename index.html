@@ -784,6 +784,9 @@
   galleryGrid.addEventListener('load', (e) => {
     if (e.target.tagName === 'IMG') e.target.classList.add('loaded');
   }, true);
+  galleryGrid.addEventListener('error', (e) => {
+    if (e.target.tagName === 'IMG') e.target.classList.add('loaded');
+  }, true);
   galleryGrid.querySelectorAll('.card-art img').forEach(img => {
     if (img.complete) img.classList.add('loaded');
   });
