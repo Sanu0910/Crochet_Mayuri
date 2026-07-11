@@ -20,14 +20,17 @@ automatically and silently to both addresses instead.
 
 3. **Create an Email Template** (Email Templates → Create New Template).
    - Set the **"To email"** field to:
-     ```
+     ```text
      mayurighoshblg@gmail.com, sanuroybhs@gmail.com
      ```
+   - Set the **"Reply To"** field to `{{from_email}}` so that hitting "Reply"
+     on the notification email replies straight to the customer, not to the
+     Gmail account the notification was sent from.
    - In the template body, use these variables (they match what the site sends):
      `{{from_name}}`, `{{from_email}}`, `{{phone}}`, `{{category}}`,
      `{{order_type}}`, `{{product}}`, `{{details}}`
    - A simple template body works well:
-     ```
+     ```text
      New {{order_type}} from the website!
 
      Name: {{from_name}}
@@ -58,6 +61,17 @@ automatically and silently to both addresses instead.
 That's it — every future order or custom enquiry will email both addresses
 automatically. The free EmailJS plan covers 200 emails/month, which is
 comfortably enough for a small shop; you can upgrade later if needed.
+
+### Optional: block spam submissions
+
+The form already turns on EmailJS's free `blockHeadless` and `limitRate`
+protections (blocks scripted/headless-browser submissions and throttles
+rapid repeat sends), so no setup is needed for that baseline protection.
+
+If you start seeing spam anyway, EmailJS also supports a Google reCAPTCHA
+checkbox on the form. That needs its own free reCAPTCHA v2 site key from
+[google.com/recaptcha](https://www.google.com/recaptcha/about/) plus a
+small code change here — ask for that to be wired in if/when it's needed.
 
 ## Adding more product photos
 

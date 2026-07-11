@@ -255,7 +255,10 @@
     height:260px; position:relative; overflow:hidden; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     background:var(--cream-2);
+    width:100%; border:none; padding:0; margin:0; font:inherit; text-align:inherit;
+    -webkit-appearance:none; appearance:none;
   }
+  .card-art:focus-visible{outline:3px solid var(--thread); outline-offset:-3px;}
   .card-art img{
     width:100%; height:100%; object-fit:cover;
     transition:transform .5s ease;
@@ -737,10 +740,10 @@
     card.dataset.cat = p.cat;
     card.style.animationDelay = (i * 0.05) + 's';
     card.innerHTML = `
-      <div class="card-art" data-product="${p.id}">
+      <button type="button" class="card-art" data-product="${p.id}" aria-label="View photos of ${p.name}">
         <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
         ${p.images.length > 1 ? `<span class="zoom-hint">📷 ${p.images.length} photos</span>` : `<span class="zoom-hint">🔍 View</span>`}
-      </div>
+      </button>
       <div class="card-body">
         <span class="card-tag">${p.tag}</span>
         <h3>${p.name}</h3>
@@ -771,26 +774,48 @@
   const navList = document.getElementById('navList');
   const navOverlay = document.getElementById('navOverlay');
 
+  // navList doubles as the desktop horizontal nav (always visible, must stay
+  // focusable there) and the mobile off-screen drawer (must be unreachable
+  // by keyboard while closed) — only mark it inert/aria-hidden when it's
+  // actually acting as a closed drawer, i.e. below the drawer breakpoint.
+  const mobileNavQuery = window.matchMedia('(max-width:760px)');
+  function syncNavA11y(){
+    const isClosedDrawer = mobileNavQuery.matches && !navList.classList.contains('open');
+    navList.toggleAttribute('inert', isClosedDrawer);
+    if (isClosedDrawer) navList.setAttribute('aria-hidden', 'true');
+    else navList.removeAttribute('aria-hidden');
+  }
+  syncNavA11y();
+  mobileNavQuery.addEventListener('change', syncNavA11y);
+
   function openMenu(){
     navList.classList.add('open');
     navOverlay.classList.add('show');
     document.body.classList.add('lock');
     menuBtn.setAttribute('aria-expanded', 'true');
     floatCta.classList.add('hide');
+    syncNavA11y();
+    const firstLink = navList.querySelector('a');
+    if (firstLink) firstLink.focus();
   }
   function closeMenu(){
     navList.classList.remove('open');
     navOverlay.classList.remove('show');
     document.body.classList.remove('lock');
     menuBtn.setAttribute('aria-expanded', 'false');
+    syncNavA11y();
     const orderInView = orderSection.getBoundingClientRect().top < window.innerHeight;
     floatCta.classList.toggle('hide', orderInView);
+    menuBtn.focus();
   }
   menuBtn.addEventListener('click', () => {
     navList.classList.contains('open') ? closeMenu() : openMenu();
   });
   navOverlay.addEventListener('click', closeMenu);
   navList.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navList.classList.contains('open')) closeMenu();
+  });
 
   // ---------- scroll reveal ----------
   const revealEls = document.querySelectorAll('.reveal');
@@ -811,6 +836,11 @@
 
   let activeProduct = null;
   let activeIndex = 0;
+  let lightboxTrigger = null;
+
+  function getLightboxFocusable(){
+    return Array.from(lightbox.querySelectorAll('button')).filter(el => getComputedStyle(el).display !== 'none');
+  }
 
   function renderLightbox(){
     const p = activeProduct;
@@ -832,16 +862,19 @@
     lbNext.style.display = p.images.length > 1 ? 'flex' : 'none';
   }
 
-  function openLightbox(productId, index){
+  function openLightbox(productId, index, triggerEl){
     activeProduct = PRODUCTS.find(p => p.id === productId);
     activeIndex = index || 0;
+    lightboxTrigger = triggerEl || document.activeElement;
     renderLightbox();
     lightbox.classList.add('open');
     document.body.classList.add('lock');
+    lbClose.focus();
   }
   function closeLightbox(){
     lightbox.classList.remove('open');
     document.body.classList.remove('lock');
+    if (lightboxTrigger) lightboxTrigger.focus();
   }
   function nextPhoto(){
     if (!activeProduct) return;
@@ -856,7 +889,7 @@
 
   galleryGrid.addEventListener('click', (e) => {
     const art = e.target.closest('.card-art');
-    if (art) { openLightbox(art.dataset.product, 0); return; }
+    if (art) { openLightbox(art.dataset.product, 0, art); return; }
   });
   lbClose.addEventListener('click', closeLightbox);
   lbNext.addEventListener('click', nextPhoto);
@@ -867,6 +900,19 @@
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowRight') nextPhoto();
     if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'Tab') {
+      const focusables = getLightboxFocusable();
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
 
   // swipe support
@@ -919,6 +965,12 @@
   document.getElementById('customOrderLink').addEventListener('click', () => {
     orderTypeField.value = 'Custom enquiry';
     productNameField.value = '';
+    // Only wipe the details field if it's still holding the auto-generated
+    // "I'd love to order..." text from a gallery item — leave any message
+    // the visitor has actually typed themselves alone.
+    if (orderContext.classList.contains('show')) {
+      detailsField.value = '';
+    }
     orderContext.classList.remove('show');
   });
 
@@ -953,7 +1005,10 @@
     ![EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID].some(v => v.startsWith('YOUR_'));
 
   if (emailjsReady) {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    // blockHeadless + limitRate are free, no-account-needed spam defenses.
+    // For stronger protection, EmailJS also supports a reCAPTCHA checkbox —
+    // see the "Optional: block spam submissions" section in SETUP.md.
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY, blockHeadless: true, limitRate: { throttle: 10000 } });
   }
 
   const submitBtn = document.getElementById('submitBtn');
