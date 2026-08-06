@@ -80,12 +80,12 @@ In `index.html`, each gallery item lives in the `PRODUCTS` array inside the
 
 ```js
 {
-  id: 'mono-scrunchie',
-  name: 'Monochrome Bloom Scrunchie',
+  id: 'sage-scrunchie',
+  name: 'Sage Bloom Scrunchie',
   cat: 'scrunchies',
   tag: 'Scrunchies',
-  desc: 'A ruffled black & cream scrunchie with a scalloped petal edge...',
-  images: ['images/scrunchie-mono-floral.jpg']
+  desc: 'A soft moss-green and cream scrunchie with a ruffled petal edge...',
+  images: ['images/sage-cream-scrunchie.jpg']
 }
 ```
 
@@ -95,5 +95,6 @@ next/previous arrows and dots for however many photos are listed. Drop the
 new image files into the `images/` folder first.
 
 To add a brand-new product, copy one of the objects, give it a unique `id`,
-and pick `cat` from: `scrunchies`, `clips`, `bows`, `flowers` (or ask for a
-new category to be added to the filter row).
+and pick `cat` from: `scrunchies`, `bows`, `flowers`, `keychains` (or ask for
+a new category — like `clips` for hair/claw clips — to be added back to the
+filter row when there's a product for it).

@@ -10,7 +10,7 @@
 <!-- Social preview -->
 <meta property="og:title" content="Handmade Crochet by Mayuri">
 <meta property="og:description" content="Cozy, one-of-a-kind crochet scrunchies, hair clips, bows and flower vines — made with love, stitch by stitch.">
-<meta property="og:image" content="images/hair-vine-daisy-worn.jpg">
+<meta property="og:image" content="images/rose-duo-red-pink.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -622,7 +622,7 @@
 <section id="about">
   <div class="about">
     <div class="about-art reveal">
-      <img src="images/hair-vine-daisy-worn.jpg" alt="Mayuri's crochet daisy hair vine styled in hair" loading="lazy">
+      <img src="images/rose-duo-red-pink.jpg" alt="Mayuri holding two handmade crochet roses, red and pink" loading="lazy">
     </div>
     <div class="reveal" style="transition-delay:.15s">
       <span class="eyebrow">Hi, I'm Mayuri</span>
@@ -680,7 +680,8 @@
               <option>Scrunchie</option>
               <option>Hair clip / Claw clip</option>
               <option>Bow</option>
-              <option>Flower / Hair vine</option>
+              <option>Flower / Rose</option>
+              <option>Keychain</option>
               <option>Something else</option>
             </select>
           </div>
@@ -723,61 +724,53 @@
      pick it up automatically, no other code changes needed. */
   const PRODUCTS = [
     {
-      id: 'mono-scrunchie',
-      name: 'Monochrome Bloom Scrunchie',
+      id: 'sunflower-keychain',
+      name: 'Sunflower Bloom Keychain',
+      cat: 'keychains',
+      tag: 'Keychains',
+      desc: 'A cheerful sunflower with a rich brown centre and golden petals, finished with a sturdy keyring — a little joy for your bag or keys.',
+      images: ['images/sunflower-keychain.jpg']
+    },
+    {
+      id: 'sage-scrunchie',
+      name: 'Sage Bloom Scrunchie',
       cat: 'scrunchies',
       tag: 'Scrunchies',
-      desc: 'A ruffled black & cream scrunchie with a scalloped petal edge — soft on hair, bold on style.',
-      images: ['images/scrunchie-mono-floral.jpg']
+      desc: 'A soft moss-green and cream scrunchie with a ruffled petal edge — simple, soft, handmade.',
+      images: ['images/sage-cream-scrunchie.jpg']
     },
     {
-      id: 'teal-scrunchie',
-      name: 'Teal Bloom Scrunchie',
-      cat: 'scrunchies',
-      tag: 'Scrunchies',
-      desc: 'A cheerful teal-and-cream scrunchie hooked in a soft flower silhouette.',
-      images: ['images/scrunchie-teal-bloom.jpg']
-    },
-    {
-      id: 'maroon-bow',
-      name: 'Maroon Scallop Bow Clip',
-      cat: 'bows',
-      tag: 'Bows',
-      desc: 'A neat cream bow finished with a delicate maroon scalloped trim, snapped onto a clip.',
-      images: ['images/bow-maroon-scallop.jpg']
-    },
-    {
-      id: 'wine-bow',
-      name: 'Wine & Cream Bow Clip',
-      cat: 'bows',
-      tag: 'Bows',
-      desc: 'A classic four-loop bow in wine and cream — an everyday touch of cute for any hairstyle.',
-      images: ['images/bow-wine-cream.jpg']
-    },
-    {
-      id: 'blossom-claw',
-      name: 'Blossom Duo Claw Clip',
-      cat: 'clips',
-      tag: 'Claw Clips',
-      desc: 'Layered crochet petals in blush and cream, built onto a sturdy claw clip for easy half-up styles.',
-      images: ['images/claw-clip-blossom-duo.jpg']
-    },
-    {
-      id: 'daisy-vine',
-      name: 'Daisy Hair Vine',
+      id: 'rose-duo',
+      name: 'Red & Pink Rose Duo',
       cat: 'flowers',
-      tag: 'Hair Vines',
-      desc: 'A trailing daisy vine with a sunny orange centre — pinned in and worn flowing down the hair.',
-      images: ['images/hair-vine-daisy-worn.jpg']
+      tag: 'Roses',
+      desc: 'Two lifelike crochet roses — deep red and blush pink — each with leafy stems, ready to gift or display.',
+      images: ['images/rose-duo-red-pink.jpg']
+    },
+    {
+      id: 'coral-rose',
+      name: 'Coral Rose Stem',
+      cat: 'flowers',
+      tag: 'Roses',
+      desc: 'A single coral rose with hand-shaped petals and leaves on its own stem — made to be cherished.',
+      images: ['images/coral-rose-stem.jpg']
+    },
+    {
+      id: 'classic-bow',
+      name: 'Classic Maroon & Cream Bow',
+      cat: 'bows',
+      tag: 'Bows',
+      desc: 'A classic crochet bow in cream with a rich maroon edge — soft yarn, lightweight and durable.',
+      images: ['images/classic-maroon-bow.jpg']
     }
   ];
 
   const CATEGORIES = [
     { key: 'all', label: 'All' },
     { key: 'scrunchies', label: 'Scrunchies' },
-    { key: 'clips', label: 'Claw & Hair Clips' },
     { key: 'bows', label: 'Bows' },
-    { key: 'flowers', label: 'Flowers & Vines' }
+    { key: 'flowers', label: 'Flowers & Roses' },
+    { key: 'keychains', label: 'Keychains' }
   ];
 
   // ---------- render filter buttons ----------
@@ -1019,7 +1012,7 @@
   const orderContextText = document.getElementById('orderContextText');
   const clearOrderContext = document.getElementById('clearOrderContext');
 
-  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Hair vine' };
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain' };
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';
