@@ -239,19 +239,32 @@
     animation-delay:1.75s;
   }
   @keyframes petalPop{ to{opacity:1; transform:scale(1);} }
+  /* little yarn-thread flourishes that stitch themselves in just ahead of
+     each line of text, tying the name and tagline into the same motif */
+  .thread-connector{
+    display:block; width:110px; height:16px; margin:4px auto;
+  }
+  .thread-connector path{
+    fill:none; stroke:var(--thread); stroke-width:2.5; stroke-linecap:round;
+    opacity:0.6;
+    stroke-dasharray:160; stroke-dashoffset:160;
+    animation:threadDraw .5s var(--ease-out) forwards;
+  }
+  .thread-connector.tc-1 path{ animation-delay:1.85s; }
+  .thread-connector.tc-2 path{ animation-delay:2.35s; }
   .brand-name{
     font-family:'Caveat',cursive; font-weight:700; font-size:2.6rem;
-    color:var(--plum); text-align:center; margin:10px 0 2px;
+    color:var(--plum); text-align:center; margin:2px 0;
     opacity:0; transform:translateY(14px);
     animation:heroRise .6s var(--ease-out) forwards;
-    animation-delay:2.2s;
+    animation-delay:2.25s;
   }
   .brand-tagline{
     text-align:center; color:var(--plum-soft); font-size:0.98rem; line-height:1.55;
     max-width:300px; margin:0 auto;
     opacity:0; transform:translateY(14px);
     animation:heroRise .7s var(--ease-out) forwards;
-    animation-delay:2.6s;
+    animation-delay:2.75s;
   }
 
   .yarn-ball{
@@ -618,7 +631,9 @@
 
       <circle class="flower-center" cx="200" cy="200" r="28" style="fill:var(--mustard)"></circle>
     </svg>
+    <svg class="thread-connector tc-1" viewBox="0 0 110 16" aria-hidden="true"><path d="M2,8 Q28,-2 55,8 T108,8"></path></svg>
     <p class="brand-name">Mayuri'z</p>
+    <svg class="thread-connector tc-2" viewBox="0 0 110 16" aria-hidden="true"><path d="M2,8 Q28,18 55,8 T108,8"></path></svg>
     <p class="brand-tagline">The best gift for someone you love — unique, handmade, and beautiful in every stitch.</p>
   </div>
 </section>
