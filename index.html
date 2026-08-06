@@ -200,39 +200,59 @@
   }
   .btn-outline:hover{background:var(--plum); color:var(--cream);}
 
-  /* stitching heart animation */
+  /* ---------- yarn-flower brand animation ----------
+     Two "thread" strokes sweep in from offscreen left/right and curl toward
+     centre; six petals pop in trailing each thread, alternating sides; the
+     centre knot settles last; then the brand name and tagline rise in. */
   .stitch-wrap{
-    position:relative; display:flex; justify-content:center; align-items:center;
+    position:relative; display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
   }
-  .stitch-wrap svg{
-    width:100%; max-width:420px;
-    transform-origin:50% 46%;
-    animation:heartbeat 2.6s ease-in-out 3.8s infinite;
+  .brand-flower-svg{
+    width:100%; max-width:340px; display:block;
+    transform-origin:50% 42%;
+    animation:heartbeat 3s ease-in-out 3.4s infinite;
   }
   @keyframes heartbeat{
     0%,100%{transform:scale(1);}
-    12%{transform:scale(1.07);}
+    12%{transform:scale(1.06);}
     24%{transform:scale(1);}
-    36%{transform:scale(1.05);}
+    36%{transform:scale(1.04);}
     48%{transform:scale(1);}
   }
-  .stitch-path{
-    fill:none;
-    stroke:var(--thread);
-    stroke-width:3.5;
-    stroke-linecap:round;
-    stroke-dasharray:14 10;
-    stroke-dashoffset:2000;
-    animation:stitchDraw 3.2s ease-in-out forwards;
+  .thread-path{
+    fill:none; stroke:var(--thread); stroke-width:3; stroke-linecap:round;
+    opacity:0.5;
+    stroke-dasharray:280; stroke-dashoffset:280;
+    animation:threadDraw 1.1s var(--ease-out) forwards;
   }
-  .stitch-fill{
-    fill:var(--blush);
-    opacity:0;
-    animation:fillIn 1.2s ease forwards;
+  @keyframes threadDraw{ to{ stroke-dashoffset:0; } }
+  .petal{
+    transform-box:fill-box; transform-origin:center;
+    opacity:0; transform:scale(0.3);
+    animation:petalPop .6s var(--ease-spring) forwards;
+  }
+  .flower-center{
+    transform-box:fill-box; transform-origin:center;
+    opacity:0; transform:scale(0.3);
+    animation:petalPop .5s var(--ease-spring) forwards;
+    animation-delay:1.75s;
+  }
+  @keyframes petalPop{ to{opacity:1; transform:scale(1);} }
+  .brand-name{
+    font-family:'Caveat',cursive; font-weight:700; font-size:2.6rem;
+    color:var(--plum); text-align:center; margin:10px 0 2px;
+    opacity:0; transform:translateY(14px);
+    animation:heroRise .6s var(--ease-out) forwards;
+    animation-delay:2.2s;
+  }
+  .brand-tagline{
+    text-align:center; color:var(--plum-soft); font-size:0.98rem; line-height:1.55;
+    max-width:300px; margin:0 auto;
+    opacity:0; transform:translateY(14px);
+    animation:heroRise .7s var(--ease-out) forwards;
     animation-delay:2.6s;
   }
-  @keyframes stitchDraw{ to{ stroke-dashoffset:0; } }
-  @keyframes fillIn{ to{ opacity:0.55; } }
 
   .yarn-ball{
     position:absolute;
@@ -529,7 +549,7 @@
     .hero-actions{justify-content:center;}
     .about, .order-grid{grid-template-columns:1fr;}
     .about-art{max-width:340px; margin:0 auto;}
-    .stitch-wrap svg{max-width:280px;}
+    .brand-flower-svg{max-width:260px;}
   }
 
   @media (max-width:600px){
@@ -585,10 +605,21 @@
   </div>
 
   <div class="stitch-wrap">
-    <svg viewBox="0 0 400 400">
-      <path class="stitch-fill" d="M200,330 C90,260 40,190 40,125 C40,70 85,35 135,35 C170,35 195,60 200,90 C205,60 230,35 265,35 C315,35 360,70 360,125 C360,190 310,260 200,330 Z"></path>
-      <path class="stitch-path" d="M200,330 C90,260 40,190 40,125 C40,70 85,35 135,35 C170,35 195,60 200,90 C205,60 230,35 265,35 C315,35 360,70 360,125 C360,190 310,260 200,330 Z"></path>
+    <svg class="brand-flower-svg" viewBox="0 0 400 400" aria-hidden="true">
+      <path class="thread-path" d="M -40,205 C 40,150 110,255 168,202" style="animation-delay:0s"></path>
+      <path class="thread-path" d="M 440,205 C 360,150 290,255 232,202" style="animation-delay:.05s"></path>
+
+      <g transform="rotate(0 200 200)"><g class="petal" style="animation-delay:.85s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:var(--blush)"></ellipse></g></g>
+      <g transform="rotate(180 200 200)"><g class="petal" style="animation-delay:.95s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:var(--blush)"></ellipse></g></g>
+      <g transform="rotate(60 200 200)"><g class="petal" style="animation-delay:1.05s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:var(--blush-deep)"></ellipse></g></g>
+      <g transform="rotate(120 200 200)"><g class="petal" style="animation-delay:1.15s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:var(--blush-deep)"></ellipse></g></g>
+      <g transform="rotate(300 200 200)"><g class="petal" style="animation-delay:1.25s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:var(--blush)"></ellipse></g></g>
+      <g transform="rotate(240 200 200)"><g class="petal" style="animation-delay:1.35s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:var(--blush)"></ellipse></g></g>
+
+      <circle class="flower-center" cx="200" cy="200" r="28" style="fill:var(--mustard)"></circle>
     </svg>
+    <p class="brand-name">Mayuri'z</p>
+    <p class="brand-tagline">The best gift for someone you love — unique, handmade, and beautiful in every stitch.</p>
   </div>
 </section>
 
