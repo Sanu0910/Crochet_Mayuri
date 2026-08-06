@@ -95,6 +95,5 @@ next/previous arrows and dots for however many photos are listed. Drop the
 new image files into the `images/` folder first.
 
 To add a brand-new product, copy one of the objects, give it a unique `id`,
-and pick `cat` from: `scrunchies`, `bows`, `flowers`, `keychains` (or ask for
-a new category — like `clips` for hair/claw clips — to be added back to the
-filter row when there's a product for it).
+and pick `cat` from: `scrunchies`, `bows`, `flowers`, `clips`, `keychains`,
+`hearts` (or ask for a new category to be added to the filter row).

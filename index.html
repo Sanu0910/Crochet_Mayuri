@@ -682,6 +682,7 @@
               <option>Bow</option>
               <option>Flower / Rose</option>
               <option>Keychain</option>
+              <option>Heart appliqué</option>
               <option>Something else</option>
             </select>
           </div>
@@ -729,7 +730,7 @@
       cat: 'keychains',
       tag: 'Keychains',
       desc: 'A cheerful sunflower with a rich brown centre and golden petals, finished with a sturdy keyring — a little joy for your bag or keys.',
-      images: ['images/sunflower-keychain.jpg']
+      images: ['images/sunflower-keychain.jpg', 'images/sunflower-keychain-alt.jpg', 'images/sunflower-hanging-charm.jpg']
     },
     {
       id: 'sage-scrunchie',
@@ -738,6 +739,14 @@
       tag: 'Scrunchies',
       desc: 'A soft moss-green and cream scrunchie with a ruffled petal edge — simple, soft, handmade.',
       images: ['images/sage-cream-scrunchie.jpg']
+    },
+    {
+      id: 'ruby-rose-scrunchie',
+      name: 'Ruby Rose Scrunchie',
+      cat: 'scrunchies',
+      tag: 'Scrunchies',
+      desc: 'A bold ring of ruby-red rose petals around a fresh green band — a scrunchie that doubles as a flower crown.',
+      images: ['images/ruby-rose-scrunchie.jpg']
     },
     {
       id: 'rose-duo',
@@ -756,12 +765,60 @@
       images: ['images/coral-rose-stem.jpg']
     },
     {
+      id: 'red-rose-stem',
+      name: 'Red Rose Stem',
+      cat: 'flowers',
+      tag: 'Roses',
+      desc: 'A classic red rose on a long leafy stem — handmade ones stay in bloom forever.',
+      images: ['images/red-rose-stem.jpg']
+    },
+    {
+      id: 'rose-bouquet',
+      name: 'Red Rose Bouquet',
+      cat: 'flowers',
+      tag: 'Roses',
+      desc: 'A full hand-tied bouquet of five crochet roses on leafy stems — a gift that never wilts.',
+      images: ['images/rose-bouquet.jpg']
+    },
+    {
       id: 'classic-bow',
       name: 'Classic Maroon & Cream Bow',
       cat: 'bows',
       tag: 'Bows',
       desc: 'A classic crochet bow in cream with a rich maroon edge — soft yarn, lightweight and durable.',
-      images: ['images/classic-maroon-bow.jpg']
+      images: ['images/classic-maroon-bow.jpg', 'images/classic-maroon-bow-alt.jpg']
+    },
+    {
+      id: 'cream-bow',
+      name: 'Simple Cream Bow',
+      cat: 'bows',
+      tag: 'Bows',
+      desc: 'A soft solid-cream bow, textured and understated — an easy everyday clip.',
+      images: ['images/cream-bow.jpg']
+    },
+    {
+      id: 'rose-claw-clip',
+      name: 'Blush Rose Claw Clip',
+      cat: 'clips',
+      tag: 'Claw Clips',
+      desc: 'A layered rose in blush, cream and cocoa, built onto a wooden claw clip for an easy half-up style.',
+      images: ['images/rose-claw-clip.jpg']
+    },
+    {
+      id: 'rose-keychain',
+      name: 'Rose Keychain',
+      cat: 'keychains',
+      tag: 'Keychains',
+      desc: 'A rich maroon rose finished with a keyring — handcrafted elegance you can carry with you.',
+      images: ['images/rose-keychain.jpg']
+    },
+    {
+      id: 'mini-hearts',
+      name: 'Sweetheart Mini Set',
+      cat: 'hearts',
+      tag: 'Hearts',
+      desc: 'Four tiny crochet hearts in buttery cream and pink — small hearts, big love, ready for clips or appliqué.',
+      images: ['images/mini-hearts-set.jpg']
     }
   ];
 
@@ -770,7 +827,9 @@
     { key: 'scrunchies', label: 'Scrunchies' },
     { key: 'bows', label: 'Bows' },
     { key: 'flowers', label: 'Flowers & Roses' },
-    { key: 'keychains', label: 'Keychains' }
+    { key: 'clips', label: 'Claw Clips' },
+    { key: 'keychains', label: 'Keychains' },
+    { key: 'hearts', label: 'Hearts' }
   ];
 
   // ---------- render filter buttons ----------
@@ -1012,7 +1071,7 @@
   const orderContextText = document.getElementById('orderContextText');
   const clearOrderContext = document.getElementById('clearOrderContext');
 
-  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain' };
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', hearts: 'Heart appliqué' };
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';
@@ -1098,6 +1157,7 @@
     if (prefersReducedMotion) return;
     const burst = document.createElement('div');
     burst.className = 'success-burst';
+    burst.setAttribute('aria-hidden', 'true');
     const emojis = ['💖', '🧶', '✨', '💗'];
     for (let i = 0; i < 7; i++) {
       const span = document.createElement('span');
