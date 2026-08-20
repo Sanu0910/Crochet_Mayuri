@@ -2,6 +2,14 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-08-20 (later)
+
+- **Rebuilt the whole site in an Apple-style design language.** Near-monochrome interface (white / warm off-white panels, `#1d1d1f` text) so the product photos carry all the colour; very large tight-tracked headlines; full-width alternating panels with a lot of breathing room; thin 48px blurred nav; Apple's inline chevron links instead of heavy buttons; flat product tiles with no drop shadows.
+- Typography moved to the system stack (SF Pro on Apple devices) with Inter as the web fallback. The Caveat script now appears only on the "Mayuri'z" brand mark, so the handmade character survives without fighting the clean layout.
+- Added two full-width feature panels — Sunflower Clips and Roses — presenting one product each at large size, the way Apple leads with a hero product.
+- The brand thread-red is retained as the accent/link colour, standing in for Apple's blue.
+- All existing behaviour kept intact: category filters, gallery-wide photo viewer, "Order this" prefill, EmailJS order form, mobile drawer, scroll reveals, reduced-motion support.
+
 ## 2026-08-20
 
 - Split every gallery item so **each card shows exactly one photo** — no more multi-photo sliders hidden behind a card. The gallery went from 13 cards to 18, and shots that were previously buried (gift-tagged keychain, hanging charm, bag charm, the bow's scallop detail, the sunflower clip's clip-back) are now visible on the page.
