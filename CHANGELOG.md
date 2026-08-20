@@ -2,6 +2,11 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-08-20
+
+- Split every gallery item so **each card shows exactly one photo** — no more multi-photo sliders hidden behind a card. The gallery went from 13 cards to 18, and shots that were previously buried (gift-tagged keychain, hanging charm, bag charm, the bow's scallop detail, the sunflower clip's clip-back) are now visible on the page.
+- Reworked the photo viewer to match: opening any photo now lets you arrow through the whole gallery instead of dead-ending on one image, and it respects whichever category filter is active (e.g. filtered to Bows, you browse 1/3).
+
 ## 2026-08-19
 
 - Added a new product: **Sunflower Hair Clip Pair** (2 photos) — two golden sunflowers with maroon centres on alligator clips, filed under Claw Clips.
