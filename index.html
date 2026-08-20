@@ -307,6 +307,7 @@
   .card{
     background:#fff; border-radius:var(--radius); overflow:hidden;
     box-shadow:var(--shadow);
+    display:flex; flex-direction:column;
     opacity:0; transform:translateY(28px) scale(0.96);
     transition:opacity .6s var(--ease-out), transform .6s var(--ease-out), box-shadow .4s var(--ease-out);
   }
@@ -342,21 +343,57 @@
     padding:5px 10px; border-radius:20px; display:flex; align-items:center; gap:4px;
     backdrop-filter:blur(3px);
   }
-  .card-body{padding:18px 20px 22px;}
+  /* promotional badge — set sizes / newly added, sits opposite the photo hint */
+  .card-badge{
+    position:absolute; top:10px; left:10px; z-index:2;
+    background:var(--thread); color:#fff;
+    font-size:0.68rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    padding:6px 12px; border-radius:20px;
+    box-shadow:0 6px 14px -4px rgba(217,108,95,0.6);
+  }
+
+  /* card body is a column so the footer can pin to the bottom, keeping the
+     CTA row aligned across cards whose descriptions differ in length */
+  .card-body{padding:18px 20px 20px; display:flex; flex-direction:column; flex:1;}
   .card-tag{
     font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
     color:var(--thread); margin-bottom:6px; display:block;
   }
   .card h3{font-size:1.45rem; margin:0 0 6px; color:var(--plum);}
-  .card p{font-size:0.92rem; color:var(--plum-soft); margin:0 0 14px; line-height:1.5;}
+  .card p{font-size:0.92rem; color:var(--plum-soft); margin:0 0 16px; line-height:1.5;}
+  .card-foot{
+    margin-top:auto; padding-top:14px; border-top:1px solid rgba(61,44,58,0.09);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .card-note{font-size:0.78rem; font-weight:600; color:var(--plum-soft); white-space:nowrap;}
   .card-order-btn{
     display:inline-flex; align-items:center; gap:6px;
-    background:rgba(217,108,95,0.1); color:var(--thread);
-    font-weight:700; font-size:0.85rem; padding:9px 16px; border-radius:20px;
-    border:none; cursor:pointer; transition:background .2s ease, transform .3s var(--ease-spring);
+    background:var(--thread); color:#fff;
+    font-weight:700; font-size:0.85rem; padding:10px 18px; border-radius:22px;
+    border:none; cursor:pointer; white-space:nowrap;
+    box-shadow:0 8px 16px -6px rgba(217,108,95,0.55);
+    transition:background .2s ease, transform .3s var(--ease-spring), box-shadow .3s var(--ease-out);
   }
-  .card-order-btn:hover{background:var(--thread); color:#fff;}
+  .card-order-btn:hover{transform:translateY(-2px); box-shadow:0 12px 22px -6px rgba(217,108,95,0.7);}
   .card-order-btn:active{transform:scale(0.92);}
+
+  /* ---------- VALUE-PROP STRIP ---------- */
+  .promo-strip{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px;
+    max-width:1300px; margin:0 auto; padding:0 6vw 10px;
+  }
+  .promo-item{
+    display:flex; align-items:center; gap:12px;
+    background:#fff; border-radius:16px; padding:14px 16px;
+    box-shadow:0 8px 20px -14px rgba(61,44,58,0.35);
+  }
+  .promo-item .promo-ico{
+    width:38px; height:38px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    background:rgba(232,178,61,0.18);
+  }
+  .promo-item strong{display:block; font-size:0.9rem; color:var(--plum); line-height:1.25;}
+  .promo-item span{font-size:0.78rem; color:var(--plum-soft);}
 
   /* ---------- LIGHTBOX ---------- */
   .lightbox{
@@ -638,6 +675,26 @@
   </div>
 </section>
 
+<!-- ---------- VALUE PROPS ---------- -->
+<div class="promo-strip reveal">
+  <div class="promo-item">
+    <span class="promo-ico" aria-hidden="true">🧶</span>
+    <div><strong>Handmade to order</strong><span>Every piece hooked by hand</span></div>
+  </div>
+  <div class="promo-item">
+    <span class="promo-ico" aria-hidden="true">🎨</span>
+    <div><strong>Any colour you like</strong><span>Pick your own yarn palette</span></div>
+  </div>
+  <div class="promo-item">
+    <span class="promo-ico" aria-hidden="true">🎁</span>
+    <div><strong>Gift-ready</strong><span>Perfect for someone you love</span></div>
+  </div>
+  <div class="promo-item">
+    <span class="promo-ico" aria-hidden="true">💌</span>
+    <div><strong>A personal reply</strong><span>You hear back from Mayuri</span></div>
+  </div>
+</div>
+
 <!-- ---------- GALLERY ---------- -->
 <section id="gallery">
   <div class="section-head reveal">
@@ -771,6 +828,15 @@
      pick it up automatically, no other code changes needed. */
   const PRODUCTS = [
     {
+      id: 'sunflower-hair-clips',
+      name: 'Sunflower Hair Clip Pair',
+      cat: 'clips',
+      tag: 'Hair Clips',
+      badge: 'New',
+      desc: 'Two golden sunflowers with deep maroon centres on secure alligator clips — bright, sturdy and easy to wear every day.',
+      images: ['images/sunflower-hair-clips.jpg', 'images/sunflower-hair-clips-alt.jpg']
+    },
+    {
       id: 'sunflower-keychain',
       name: 'Sunflower Bloom Keychain',
       cat: 'keychains',
@@ -799,6 +865,7 @@
       name: 'Red & Pink Rose Duo',
       cat: 'flowers',
       tag: 'Roses',
+      badge: 'Set of 2',
       desc: 'Two lifelike crochet roses — deep red and blush pink — each with leafy stems, ready to gift or display.',
       images: ['images/rose-duo-red-pink.jpg']
     },
@@ -823,6 +890,7 @@
       name: 'Red Rose Bouquet',
       cat: 'flowers',
       tag: 'Roses',
+      badge: 'Bouquet of 5',
       desc: 'A full hand-tied bouquet of five crochet roses on leafy stems — a gift that never wilts.',
       images: ['images/rose-bouquet.jpg']
     },
@@ -863,6 +931,7 @@
       name: 'Sweetheart Mini Set',
       cat: 'hearts',
       tag: 'Hearts',
+      badge: 'Set of 4',
       desc: 'Four tiny crochet hearts in buttery cream and pink — small hearts, big love, ready for clips or appliqué.',
       images: ['images/mini-hearts-set.jpg']
     }
@@ -901,13 +970,17 @@
     card.innerHTML = `
       <button type="button" class="card-art" data-product="${p.id}" aria-label="View photos of ${p.name}">
         <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ``}
         ${p.images.length > 1 ? `<span class="zoom-hint">📷 ${p.images.length} photos</span>` : `<span class="zoom-hint">🔍 View</span>`}
       </button>
       <div class="card-body">
         <span class="card-tag">${p.tag}</span>
         <h3>${p.name}</h3>
         <p>${p.desc}</p>
-        <button class="card-order-btn" data-order="${p.id}">💌 Order this</button>
+        <div class="card-foot">
+          <span class="card-note">🧶 Made to order</span>
+          <button class="card-order-btn" data-order="${p.id}">Order this →</button>
+        </div>
       </div>
     `;
     galleryGrid.appendChild(card);

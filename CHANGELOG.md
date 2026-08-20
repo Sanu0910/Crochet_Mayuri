@@ -2,6 +2,12 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-08-19
+
+- Added a new product: **Sunflower Hair Clip Pair** (2 photos) — two golden sunflowers with maroon centres on alligator clips, filed under Claw Clips.
+- Gave the gallery a more promotional look: product cards now carry factual badges ("New", "Set of 2", "Bouquet of 5", "Set of 4"), a "Made to order" note, and a stronger "Order this →" button. Card footers now line up across the row regardless of description length.
+- Added a value-prop strip under the hero: Handmade to order · Any colour you like · Gift-ready · A personal reply.
+
 ## 2026-08-06
 
 - Added yarn-thread flourish animations that draw in above the "Mayuri'z" name and the tagline, tying them into the flower animation below.
