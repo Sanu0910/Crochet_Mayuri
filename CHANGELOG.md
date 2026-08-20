@@ -2,6 +2,25 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-08-20 (later, part 3)
+
+- **Added a promo film to the site.** 27 seconds, portrait, silent: the yarn
+  threads draw in and become the flower, the "Handmade." headline lands, then
+  all 18 pieces play through one photo at a time with their names, and it
+  closes on the order address. It sits in a new "The Film" panel above the
+  product features, and there's a "Watch the film" link in the hero.
+- The film never autoplays — the page ships a poster frame and a play button,
+  and the 2.6MB video is only fetched once someone actually asks for it, so
+  nobody on mobile data pays for it by accident.
+- Built the film with [Remotion](https://remotion.dev), following the
+  skills published at github.com/remotion-dev/remotion. The project lives in
+  `video/` and renders from the same photos and palette as the site, so the
+  catalogue and the film can't drift apart — see `video/README.md` for how to
+  re-render it after adding a product.
+- Corrected the "Adding more product photos" section of `SETUP.md`, which
+  still described the old multi-photo `images: []` field that was replaced by
+  a single `image:` per card back on 2026-08-20.
+
 ## 2026-08-20 (later, part 2)
 
 - Audited the new design against the `apple-design` skill from github.com/emilkowalski/skills and closed the gaps it surfaced:

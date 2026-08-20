@@ -267,6 +267,37 @@
     .feature-copy .link-row{justify-content:center;}
   }
 
+  /* ---------- THE FILM ---------- */
+  /* A portrait film sits in a phone-shaped frame, the way Apple presents a
+     vertical product film. It never autoplays: the poster and play button
+     stand in until the visitor asks for it, so nobody on mobile data pays
+     for 2.6MB they didn't want. */
+  .film-stage{
+    position:relative; width:100%; max-width:440px; margin:40px auto 0;
+    aspect-ratio:4/5; border-radius:var(--r-lg); overflow:hidden;
+    background:var(--surface-alt);
+  }
+  .film-video{width:100%; height:100%; object-fit:cover; display:block; background:var(--surface-alt);}
+  /* The poster is a frame of the film itself, so the overlay stays out of its
+     way: no scrim, no label over the artwork — just the play target. */
+  .film-play{
+    position:absolute; inset:0; width:100%; height:100%;
+    display:grid; place-items:center;
+    border:0; padding:0; cursor:pointer; background:transparent; font:inherit;
+    transition:opacity .35s var(--ease-out);
+  }
+  .film-stage.playing .film-play{opacity:0; pointer-events:none;}
+  .film-play-ico{
+    width:74px; height:74px; border-radius:50%; display:grid; place-items:center;
+    font-size:1.35rem; padding-left:5px;
+    background:rgba(255,255,255,0.94); color:var(--ink);
+    box-shadow:0 10px 34px rgba(0,0,0,0.28);
+    transition:transform 220ms var(--ease-spring);
+  }
+  .film-play:hover .film-play-ico{transform:scale(1.06);}
+  .film-play:active .film-play-ico{transform:scale(0.94); transition-duration:100ms;}
+  .film-meta{margin:16px 0 0; font-size:0.85rem; color:var(--ink-faint);}
+
   /* ---------- GALLERY ---------- */
   .filter-row{
     display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
@@ -595,6 +626,7 @@
     <div class="link-row">
       <a href="#gallery" class="link">Browse the collection</a>
       <a href="#order" class="link" id="customOrderLink">Request a custom piece</a>
+      <a href="#film" class="link">Watch the film</a>
     </div>
   </div>
 </section>
@@ -620,6 +652,27 @@
     </div>
   </div>
 </div>
+
+<!-- ---------- THE FILM ---------- -->
+<section class="panel" id="film">
+  <div class="panel-inner reveal">
+    <span class="eyebrow">The Film</span>
+    <h2 class="headline">The whole collection,<br>in half a minute.</h2>
+    <p class="subhead">Every piece, one at a time — put together frame by frame, the same way they were made.</p>
+    <div class="film-stage" id="filmStage">
+      <video class="film-video" id="promoVideo"
+             poster="media/mayuriz-film-poster.jpg"
+             preload="none" playsinline muted
+             aria-label="Mayuri'z film — the full handmade crochet collection">
+        <source src="media/mayuriz-film.mp4" type="video/mp4">
+      </video>
+      <button type="button" class="film-play" id="filmPlay" aria-label="Play the Mayuri'z film">
+        <span class="film-play-ico" aria-hidden="true">&#9654;</span>
+      </button>
+    </div>
+    <p class="film-meta">27 seconds &middot; no sound &middot; 2.6&nbsp;MB</p>
+  </div>
+</section>
 
 <!-- ---------- FEATURE: SUNFLOWER CLIPS ---------- -->
 <section class="panel">
@@ -1052,6 +1105,28 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
+
+  // ---------- the film ----------
+  /* Click-to-play only. The <video> carries preload="none", so the file is
+     not fetched until someone actually asks for it; the native controls are
+     attached at that moment and taken away again when it finishes, so the
+     poster frame and play button come back. */
+  const filmStage = document.getElementById('filmStage');
+  const filmVideo = document.getElementById('promoVideo');
+  const filmPlay  = document.getElementById('filmPlay');
+  if (filmStage && filmVideo && filmPlay) {
+    filmPlay.addEventListener('click', () => {
+      filmVideo.setAttribute('controls', '');
+      filmStage.classList.add('playing');
+      // If the browser refuses to start playback, the native controls are
+      // already showing, so the visitor can still start it themselves.
+      filmVideo.play().catch(() => {});
+    });
+    filmVideo.addEventListener('ended', () => {
+      filmStage.classList.remove('playing');
+      filmVideo.removeAttribute('controls');
+    });
+  }
 
   // ---------- lightbox / photo slider ----------
   const lightbox = document.getElementById('lightbox');
