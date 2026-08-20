@@ -59,6 +59,7 @@
     letter-spacing:-0.01em;
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    font-optical-sizing:auto;
   }
   body.lock{overflow:hidden;}
   a{text-decoration:none;color:inherit;}
@@ -93,14 +94,19 @@
   .script{font-family:'Caveat',cursive; font-weight:700; letter-spacing:0;}
 
   /* Apple's signature inline chevron link */
+  /* Press feedback fires on pointer-down rather than release — waiting for
+     mouseup to acknowledge a tap is what makes an interface read as laggy.
+     100ms is fast enough to feel instant while still being visible. */
   .link{
     display:inline-flex; align-items:center; gap:5px;
     color:var(--accent); font-size:1.05rem; font-weight:400;
     letter-spacing:-0.012em;
+    transition:transform 100ms var(--ease-out);
   }
   .link::after{content:"›"; font-size:1.25em; line-height:0.9; transition:transform .25s var(--ease-out);}
   .link:hover{text-decoration:underline;}
   .link:hover::after{transform:translateX(3px);}
+  .link:active{transform:scale(0.97);}
   .link-row{display:flex; gap:30px; justify-content:center; flex-wrap:wrap; margin-top:22px;}
 
   /* ---------- NAV ---------- */
@@ -111,6 +117,7 @@
     background:rgba(255,255,255,0.82);
     backdrop-filter:saturate(180%) blur(20px);
     border-bottom:1px solid var(--hairline);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.5);
   }
   .logo{
     display:flex; align-items:center; gap:8px;
@@ -131,9 +138,10 @@
   .nav-cta{
     background:var(--accent); color:#fff !important; opacity:1 !important;
     padding:6px 14px; border-radius:980px; font-size:0.78rem; font-weight:500;
-    transition:filter .2s ease;
+    transition:filter .2s ease, transform 100ms var(--ease-out);
   }
   .nav-cta:hover{filter:brightness(1.08);}
+  .nav-cta:active{transform:scale(0.97);}
   .menu-btn{
     display:none; background:none; border:none; font-size:1.15rem; cursor:pointer;
     color:var(--ink); width:44px; height:44px; align-items:center; justify-content:center;
@@ -268,9 +276,11 @@
     padding:7px 16px; border-radius:980px; border:1px solid var(--hairline);
     background:transparent; font-size:0.85rem; font-weight:400; cursor:pointer;
     color:var(--ink); letter-spacing:-0.008em;
-    transition:background .2s ease, color .2s ease, border-color .2s ease;
+    transition:background .2s ease, color .2s ease, border-color .2s ease,
+               transform 100ms var(--ease-out);
   }
   .filter-btn:hover{background:rgba(0,0,0,0.04);}
+  .filter-btn:active{transform:scale(0.97);}
   .filter-btn.active{background:var(--ink); color:#fff; border-color:var(--ink);}
 
   .gallery{
@@ -291,6 +301,7 @@
     position:relative; aspect-ratio:1/1; overflow:hidden; cursor:pointer;
     display:block; width:100%; border:none; padding:0; margin:0;
     background:var(--surface-alt); -webkit-appearance:none; appearance:none;
+    transition:transform 100ms var(--ease-out);
   }
   .card-art:focus-visible{outline:3px solid var(--accent); outline-offset:-3px;}
   .card-art img{
@@ -299,6 +310,7 @@
   }
   .card-art img.loaded{opacity:1;}
   .card:hover .card-art img{transform:scale(1.04);}
+  .card-art:active{transform:scale(0.985);}
 
   .card-badge{
     position:absolute; top:12px; left:12px; z-index:2;
@@ -335,10 +347,12 @@
     color:var(--accent); font-size:0.92rem; font-weight:400;
     display:inline-flex; align-items:center; gap:4px; white-space:nowrap;
     letter-spacing:-0.012em;
+    transition:transform 100ms var(--ease-out);
   }
   .card-order-btn::after{content:"›"; font-size:1.2em; line-height:0.9; transition:transform .25s var(--ease-out);}
   .card-order-btn:hover{text-decoration:underline;}
   .card-order-btn:hover::after{transform:translateX(3px);}
+  .card-order-btn:active{transform:scale(0.95);}
 
   /* ---------- LIGHTBOX ---------- */
   .lightbox{
@@ -369,13 +383,13 @@
     position:absolute; z-index:2; border:none; cursor:pointer;
     background:rgba(0,0,0,0.06); color:var(--ink); border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    transition:background .2s ease, transform .25s var(--ease-out);
+    transition:background .2s ease, transform 100ms var(--ease-out);
   }
   .lb-close{top:-8px; right:-8px; width:40px; height:40px; font-size:1.15rem;}
   .lb-nav{top:50%; transform:translateY(-50%); width:44px; height:44px; font-size:1.4rem;}
   .lb-close:hover,.lb-nav:hover{background:rgba(0,0,0,0.12);}
-  .lb-close:active{transform:scale(0.9);}
-  .lb-nav:active{transform:translateY(-50%) scale(0.9);}
+  .lb-close:active{transform:scale(0.92);}
+  .lb-nav:active{transform:translateY(-50%) scale(0.92);}
   .lb-prev{left:-58px;}
   .lb-next{right:-58px;}
   @media (max-width:900px){
@@ -456,10 +470,10 @@
     background:var(--accent); color:#fff; font-weight:500; font-size:1rem;
     letter-spacing:-0.012em; cursor:pointer;
     display:flex; align-items:center; justify-content:center; gap:8px;
-    transition:filter .2s ease, transform .25s var(--ease-out);
+    transition:filter .2s ease, transform 100ms var(--ease-out);
   }
   .submit-btn:hover{filter:brightness(1.08);}
-  .submit-btn:active:not(:disabled){transform:scale(0.985);}
+  .submit-btn:active:not(:disabled){transform:scale(0.97);}
   .submit-btn:disabled{opacity:0.5; cursor:not-allowed;}
   .form-note{font-size:0.8rem; color:var(--ink-faint); margin-top:12px; text-align:center;}
   .form-status{
@@ -498,6 +512,7 @@
     transition:transform .35s var(--ease-out), opacity .3s ease;
   }
   .float-cta.hide{transform:translateY(160%); opacity:0;}
+  .float-cta:active{transform:scale(0.97);}
   @media (max-width:760px){ .float-cta{display:inline-flex;} }
 
   /* ---------- FOOTER ---------- */
@@ -517,6 +532,26 @@
 
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:0.001s !important; animation-iteration-count:1 !important; transition-duration:0.001s !important;}
+  }
+
+  /* Translucency is decorative here — when the OS asks for less of it, make
+     the frosted surfaces solid rather than merely less blurred. */
+  @media (prefers-reduced-transparency: reduce){
+    .header-bar{background:var(--surface); backdrop-filter:none; box-shadow:none;}
+    nav ul{background:var(--surface); backdrop-filter:none;}
+    .lightbox{background:var(--surface); backdrop-filter:none;}
+    .card-badge,.zoom-hint{backdrop-filter:none; background:rgba(255,255,255,0.98);}
+  }
+
+  /* High-contrast users get solid fills and defined borders instead of
+     hairlines and low-contrast greys. */
+  @media (prefers-contrast: more){
+    :root{--ink-soft:#3a3a3c; --ink-faint:#4a4a4d; --hairline:rgba(0,0,0,0.45);}
+    .header-bar{background:var(--surface); backdrop-filter:none;}
+    .card{border:1px solid var(--hairline);}
+    .filter-btn{border-color:var(--hairline);}
+    .field input,.field select,.field textarea{border-color:var(--hairline);}
+    .card-badge,.zoom-hint{background:#fff; border:1px solid var(--hairline); backdrop-filter:none;}
   }
 </style>
 </head>

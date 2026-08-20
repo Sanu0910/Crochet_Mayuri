@@ -2,6 +2,15 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-08-20 (later, part 2)
+
+- Audited the new design against the `apple-design` skill from github.com/emilkowalski/skills and closed the gaps it surfaced:
+  - **Restored press feedback on every control.** The redesign had dropped it — buttons, filter pills, chevron links and photo tiles now respond on pointer-down with a 100ms `scale(0.97)`, rather than only reacting on release (which is what makes an interface read as laggy).
+  - Added `font-optical-sizing: auto`.
+  - Added `prefers-reduced-transparency` support — frosted surfaces become solid instead of just less blurred.
+  - Added `prefers-contrast: more` support — solid fills, darker text, defined borders in place of hairlines.
+  - Added the light inner top highlight to the nav bar, per the skill's translucent-toolbar recipe.
+
 ## 2026-08-20 (later)
 
 - **Rebuilt the whole site in an Apple-style design language.** Near-monochrome interface (white / warm off-white panels, `#1d1d1f` text) so the product photos carry all the colour; very large tight-tracked headlines; full-width alternating panels with a lot of breathing room; thin 48px blurred nav; Apple's inline chevron links instead of heavy buttons; flat product tiles with no drop shadows.
