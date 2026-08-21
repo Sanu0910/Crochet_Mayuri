@@ -657,8 +657,8 @@
 <section class="panel" id="film">
   <div class="panel-inner reveal">
     <span class="eyebrow">The Film</span>
-    <h2 class="headline">The whole collection,<br>in half a minute.</h2>
-    <p class="subhead">Every piece, one at a time — put together frame by frame, the same way they were made.</p>
+    <h2 class="headline">The whole collection,<br>one piece at a time.</h2>
+    <p class="subhead">Every item in the shop, put together frame by frame — the same way they were made.</p>
     <div class="film-stage" id="filmStage">
       <video class="film-video" id="promoVideo"
              poster="media/mayuriz-film-poster.jpg"
@@ -670,7 +670,7 @@
         <span class="film-play-ico" aria-hidden="true">&#9654;</span>
       </button>
     </div>
-    <p class="film-meta">27 seconds &middot; no sound &middot; 2.6&nbsp;MB</p>
+    <p class="film-meta">32 seconds &middot; no sound &middot; 3.4&nbsp;MB</p>
   </div>
 </section>
 
@@ -793,6 +793,7 @@
             <option>Bow</option>
             <option>Flower / Rose</option>
             <option>Keychain</option>
+            <option>Garland / Hanging</option>
             <option>Heart appliqué</option>
             <option>Something else</option>
           </select>
@@ -891,6 +892,27 @@
       image: 'images/rose-keychain.jpg'
     },
     {
+      id: 'ocean-blue-scrunchie',
+      name: 'Ocean Blue Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
+      desc: 'Deep teal ruffles gathered onto a soft white band, finished with a woven Mayuri\u2019z label.',
+      image: 'images/ocean-blue-scrunchie.jpg'
+    },
+    {
+      id: 'blue-blossom-scrunchie',
+      name: 'Blue Blossom Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
+      desc: 'A ring of little flowers in three shades of blue with bright green leaves between them.',
+      image: 'images/blue-blossom-scrunchie.jpg'
+    },
+    {
+      id: 'tricolour-scrunchie',
+      name: 'Tricolour Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
+      desc: 'Saffron, white and green ruffles worked in bands \u2014 the tricolour, made to wear in your hair.',
+      image: 'images/tricolour-scrunchie.jpg'
+    },
+    {
       id: 'sage-scrunchie',
       name: 'Sage Bloom Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies',
@@ -933,6 +955,13 @@
       image: 'images/rose-bouquet.jpg'
     },
     {
+      id: 'caramel-cream-bow',
+      name: 'Caramel & Cream Bow',
+      cat: 'bows', tag: 'Bows', badge: 'New',
+      desc: 'A chunky cream bow edged all the way round in warm caramel, with a soft knotted centre.',
+      image: 'images/caramel-cream-bow.jpg'
+    },
+    {
       id: 'classic-bow',
       name: 'Classic Maroon & Cream Bow',
       cat: 'bows', tag: 'Bows',
@@ -954,6 +983,13 @@
       image: 'images/cream-bow.jpg'
     },
     {
+      id: 'flower-vine-garland',
+      name: 'Yellow Flower Vine Set',
+      cat: 'garlands', tag: 'Garlands', badge: 'Set of 3',
+      desc: 'Three long green vines strung with yellow pearl-centred flowers and leaves, each ending in a tassel.',
+      image: 'images/flower-vine-garland.jpg'
+    },
+    {
       id: 'mini-hearts',
       name: 'Sweetheart Mini Set',
       cat: 'hearts', tag: 'Hearts', badge: 'Set of 4',
@@ -969,6 +1005,7 @@
     { key: 'flowers', label: 'Flowers & Roses' },
     { key: 'clips', label: 'Claw Clips' },
     { key: 'keychains', label: 'Keychains' },
+    { key: 'garlands', label: 'Garlands' },
     { key: 'hearts', label: 'Hearts' }
   ];
 
@@ -1240,7 +1277,7 @@
   const orderContextText = document.getElementById('orderContextText');
   const clearOrderContext = document.getElementById('clearOrderContext');
 
-  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', hearts: 'Heart appliqué' };
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';

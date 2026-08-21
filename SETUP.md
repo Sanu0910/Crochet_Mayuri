@@ -96,7 +96,7 @@ visitors arrow across the whole gallery.
 
 To add a photo: drop the file into the `images/` folder, copy one of the
 objects above, give it a unique `id`, and pick `cat` from: `scrunchies`,
-`bows`, `flowers`, `clips`, `keychains`, `hearts` (or ask for a new category
+`bows`, `flowers`, `clips`, `keychains`, `garlands`, `hearts` (or ask for a new category
 to be added to the filter row). An optional `badge: 'New'` puts a small label
 on the card — keep those factual (a count, or genuinely new), not marketing
 claims.

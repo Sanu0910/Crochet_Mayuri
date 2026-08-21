@@ -31,7 +31,7 @@
     "lint": "eslint src && tsc",
     "sync-assets": "mkdir -p public/images && cp ../images/*.jpg public/images/",
     "render": "npm run sync-assets && remotion render Promo out/promo.mp4 --codec=h264 --crf=26 --jpeg-quality=92",
-    "poster": "remotion still Promo out/promo-poster.png --frame=178"
+    "poster": "remotion still Promo out/promo-poster.png --frame=658"
   },
   "sideEffects": [
     "*.css"

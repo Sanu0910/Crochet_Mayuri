@@ -2,6 +2,18 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-08-21
+
+- Added five new pieces from the latest photos: **Ocean Blue Ruffle
+  Scrunchie**, **Blue Blossom Scrunchie**, **Tricolour Ruffle Scrunchie**,
+  **Caramel & Cream Bow**, and a **Yellow Flower Vine Set** (three tasselled
+  vines). The shop is now 23 pieces, each with its own photo and card.
+- Added a **Garlands** category for the flower vines — it shows up in the
+  gallery filters and in the project-type list on the order form, so an
+  enquiry about one arrives labelled correctly.
+- Re-rendered the film so it covers all 23 pieces (now 32 seconds) and
+  refreshed its poster frame.
+
 ## 2026-08-20 (later, part 3)
 
 - **Added a promo film to the site.** 27 seconds, portrait, silent: the yarn
