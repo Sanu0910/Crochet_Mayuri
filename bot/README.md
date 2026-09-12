@@ -69,72 +69,83 @@ The last two lines are filled in by `announce.py` after the push has really
 happened, so the message reports what landed rather than what was intended.
 If a step fails, the checklist stops there and says why.
 
-## Two ways to run it
+## How it runs
 
-The bot is the same either way; only how often it checks differs.
+Two halves, because neither can do the job alone.
 
-### Scheduled — free, 5–15 minutes (what's set up)
-
-`.github/workflows/telegram-uploader.yml` runs `poll_once.py` on GitHub
-Actions every five minutes: it wakes, publishes whatever arrived, and exits.
-The repository is public so Actions minutes are free, and because the job
-runs *inside* the repo it already has permission to push — **no personal
-access token needed**.
-
-It reads two settings from **Settings → Secrets and variables → Actions**:
-
-- Secret `TELEGRAM_TOKEN` — the token from [@BotFather](https://t.me/BotFather)
-- Variable `ALLOWED_USER_IDS` — e.g. `924868395,5770732970`
-
-To switch it off, delete the workflow file or disable it from the Actions
-tab. Revoke the token in BotFather if you want it truly dead.
-
-> **The workflow file has to be on the default branch.** GitHub only
-> registers `schedule` and `workflow_dispatch` workflows from the default
-> branch (`main`) — a workflow that exists only on another branch is never
-> listed and never fires, with no error to tell you so. The job itself
-> checks out `claude/website-mobile-redesign-xfmicu` explicitly, so it
-> behaves the same wherever the file is stored; it just has to *live* on
-> `main` to run at all. The same goes for `render-film.yml`, which `/film`
-> dispatches.
-
-Two other things to know about scheduled workflows: GitHub disables them
-after 60 days with no repository activity, and `*/5` is a best effort —
-under load a run can be ten minutes late. Neither matters much for a shop
-that gains a few pieces a week.
-
-### Always on — instant, needs a host
-
-`main.py` is the same bot as a long-running process that holds a connection
-open, so uploads land in seconds and the category can be a tap on a button
-rather than a hashtag. It needs somewhere to run (Railway, Fly, a Raspberry
-Pi) and, because it is outside the repository, a GitHub token:
-
-| Variable | What |
-|---|---|
-| `TELEGRAM_TOKEN` | from [@BotFather](https://t.me/BotFather) |
-| `GITHUB_TOKEN` | fine-grained PAT — **Contents: read and write**, plus **Actions: read and write** for `/film`, scoped to this repository only |
-| `ALLOWED_USER_IDS` | comma-separated Telegram user IDs |
-
-```bash
-pip install -r requirements.txt
-TELEGRAM_TOKEN=... GITHUB_TOKEN=... ALLOWED_USER_IDS=123,456 python main.py
+```
+photo → Cloudflare Worker  → 👀 and a reply, in under a second
+                           → pokes GitHub
+       GitHub Actions      → resize, edit, commit, push, rebuild (~30s)
+                           → fills in the checklist it promised
 ```
 
-Only one of the two may be live at a time — two pollers fight over the same
-updates and both misbehave.
+**The Worker** (`worker/worker.js`) is always awake, so it can answer
+immediately. It can't resize a photo or commit to a repository, so it hands
+that on.
+
+**GitHub Actions** (`poll_once.py`) does the real work. It only exists in
+bursts, which is exactly why it can't be the part that answers you.
+
+Before the Worker existed this ran on a `*/5` schedule and a photo took
+5–15 minutes to appear — when GitHub ran the schedule at all. On this
+repository it never did: ninety minutes, zero scheduled runs. The hourly
+`schedule:` that remains is a safety net for if the Worker is ever removed,
+and no-ops while the webhook is live.
+
+### Setting up the Worker
+
+1. **A Cloudflare account** (free) → Workers & Pages → *Create* → *Start
+   with Hello World* → *Deploy*. Then *Edit code*, paste all of
+   `bot/worker/worker.js` over what's there, and deploy again.
+
+2. **Settings → Variables**. Three secrets:
+
+   | | |
+   |---|---|
+   | `TELEGRAM_TOKEN` | from [@BotFather](https://t.me/BotFather) |
+   | `GITHUB_TOKEN` | fine-grained PAT, **Contents: read and write**, this repo only |
+   | `WEBHOOK_SECRET` | any long random string you invent |
+
+   and two plain variables:
+
+   | | |
+   |---|---|
+   | `GITHUB_REPO` | `Sanu0910/Crochet_Mayuri` |
+   | `ALLOWED_USER_IDS` | `924868395,5770732970` |
+
+3. **Point Telegram at it.** Open this once in a browser, with your own
+   values filled in:
+
+   ```
+   https://api.telegram.org/bot<TELEGRAM_TOKEN>/setWebhook?url=<WORKER_URL>&secret_token=<WEBHOOK_SECRET>
+   ```
+
+   `{"ok":true}` means done. Check any time with `/getWebhookInfo`.
+
+4. **Group Privacy off** in BotFather (`/mybots` → Bot Settings → Group
+   Privacy → Turn off), or photos posted in a group never reach the bot at
+   all.
+
+To undo it: `https://api.telegram.org/bot<TOKEN>/deleteWebhook`. Polling
+then works again on the hourly schedule.
+
+### Why the GitHub token comes back
+
+The scheduled-only version needed none, because it ran *inside* the
+repository. The Worker runs outside it, so it needs its own key. Any instant
+option has this cost — a hosted `bot/main.py` would too.
+
+### Always on instead — instant, needs a host
+
+`main.py` is the same bot as a long-running process holding a connection
+open. Categories become buttons to tap rather than hashtags. It needs a host
+(~$5/month) and the same three variables. Only one of the three modes may be
+live at a time: two things polling the same bot fight over updates.
 
 > **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from
-> `claude/website-mobile-redesign-xfmicu`, *not* from `main` — that's what
-> both entry points default to, because a push anywhere else won't appear on
-> the site. If Pages is ever repointed at `main`, change it to match or
-> uploads will silently go nowhere visible.
-
-### Group privacy must be off
-
-In BotFather: `/mybots` → the bot → Bot Settings → Group Privacy → **Turn
-off**. On by default, a bot in a group only receives messages that mention
-it, so your photos never arrive.
+> `claude/website-mobile-redesign-xfmicu`, *not* from `main`. If Pages is
+> ever repointed at `main`, change it to match or uploads go nowhere visible.
 
 ## What it does not do
 

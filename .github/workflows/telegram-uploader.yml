@@ -1,19 +1,28 @@
 name: Telegram uploader
 
-# Checks Telegram for new photos and publishes them to the site.
+# Publishes a photo sent to Telegram onto the site.
 #
-# This runs on a schedule rather than as an always-on service because the
-# repository is public, which makes Actions minutes free — no host to pay
-# for. The trade is latency: a photo appears within roughly 5-15 minutes
-# rather than instantly. bot/main.py is the same bot as a long-running
-# process, for if that trade ever stops being worth it.
+# This is the slow half of the bot. The fast half is a Cloudflare Worker
+# (bot/worker/worker.js) that is always awake: it answers the message in
+# under a second and then starts this, which does the resizing, editing,
+# committing and pushing that a Worker cannot.
 #
-# To switch this off again, delete this file or disable it from the Actions
-# tab. See bot/README.md.
+# The repository is public, so the minutes this uses are free.
+#
+# To switch it off, delete this file or disable it from the Actions tab, and
+# remove the Telegram webhook. See bot/README.md.
 on:
-  schedule:
-    - cron: "*/5 * * * *"
+  # The Cloudflare Worker fires this the moment a message arrives, carrying
+  # the message with it — that is what makes the bot answer in seconds
+  # instead of whenever GitHub next feels like running a schedule.
+  repository_dispatch:
+    types: [telegram]
   workflow_dispatch:
+  # A slow safety net. It cannot fetch anything while the webhook is live
+  # (Telegram allows a webhook or polling, never both) and says so rather
+  # than failing; it earns its keep only if the Worker is ever removed.
+  schedule:
+    - cron: "23 * * * *"
 
 permissions:
   contents: write   # commit and push the new piece
@@ -52,6 +61,8 @@ jobs:
           SITE_URL: https://sanu0910.github.io/Crochet_Mayuri/
           COMMIT_MSG_FILE: ${{ runner.temp }}/commit-msg.txt
           ANNOUNCE_FILE: ${{ runner.temp }}/announce.json
+          # Empty unless this run was started by the Worker.
+          PUSHED_UPDATE: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload.update) || '' }}
         run: python poll_once.py
 
       - name: Publish anything new

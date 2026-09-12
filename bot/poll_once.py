@@ -46,6 +46,15 @@ SITE_URL = os.environ.get("SITE_URL", "").strip()
 COMMIT_MSG_FILE = Path(os.environ.get("COMMIT_MSG_FILE", "/tmp/commit-msg.txt"))
 ANNOUNCE_FILE = Path(os.environ.get("ANNOUNCE_FILE", "/tmp/announce.json"))
 
+# When the Cloudflare Worker pokes GitHub it carries the update with it, so
+# there is nothing to go and fetch. Empty means fall back to asking Telegram.
+#
+# A scheduled or manual run has no payload, and GitHub renders that absent
+# value as the four characters "null" rather than an empty string — truthy,
+# and it would be parsed into None and crash on the first attribute access.
+_pushed = os.environ.get("PUSHED_UPDATE", "").strip()
+PUSHED_UPDATE = "" if _pushed in ("", "null") else _pushed
+
 ALLOWED = {
     int(x) for x in os.environ.get("ALLOWED_USER_IDS", "").replace(" ", "").split(",") if x
 }
@@ -286,8 +295,23 @@ def main() -> int:
     edited: list[str] = []
 
     try:
-        updates = tg.get_updates()
-        log.info("%d update(s) waiting", len(updates))
+        if PUSHED_UPDATE:
+            # Pushed to us by the Worker. Telegram has already considered it
+            # delivered, so there is nothing to acknowledge afterwards.
+            updates = [json.loads(PUSHED_UPDATE)]
+            log.info("1 update pushed in by the webhook")
+        else:
+            try:
+                updates = tg.get_updates()
+                log.info("%d update(s) waiting", len(updates))
+            except RuntimeError as exc:
+                # Telegram allows a webhook or polling, never both. If the
+                # Worker is live this is the expected answer, not a fault.
+                if "webhook is active" in str(exc).lower():
+                    log.info("a webhook is handling updates — nothing to poll")
+                    updates = []
+                else:
+                    raise
 
         for update in updates:
             message = update.get("message") or update.get("channel_post")
@@ -381,7 +405,9 @@ def main() -> int:
             finally:
                 # Acknowledge every update even if handling it went wrong, so
                 # one bad message can't jam the queue on every future run.
-                tg.acknowledge(update["update_id"])
+                # A pushed update was never in a queue to begin with.
+                if not PUSHED_UPDATE:
+                    tg.acknowledge(update["update_id"])
 
     finally:
         tg.close()
