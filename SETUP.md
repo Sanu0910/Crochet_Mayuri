@@ -85,15 +85,25 @@ In `index.html`, each gallery item lives in the `PRODUCTS` array inside the
   cat: 'scrunchies',
   tag: 'Scrunchies',
   desc: 'A soft moss-green and cream scrunchie with a ruffled petal edge...',
-  images: ['images/sage-cream-scrunchie.jpg']
+  image: 'images/sage-cream-scrunchie.jpg'
 }
 ```
 
-To add more angles/photos of the same item, just add more file paths to its
-`images` array — the gallery photo slider (lightbox) will automatically show
-next/previous arrows and dots for however many photos are listed. Drop the
-new image files into the `images/` folder first.
+**One photo per entry.** Every photo gets its own card on the page, so a
+second angle of the same item is a second entry with its own `id`, name and
+description — not an extra path on the first one. The photo viewer then lets
+visitors arrow across the whole gallery.
 
-To add a brand-new product, copy one of the objects, give it a unique `id`,
-and pick `cat` from: `scrunchies`, `bows`, `flowers`, `clips`, `keychains`,
-`hearts` (or ask for a new category to be added to the filter row).
+To add a photo: drop the file into the `images/` folder, copy one of the
+objects above, give it a unique `id`, and pick `cat` from: `scrunchies`,
+`bows`, `flowers`, `clips`, `keychains`, `garlands`, `hearts` (or ask for a new category
+to be added to the filter row). An optional `badge: 'New'` puts a small label
+on the card — keep those factual (a count, or genuinely new), not marketing
+claims.
+
+## Keeping the film in step
+
+The promo film in the "The Film" panel is generated from the same photos.
+After adding a product, add it to `video/src/theme.ts` too and re-render —
+`video/README.md` has the exact commands. The site keeps working with the
+old film until you do; it just won't show the new piece.

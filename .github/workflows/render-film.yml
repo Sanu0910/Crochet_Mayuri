@@ -1,0 +1,91 @@
+name: Render the film
+
+# Triggered by the Telegram bot's /film command, or by hand from the Actions
+# tab. Rendering needs Chrome and a few minutes of CPU, which is why it runs
+# here rather than on the little host the bot lives on.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-film
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: video/package-lock.json
+
+      - name: Install
+        working-directory: video
+        run: npm ci
+
+      - name: Render
+        working-directory: video
+        run: npm run render
+
+      - name: Compress for the web
+        working-directory: video
+        run: |
+          # Remotion adds a silent AAC track worth about a megabyte; -an drops
+          # it. faststart lets the video begin playing before it has finished
+          # downloading.
+          ffmpeg -y -loglevel error -i out/promo.mp4 \
+            -an -c:v libx264 -profile:v high -crf 30 -preset slow \
+            -pix_fmt yuv420p -movflags +faststart \
+            ../media/mayuriz-film.mp4
+
+      - name: Refresh the poster
+        working-directory: video
+        run: |
+          FRAME=$(node poster-frame.mjs)
+          echo "Poster frame: $FRAME"
+          npx remotion still Promo out/promo-poster.png --frame="$FRAME"
+          ffmpeg -y -loglevel error -i out/promo-poster.png -q:v 5 \
+            ../media/mayuriz-film-poster.jpg
+
+      - name: Update the run time shown on the page
+        run: |
+          SECONDS_LONG=$(ffprobe -v error -show_entries format=duration \
+            -of default=noprint_wrappers=1:nokey=1 media/mayuriz-film.mp4 \
+            | cut -d. -f1)
+          SECONDS_LONG=$((SECONDS_LONG + 1))
+          SIZE=$(du -m media/mayuriz-film.mp4 | cut -f1)
+          echo "Film is ${SECONDS_LONG}s, ${SIZE}MB"
+          python3 - "$SECONDS_LONG" "$SIZE" <<'PY'
+          import re, sys
+          seconds, size = sys.argv[1], sys.argv[2]
+          path = "index.html"
+          html = open(path).read()
+          html = re.sub(
+              r'<p class="film-meta">.*?</p>',
+              f'<p class="film-meta">{seconds} seconds &middot; no sound &middot; {size}&nbsp;MB</p>',
+              html, count=1,
+          )
+          open(path, "w").write(html)
+          PY
+
+      - name: Commit
+        run: |
+          git config user.name "Mayuri'z bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add media/ index.html
+          if git diff --cached --quiet; then
+            echo "Film is already up to date."
+            exit 0
+          fi
+          git commit -m "Re-render the film
+
+          Rendered from the current product list by the render-film workflow."
+          git push
