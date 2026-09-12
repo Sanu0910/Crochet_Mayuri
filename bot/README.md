@@ -54,8 +54,14 @@ Needs three environment variables:
 | `GITHUB_TOKEN` | fine-grained PAT, see below |
 | `ALLOWED_USER_IDS` | comma-separated Telegram user IDs allowed to publish |
 
-Optional: `GITHUB_REPO` (default `Sanu0910/Crochet_Mayuri`), `GIT_BRANCH`
-(default `main`), `SITE_URL` (shown in the confirmation message), `WORKDIR`.
+Optional: `GITHUB_REPO` (default `Sanu0910/Crochet_Mayuri`), `GIT_BRANCH`,
+`SITE_URL` (shown in the confirmation message), `WORKDIR`.
+
+> **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from
+> `claude/website-mobile-redesign-xfmicu`, *not* from `main` — that's what
+> the bot defaults to, because a push anywhere else won't appear on the
+> site. If Pages is ever repointed at `main`, change this variable to match
+> or uploads will silently go nowhere visible.
 
 **The GitHub token** should be a fine-grained personal access token scoped
 to this one repository, with:

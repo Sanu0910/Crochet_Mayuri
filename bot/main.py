@@ -40,7 +40,9 @@ log = logging.getLogger("mayuriz-bot")
 TOKEN = os.environ.get("TELEGRAM_TOKEN", "").strip()
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
 GITHUB_REPO = os.environ.get("GITHUB_REPO", "Sanu0910/Crochet_Mayuri").strip()
-BRANCH = os.environ.get("GIT_BRANCH", "main").strip()
+# GitHub Pages serves this repo from the branch below, not from main, so
+# that is where an upload has to land to actually become visible.
+BRANCH = os.environ.get("GIT_BRANCH", "claude/website-mobile-redesign-xfmicu").strip()
 WORKDIR = Path(os.environ.get("WORKDIR", "/tmp/mayuriz-site"))
 SITE_URL = os.environ.get("SITE_URL", "").strip()
 
