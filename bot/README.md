@@ -35,21 +35,19 @@ The bot is the same either way; only how often it checks differs.
 
 ### Scheduled — free, 5–15 minutes (what's set up)
 
-`telegram-uploader.yml.example` runs `poll_once.py` on GitHub Actions every
-five minutes: it wakes, publishes whatever arrived, and exits. The
-repository is public so Actions minutes are free, and because the job runs
-*inside* the repo it already has permission to push — **no personal access
-token needed**.
+`.github/workflows/telegram-uploader.yml` runs `poll_once.py` on GitHub
+Actions every five minutes: it wakes, publishes whatever arrived, and exits.
+The repository is public so Actions minutes are free, and because the job
+runs *inside* the repo it already has permission to push — **no personal
+access token needed**.
 
-To switch it on:
+It reads two settings from **Settings → Secrets and variables → Actions**:
 
-1. **Settings → Secrets and variables → Actions**
-   - Secret `TELEGRAM_TOKEN` — the token from [@BotFather](https://t.me/BotFather)
-   - Variable `ALLOWED_USER_IDS` — e.g. `924868395,5770732970`
-2. Copy `bot/telegram-uploader.yml.example` to
-   `.github/workflows/telegram-uploader.yml` and commit it.
+- Secret `TELEGRAM_TOKEN` — the token from [@BotFather](https://t.me/BotFather)
+- Variable `ALLOWED_USER_IDS` — e.g. `924868395,5770732970`
 
-To switch it off, delete that workflow file.
+To switch it off, delete the workflow file or disable it from the Actions
+tab. Revoke the token in BotFather if you want it truly dead.
 
 Two things to know about scheduled workflows: GitHub disables them after 60
 days with no repository activity, and `*/5` is a best effort — under load a
