@@ -1,8 +1,14 @@
-"""Reading a price out of a Telegram caption.
+"""Spotting a price in a Telegram caption so it can be kept out of the name.
+
+The site deliberately shows no prices — every piece is meant to start a
+conversation instead. But captions get typed out of habit, and a caption
+reading "Ocean Blue Scrunchie \u20b9250" must not become a product called
+"Ocean Blue Scrunchie \u20b9250". So a price is still recognised, purely in
+order to be removed, and the uploader says so rather than dropping it
+silently.
 
 Deliberately strict: a bare number is far more likely to be part of a name
-("Set of 3") than a price, so a currency marker is required. Anything the
-shop actually charges will have one.
+("Set of 3") than a price, so a currency marker is required.
 """
 
 import re

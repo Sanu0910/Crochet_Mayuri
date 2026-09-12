@@ -123,17 +123,18 @@ def main() -> int:
             ("Bouquet of 5 roses", None),     # likewise
             ("Rose 0", None),                 # zero is not a price
         ]:
-            got, _ = find_price(text)
+            got, rest = find_price(text)
             check(got == want, f"price from {text!r} -> {got!r}")
+            if want:
+                check(want not in rest, f"price is stripped out of {text!r}")
 
         index4, theme4 = fresh(tmp)
         insert_into_index(index4, product_id="priced", name="Priced Bow", cat="bows",
-                          desc="d", image="p.jpg", price="\u20b9250")
-        check("price: '\u20b9250'" in index4.read_text(), "price lands in index.html")
+                          desc="d", image="p.jpg")
         insert_into_index(index4, product_id="unpriced", name="Unpriced Bow", cat="bows",
                           desc="d", image="u.jpg")
-        entry = index4.read_text().split("id: 'unpriced'")[1].split("},")[0]
-        check("price:" not in entry, "a piece with no price gets no price field")
+        check("price:" not in index4.read_text(),
+              "no price is ever written to the site")
 
         # --- removing ---
         images = tmp / "imgs"

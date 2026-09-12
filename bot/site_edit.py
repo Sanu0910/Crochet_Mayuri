@@ -52,8 +52,7 @@ def product_ids(index_html: str) -> list[str]:
 
 
 def insert_into_index(
-    path: Path, *, product_id: str, name: str, cat: str, desc: str, image: str,
-    price: str | None = None
+    path: Path, *, product_id: str, name: str, cat: str, desc: str, image: str
 ) -> None:
     text = path.read_text()
     if f"id: '{product_id}'" in text:
@@ -66,8 +65,7 @@ def insert_into_index(
         f"      name: '{_js_string(name)}',\n"
         f"      cat: '{cat}', tag: '{_js_string(category.tag)}', badge: 'New',\n"
         f"      desc: '{_js_string(desc)}',\n"
-        + (f"      price: '{_js_string(price)}',\n" if price else "")
-        + f"      image: 'images/{image}'\n"
+        f"      image: 'images/{image}'\n"
         f"    }},\n"
     )
 

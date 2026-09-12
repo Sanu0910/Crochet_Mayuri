@@ -274,7 +274,7 @@ async def on_category(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     async with repo.lock:
         try:
-            result = await asyncio.to_thread(_publish, raw, name, desc, cat, who, price)
+            result = await asyncio.to_thread(_publish, raw, name, desc, cat, who)
         except (GitError, SiteEditError) as exc:
             await asyncio.to_thread(repo.discard)
             return await query.edit_message_text(f"⚠️ {html.escape(str(exc))}",
@@ -297,8 +297,7 @@ async def on_category(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     )
 
 
-def _publish(raw: bytes, name: str, desc: str, cat: str, who: str,
-             price: str | None = None) -> tuple[str, str, int]:
+def _publish(raw: bytes, name: str, desc: str, cat: str, who: str) -> tuple[str, str, int]:
     """The whole blocking half of an upload. Runs under the repo lock."""
     repo.refresh()
 
@@ -308,7 +307,7 @@ def _publish(raw: bytes, name: str, desc: str, cat: str, who: str,
 
     insert_into_index(
         repo.path / "index.html",
-        product_id=slug, name=name, cat=cat, desc=desc, image=filename, price=price,
+        product_id=slug, name=name, cat=cat, desc=desc, image=filename,
     )
     insert_into_film(
         repo.path / "video/src/theme.ts", name=name, cat=cat, image=filename,

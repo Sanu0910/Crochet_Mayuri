@@ -137,7 +137,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str]) -> None:
         raw = tg.download(photo["file_id"])
         filename = save_photo(raw, images_dir, slug)
         insert_into_index(REPO_ROOT / "index.html", product_id=slug, name=name,
-                          cat=category_key, desc=desc, image=filename, price=price)
+                          cat=category_key, desc=desc, image=filename)
         insert_into_film(REPO_ROOT / "video/src/theme.ts", name=name,
                          cat=category_key, image=filename)
     except SiteEditError as exc:
@@ -151,16 +151,15 @@ def handle_photo(tg: Telegram, message: dict, added: list[str]) -> None:
 
     total = len(list(images_dir.glob("*.jpg")))
     who = message.get("from", {}).get("first_name", "someone")
-    added.append(f"{name} ({BY_KEY[category_key].tag}, {price or 'no price'}, from {who})")
+    added.append(f"{name} ({BY_KEY[category_key].tag}, from {who})")
 
     where = f"\n{SITE_URL}" if SITE_URL else ""
     tg.send(
         chat_id,
         f"✅ <b>{html.escape(name)}</b> added — {BY_KEY[category_key].tag}, "
         f"{total} pieces in the shop.\n"
-        + (f"Price shown: <b>{price}</b>\n" if price
-           else "No price on this one — add \u20b9250 to the caption next time "
-                "and it shows on the card.\n")
+        + (f"<i>I left {price} off — the site doesn't show prices, so people "
+           "ask you instead.</i>\n" if price else "")
         + f"Live in a minute or two.{where}",
         reply_to=message_id,
     )
