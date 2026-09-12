@@ -44,6 +44,7 @@ export type Product = {
 
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
+  /* PRODUCTS:START */
   { image: "sunflower-hair-clips.jpg", name: "Sunflower Hair Clip Pair", tag: "Hair Clips" },
   { image: "sunflower-hair-clips-alt.jpg", name: "Sunflower Clips — Clip Detail", tag: "Hair Clips" },
   { image: "rose-claw-clip.jpg", name: "Blush Rose Claw Clip", tag: "Claw Clips" },
@@ -67,4 +68,5 @@ export const PRODUCTS: readonly Product[] = [
   { image: "cream-bow.jpg", name: "Simple Cream Bow", tag: "Bows" },
   { image: "flower-vine-garland.jpg", name: "Yellow Flower Vine Set", tag: "Garlands" },
   { image: "mini-hearts-set.jpg", name: "Sweetheart Mini Set", tag: "Hearts" },
+  /* PRODUCTS:END */
 ];
