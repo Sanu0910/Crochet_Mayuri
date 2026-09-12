@@ -26,9 +26,28 @@ Without a description the bot writes a plain one you can edit later. Every
 upload gets a "New" badge. Forget the hashtag and it asks for one rather
 than guessing.
 
-**Commands:** `/status` (what's on the site, whether the film matches, the
-last change), `/film` (re-render the video), `/remove <name>`, `/whoami`,
-`/help`. The always-on version below also has `/recent` and `/undo`.
+### Commands
+
+| | |
+|---|---|
+| `/list` | every piece, by category — the names the other commands expect |
+| `/status` | how many pieces, whether the film still matches, the last change |
+| `/caption <name> \| <new wording>` | reword a piece without touching the code |
+| `/rename <name> \| <new name>` | fix a name |
+| `/remove <name>` | take a piece and its photo down |
+| `/film` | re-render the video |
+| `/whoami`, `/help` | |
+
+`/caption` and `/rename` leave the id and the photo file alone, since those
+are what the gallery, the film and any existing link already point at.
+
+The always-on version also has `/recent` and `/undo`.
+
+### It reacts
+
+The photo you sent gets a reaction as it goes: 👀 picked up, 🎉 published,
+🤔 something was wrong. Telegram only allows reactions from a fixed list, so
+this is best effort and never fails an upload.
 
 ### It tells you what it's doing
 

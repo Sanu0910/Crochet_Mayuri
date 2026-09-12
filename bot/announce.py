@@ -37,6 +37,7 @@ def main() -> int:
     notices = plan.get("notices") or []
     chats = plan.get("chats") or []
     removed = plan.get("removed") or []
+    edited = plan.get("edited") or []
 
     telegram = Telegram(TOKEN)
     try:
@@ -65,10 +66,17 @@ def main() -> int:
                 telegram.edit(int(notice["chat"]), int(notice["message_id"]),
                               "\n".join(lines))
 
-        # Removals have no checklist of their own, so they get a short note.
-        if removed:
-            text = "🗑 <b>Removed from the site:</b>\n" + "\n".join(
-                f"  • {name}" for name in removed)
+        # Removals and rewordings have no checklist of their own, so they
+        # get a short note instead.
+        if removed or edited:
+            parts = []
+            if removed:
+                parts.append("🗑 <b>Removed from the site:</b>\n" + "\n".join(
+                    f"  • {name}" for name in removed))
+            if edited:
+                parts.append("✏️ <b>Reworded:</b>\n" + "\n".join(
+                    f"  • {name}" for name in edited))
+            text = "\n\n".join(parts)
             if COMMIT_SHA:
                 text += (f'\n\n🔗 <a href="https://github.com/{GITHUB_REPO}/commit/'
                          f'{COMMIT_SHA}">commit {COMMIT_SHA[:7]}</a>')

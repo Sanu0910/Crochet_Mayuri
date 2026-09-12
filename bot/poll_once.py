@@ -30,6 +30,7 @@ from site_edit import (
     insert_into_film,
     insert_into_index,
     remove_product,
+    update_product,
 )
 from telegram_api import Telegram
 
@@ -108,6 +109,27 @@ def parse_caption(caption: str) -> tuple[str | None, str, str | None, str | None
     return found, first[:80], (" ".join(lines[1:])[:300] or None), price
 
 
+def shop_list() -> str:
+    """Every piece, by category — the names /remove and /caption expect."""
+    index = (REPO_ROOT / "index.html").read_text()
+    entries = re.findall(r"name: '([^']+)',\n      cat: '([a-z]+)'", index)
+    if not entries:
+        return "Nothing on the site yet."
+
+    by_cat: dict[str, list[str]] = {}
+    for name, cat in entries:
+        by_cat.setdefault(cat, []).append(name.replace("\\'", "'"))
+
+    out = [f"🧶 <b>{len(entries)} pieces</b>", ""]
+    for key in (c.key for c in CATEGORIES):
+        if key in by_cat:
+            out.append(f"<b>{html.escape(BY_KEY[key].button)}</b>")
+            out += [f"  \u2022 {html.escape(n)}" for n in by_cat[key]]
+            out.append("")
+    out.append("<i>/remove or /caption take any of these names.</i>")
+    return "\n".join(out)
+
+
 def shop_status() -> str:
     """A plain account of what is on the site and whether the film matches."""
     import subprocess
@@ -126,7 +148,7 @@ def shop_status() -> str:
         last = "unknown"
 
     breakdown = "\n".join(
-        f"  {BY_KEY[key].button} {count}" for key, count in
+        f"  {html.escape(BY_KEY[key].button)} {count}" for key, count in
         sorted(cats.items(), key=lambda kv: -kv[1]) if key in BY_KEY)
 
     film_note = ("matches the shop" if film_scenes == photos
@@ -191,6 +213,10 @@ def handle_photo(tg: Telegram, message: dict, added: list[str],
     desc = desc or f"{name} — handmade to order, in any colour you like."
     photo = message["photo"][-1]  # the largest size Telegram kept
 
+    # A reaction on the photo itself, so the original message shows its own
+    # state without anyone scrolling to find the reply.
+    tg.react(chat_id, message_id, "👀")
+
     done: dict[str, str] = {}
     status_id = tg.send(chat_id, progress(name, done, "caption"), reply_to=message_id)
 
@@ -220,6 +246,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str],
                          cat=category_key, image=filename)
         step("film", "scene added", "push")
     except SiteEditError as exc:
+        tg.react(chat_id, message_id, "🤔")
         if status_id:
             tg.edit(chat_id, status_id,
                     progress(name, done, None) + f"\n\n⚠️ {html.escape(str(exc))}")
@@ -228,6 +255,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str],
         return
     except Exception as exc:
         log.exception("failed to add %s", name)
+        tg.react(chat_id, message_id, "🤔")
         if status_id:
             tg.edit(chat_id, status_id, progress(name, done, None)
                     + f"\n\n⚠️ Couldn't add that one: {html.escape(str(exc))}")
@@ -236,6 +264,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str],
                     reply_to=message_id)
         return
 
+    tg.react(chat_id, message_id, "🎉")
     who = message.get("from", {}).get("first_name", "someone")
     added.append(f"{name} ({BY_KEY[category_key].tag}, from {who})")
     # announce.py finishes this same message once the push has really happened.
@@ -254,6 +283,7 @@ def main() -> int:
     removed: list[str] = []
     notices: list[dict] = []
     chats_touched: set[int] = set()
+    edited: list[str] = []
 
     try:
         updates = tg.get_updates()
@@ -289,6 +319,36 @@ def main() -> int:
                             f"Your user ID: <code>{user_id}</code>\n"
                             f"This chat: <code>{chat_id}</code>\nAllowed: yes",
                             reply_to=message["message_id"])
+                elif text.startswith("/list"):
+                    tg.send(chat_id, shop_list(), reply_to=message["message_id"])
+                elif text.startswith(("/caption", "/rename")):
+                    verb = "/caption" if text.startswith("/caption") else "/rename"
+                    rest = text[len(verb):].strip()
+                    if "|" not in rest:
+                        tg.send(chat_id,
+                                f"Use <code>{verb} piece name | new "
+                                f"{'wording' if verb == '/caption' else 'name'}</code>",
+                                reply_to=message["message_id"])
+                    else:
+                        target, value = (part.strip() for part in rest.split("|", 1))
+                        try:
+                            field = {"desc": value} if verb == "/caption" else {"name": value}
+                            was, now = update_product(
+                                REPO_ROOT / "index.html",
+                                REPO_ROOT / "video/src/theme.ts",
+                                target, **field,
+                            )
+                            chats_touched.add(chat_id)
+                            edited.append(f"{was}" + (f" \u2192 {now}" if was != now else ""))
+                            tg.react(chat_id, message["message_id"], "🎉")
+                            tg.send(chat_id,
+                                    f"✏️ Updated <b>{html.escape(now)}</b>. "
+                                    "Live in a minute or two.",
+                                    reply_to=message["message_id"])
+                        except SiteEditError as exc:
+                            tg.react(chat_id, message["message_id"], "🤔")
+                            tg.send(chat_id, f"⚠️ {html.escape(str(exc))}",
+                                    reply_to=message["message_id"])
                 elif text.startswith("/status"):
                     tg.send(chat_id, shop_status(), reply_to=message["message_id"])
                 elif text.startswith("/remove"):
@@ -326,21 +386,33 @@ def main() -> int:
     finally:
         tg.close()
 
-    if added or removed:
+    if added or removed or edited:
         if added and not removed:
             title = (f"Add {added[0].split(' (')[0]} to the shop"
                      if len(added) == 1 else f"Add {len(added)} pieces to the shop")
-        elif removed and not added:
+        elif removed and not added and not edited:
             title = (f"Remove {removed[0]} from the shop"
                      if len(removed) == 1 else f"Remove {len(removed)} pieces from the shop")
+        elif edited and not added and not removed:
+            title = (f"Reword {edited[0]}" if len(edited) == 1
+                     else f"Reword {len(edited)} pieces")
         else:
-            title = f"Add {len(added)} and remove {len(removed)} pieces"
+            parts = []
+            if added:
+                parts.append(f"add {len(added)}")
+            if removed:
+                parts.append(f"remove {len(removed)}")
+            if edited:
+                parts.append(f"reword {len(edited)}")
+            title = "Shop update: " + ", ".join(parts)
 
         body = ""
         if added:
             body += "\nAdded via Telegram:\n" + "\n".join(f"- {x}" for x in added)
         if removed:
             body += "\nRemoved via Telegram:\n" + "\n".join(f"- {x}" for x in removed)
+        if edited:
+            body += "\nReworded via Telegram:\n" + "\n".join(f"- {x}" for x in edited)
 
         COMMIT_MSG_FILE.write_text(
             title + "\n" + body
@@ -351,8 +423,9 @@ def main() -> int:
             "chats": sorted({n["chat"] for n in notices} | chats_touched),
             "added": [a.split(" (")[0] for a in added],
             "removed": removed,
+            "edited": edited,
         }))
-        log.info("added: %s | removed: %s", added, removed)
+        log.info("added: %s | removed: %s | edited: %s", added, removed, edited)
     else:
         log.info("nothing to publish")
 

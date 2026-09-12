@@ -168,3 +168,66 @@ def remove_product(
         photo.unlink()
 
     return name, image
+
+
+def _find_entry(text: str, query: str) -> tuple[str, str, str, str]:
+    """Locate one product entry. Same cautious matching as remove_product."""
+    entries = re.findall(r"    \{\n(?:.*\n)*?    \},\n", text)
+    found = []
+    for entry in entries:
+        product_id = re.search(r"id: '([^']+)'", entry)
+        name = re.search(r"name: '([^']+)'", entry)
+        image = re.search(r"image: 'images/([^']+)'", entry)
+        if product_id and name and image:
+            found.append((entry, product_id.group(1), name.group(1), image.group(1)))
+
+    needle = " ".join(query.split()).lower()
+    exact = [f for f in found if needle in (f[1].lower(), f[2].lower())]
+    partial = [f for f in found if needle in f[2].lower() or needle in f[1].lower()]
+
+    if exact:
+        return exact[0]
+    if len(partial) > 1:
+        names = ", ".join(f"\u201c{f[2]}\u201d" for f in partial[:5])
+        raise SiteEditError(
+            f"\u201c{query}\u201d matches {len(partial)} pieces ({names}). "
+            "Use the full name."
+        )
+    if partial:
+        return partial[0]
+    raise SiteEditError(f"I couldn't find a piece matching \u201c{query}\u201d.")
+
+
+def update_product(
+    index_path: Path, theme_path: Path, query: str, *,
+    name: str | None = None, desc: str | None = None
+) -> tuple[str, str]:
+    """Change a piece's displayed name or description. Returns (old, new) name.
+
+    The id and the photo file are left alone deliberately: they are what the
+    gallery, the film and any link already point at, and renaming them to
+    follow a wording change would break more than it tidies.
+    """
+    text = index_path.read_text()
+    entry, _, old_name, image = _find_entry(text, query)
+
+    updated = entry
+    if name:
+        updated = re.sub(r"(name: ')[^']*(')", lambda m: m.group(1) + _js_string(name) + m.group(2),
+                         updated, count=1)
+    if desc:
+        updated = re.sub(r"(desc: ')[^']*(')", lambda m: m.group(1) + _js_string(desc) + m.group(2),
+                         updated, count=1)
+    index_path.write_text(text.replace(entry, updated, 1))
+
+    if name:
+        theme = theme_path.read_text()
+        line = re.search(r'^  \{ image: "%s", name: "[^"]*"' % re.escape(image),
+                         theme, re.MULTILINE)
+        if line:
+            # The match runs from the start of the line through the closing
+            # quote of the old name, so the replacement rebuilds exactly that.
+            replacement = f'  {{ image: "{image}", name: {_ts_string(name)}'
+            theme_path.write_text(theme.replace(line.group(0), replacement, 1))
+
+    return old_name, (name or old_name)

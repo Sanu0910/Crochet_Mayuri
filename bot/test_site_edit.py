@@ -18,6 +18,7 @@ from site_edit import (
     insert_into_index,
     product_ids,
     remove_product,
+    update_product,
 )
 from pricing import find_price
 
@@ -170,6 +171,25 @@ def main() -> int:
                           desc="d", image="c.jpg")
         removed_name, _ = remove_product(index5, theme5, images, "Rose Bow")
         check(removed_name == "Rose Bow", "an exact name wins over longer ones containing it")
+
+        # --- editing wording after the fact ---
+        index6, theme6 = fresh(tmp)
+        insert_into_index(index6, product_id="edit-me", name="Typo Bow", cat="bows",
+                          desc="Wrong words.", image="e.jpg")
+        insert_into_film(theme6, name="Typo Bow", cat="bows", image="e.jpg")
+        old_name, new_name = update_product(index6, theme6, "edit-me",
+                                            name="Tidy Bow", desc="Better words.")
+        text6 = index6.read_text()
+        check((old_name, new_name) == ("Typo Bow", "Tidy Bow"), "update reports both names")
+        check("name: 'Tidy Bow'" in text6, "the new name lands in index.html")
+        check("desc: 'Better words.'" in text6, "the new description lands too")
+        check("Typo Bow" not in text6, "the old name is gone from the site")
+        check('name: "Tidy Bow"' in theme6.read_text(), "the film scene is renamed too")
+        check('image: "e.jpg"' in theme6.read_text(), "the film still points at the same photo")
+        check("id: 'edit-me'" in text6, "the id is left alone, so nothing that links to it breaks")
+
+        update_product(index6, theme6, "Tidy Bow", desc="Only the words change.")
+        check("name: 'Tidy Bow'" in index6.read_text(), "editing only the description keeps the name")
 
         try:
             remove_product(index4, theme4, images, "does not exist")

@@ -91,5 +91,22 @@ class Telegram:
             if "not modified" not in str(exc):
                 log.warning("could not edit message %s: %s", message_id, exc)
 
+    def react(self, chat_id: int, message_id: int, emoji: str) -> None:
+        """Put an emoji reaction on a message.
+
+        Telegram only accepts reactions from a fixed list, and rejects one it
+        doesn't know — which is not worth failing an upload over, so this is
+        best effort.
+        """
+        try:
+            self._call(
+                "setMessageReaction",
+                chat_id=chat_id,
+                message_id=message_id,
+                reaction=[{"type": "emoji", "emoji": emoji}],
+            )
+        except Exception as exc:
+            log.debug("could not react with %s: %s", emoji, exc)
+
     def close(self) -> None:
         self._client.close()
