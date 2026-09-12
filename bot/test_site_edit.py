@@ -12,7 +12,14 @@ import sys
 import tempfile
 from pathlib import Path
 
-from site_edit import SiteEditError, insert_into_film, insert_into_index, product_ids
+from site_edit import (
+    SiteEditError,
+    insert_into_film,
+    insert_into_index,
+    product_ids,
+    remove_product,
+)
+from pricing import find_price
 
 REPO = Path(__file__).resolve().parent.parent
 FAILURES: list[str] = []
@@ -105,6 +112,69 @@ def main() -> int:
             check(False, "a file without markers is refused")
         except SiteEditError as exc:
             check("markers" in str(exc), "a file without markers is refused with a clear message")
+
+        # --- prices ---
+        for text, want in [
+            ("Ocean Scrunchie \u20b9250", "\u20b9250"),
+            ("Bow Rs. 1,200", "\u20b91,200"),
+            ("Vine 450/-", "\u20b9450"),
+            ("Clip INR 99", "\u20b999"),
+            ("Set of 3 hearts", None),        # a count, not a price
+            ("Bouquet of 5 roses", None),     # likewise
+            ("Rose 0", None),                 # zero is not a price
+        ]:
+            got, _ = find_price(text)
+            check(got == want, f"price from {text!r} -> {got!r}")
+
+        index4, theme4 = fresh(tmp)
+        insert_into_index(index4, product_id="priced", name="Priced Bow", cat="bows",
+                          desc="d", image="p.jpg", price="\u20b9250")
+        check("price: '\u20b9250'" in index4.read_text(), "price lands in index.html")
+        insert_into_index(index4, product_id="unpriced", name="Unpriced Bow", cat="bows",
+                          desc="d", image="u.jpg")
+        entry = index4.read_text().split("id: 'unpriced'")[1].split("},")[0]
+        check("price:" not in entry, "a piece with no price gets no price field")
+
+        # --- removing ---
+        images = tmp / "imgs"
+        images.mkdir(exist_ok=True)
+        (images / "p.jpg").write_bytes(b"x" * 100)
+        insert_into_film(theme4, name="Priced Bow", cat="bows", image="p.jpg")
+        name, image = remove_product(index4, theme4, images, "priced")
+        check(name == "Priced Bow", f"remove finds it by id (got {name!r})")
+        check("id: 'priced'" not in index4.read_text(), "remove takes it out of index.html")
+        check('image: "p.jpg"' not in theme4.read_text(), "remove takes it out of the film list")
+        check(not (images / "p.jpg").exists(), "remove deletes the photo file")
+        check("id: 'unpriced'" in index4.read_text(), "remove leaves other pieces alone")
+
+        name2, _ = remove_product(index4, theme4, images, "unpriced bow")
+        check(name2 == "Unpriced Bow", "remove also matches on the name")
+
+        index5, theme5 = fresh(tmp)
+        insert_into_index(index5, product_id="bow-a", name="Rose Bow One", cat="bows",
+                          desc="d", image="a.jpg")
+        insert_into_index(index5, product_id="bow-b", name="Rose Bow Two", cat="bows",
+                          desc="d", image="b.jpg")
+        # "rose bow" is nobody's full name but is inside both — refuse rather
+        # than pick one, since the wrong guess deletes a photo.
+        try:
+            remove_product(index5, theme5, images, "rose bow")
+            check(False, "an ambiguous partial name is refused")
+        except SiteEditError as exc:
+            check("matches 2 pieces" in str(exc), "an ambiguous partial name is refused")
+        check("id: 'bow-a'" in index5.read_text() and "id: 'bow-b'" in index5.read_text(),
+              "an ambiguous remove deletes nothing")
+        # An exact name is never ambiguous, even when it sits inside another.
+        insert_into_index(index5, product_id="bow-c", name="Rose Bow", cat="bows",
+                          desc="d", image="c.jpg")
+        removed_name, _ = remove_product(index5, theme5, images, "Rose Bow")
+        check(removed_name == "Rose Bow", "an exact name wins over longer ones containing it")
+
+        try:
+            remove_product(index4, theme4, images, "does not exist")
+            check(False, "removing something absent is refused")
+        except SiteEditError:
+            check(True, "removing something absent is refused")
 
     print()
     if FAILURES:

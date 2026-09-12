@@ -26,6 +26,7 @@ from telegram.ext import (
 
 from catalogue import BY_KEY, CATEGORIES
 from media import save_photo, slugify, unique_slug
+from pricing import find_price
 from repo import GitError, Repo
 from site_edit import SiteEditError, insert_into_film, insert_into_index
 
@@ -202,7 +203,10 @@ async def on_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     lines = [line.strip() for line in caption.splitlines() if line.strip()]
-    name = lines[0][:80]
+    # Price is read from the first line only, so a description mentioning a
+    # number is left alone.
+    price, first = find_price(lines[0])
+    name = first[:80]
     desc = " ".join(lines[1:])[:300] or f"{name} — handmade to order, in any colour you like."
 
     photo = message.photo[-1]  # the largest size Telegram kept
@@ -214,6 +218,7 @@ async def on_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "file_id": photo.file_id,
         "name": name,
         "desc": desc,
+        "price": price,
         "user": update.effective_user.full_name,
     }
     # Don't let abandoned uploads pile up in memory forever.
@@ -257,6 +262,7 @@ async def on_category(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     pending.pop(key, None)
     name, desc, who = item["name"], item["desc"], item["user"]
+    price = item.get("price")
     await query.edit_message_text(f"Adding <b>{html.escape(name)}</b>…", parse_mode=ParseMode.HTML)
 
     try:
@@ -268,7 +274,7 @@ async def on_category(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     async with repo.lock:
         try:
-            result = await asyncio.to_thread(_publish, raw, name, desc, cat, who)
+            result = await asyncio.to_thread(_publish, raw, name, desc, cat, who, price)
         except (GitError, SiteEditError) as exc:
             await asyncio.to_thread(repo.discard)
             return await query.edit_message_text(f"⚠️ {html.escape(str(exc))}",
@@ -291,7 +297,8 @@ async def on_category(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     )
 
 
-def _publish(raw: bytes, name: str, desc: str, cat: str, who: str) -> tuple[str, str, int]:
+def _publish(raw: bytes, name: str, desc: str, cat: str, who: str,
+             price: str | None = None) -> tuple[str, str, int]:
     """The whole blocking half of an upload. Runs under the repo lock."""
     repo.refresh()
 
@@ -301,7 +308,7 @@ def _publish(raw: bytes, name: str, desc: str, cat: str, who: str) -> tuple[str,
 
     insert_into_index(
         repo.path / "index.html",
-        product_id=slug, name=name, cat=cat, desc=desc, image=filename,
+        product_id=slug, name=name, cat=cat, desc=desc, image=filename, price=price,
     )
     insert_into_film(
         repo.path / "video/src/theme.ts", name=name, cat=cat, image=filename,

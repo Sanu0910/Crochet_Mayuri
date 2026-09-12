@@ -23,7 +23,13 @@ import httpx
 
 from catalogue import BY_KEY, CATEGORIES
 from media import save_photo, slugify, unique_slug
-from site_edit import SiteEditError, insert_into_film, insert_into_index
+from pricing import find_price
+from site_edit import (
+    SiteEditError,
+    insert_into_film,
+    insert_into_index,
+    remove_product,
+)
 from telegram_api import Telegram
 
 logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
@@ -55,8 +61,8 @@ HELP = (
 )
 
 
-def parse_caption(caption: str) -> tuple[str | None, str, str | None]:
-    """-> (category key or None, name, description or None)."""
+def parse_caption(caption: str) -> tuple[str | None, str, str | None, str | None]:
+    """-> (category key or None, name, description or None, price or None)."""
     found = None
     for category in CATEGORIES:
         if re.search(rf"#{category.key}\b", caption, re.IGNORECASE):
@@ -66,8 +72,12 @@ def parse_caption(caption: str) -> tuple[str | None, str, str | None]:
     cleaned = re.sub(r"#\w+", "", caption)
     lines = [line.strip() for line in cleaned.splitlines() if line.strip()]
     if not lines:
-        return found, "", None
-    return found, lines[0][:80], (" ".join(lines[1:])[:300] or None)
+        return found, "", None, None
+
+    # The price is looked for on the first line only, so a description that
+    # happens to mention a number is left alone.
+    price, first = find_price(lines[0])
+    return found, first[:80], (" ".join(lines[1:])[:300] or None), price
 
 
 def dispatch_film_render() -> str:
@@ -103,7 +113,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str]) -> None:
                 reply_to=message_id)
         return
 
-    category_key, name, desc = parse_caption(caption)
+    category_key, name, desc, price = parse_caption(caption)
     if not name:
         tg.send(chat_id, "I couldn't find a name in that caption.\n\n" + HELP,
                 reply_to=message_id)
@@ -127,7 +137,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str]) -> None:
         raw = tg.download(photo["file_id"])
         filename = save_photo(raw, images_dir, slug)
         insert_into_index(REPO_ROOT / "index.html", product_id=slug, name=name,
-                          cat=category_key, desc=desc, image=filename)
+                          cat=category_key, desc=desc, image=filename, price=price)
         insert_into_film(REPO_ROOT / "video/src/theme.ts", name=name,
                          cat=category_key, image=filename)
     except SiteEditError as exc:
@@ -141,13 +151,17 @@ def handle_photo(tg: Telegram, message: dict, added: list[str]) -> None:
 
     total = len(list(images_dir.glob("*.jpg")))
     who = message.get("from", {}).get("first_name", "someone")
-    added.append(f"{name} ({BY_KEY[category_key].tag}, from {who})")
+    added.append(f"{name} ({BY_KEY[category_key].tag}, {price or 'no price'}, from {who})")
 
     where = f"\n{SITE_URL}" if SITE_URL else ""
     tg.send(
         chat_id,
         f"✅ <b>{html.escape(name)}</b> added — {BY_KEY[category_key].tag}, "
-        f"{total} pieces in the shop.\nLive in a minute or two.{where}",
+        f"{total} pieces in the shop.\n"
+        + (f"Price shown: <b>{price}</b>\n" if price
+           else "No price on this one — add \u20b9250 to the caption next time "
+                "and it shows on the card.\n")
+        + f"Live in a minute or two.{where}",
         reply_to=message_id,
     )
 
@@ -160,6 +174,7 @@ def main() -> int:
 
     tg = Telegram(TOKEN)
     added: list[str] = []
+    removed: list[str] = []
 
     try:
         updates = tg.get_updates()
@@ -195,6 +210,28 @@ def main() -> int:
                             f"Your user ID: <code>{user_id}</code>\n"
                             f"This chat: <code>{chat_id}</code>\nAllowed: yes",
                             reply_to=message["message_id"])
+                elif text.startswith("/remove"):
+                    query = text[len("/remove"):].strip()
+                    if not query:
+                        tg.send(chat_id,
+                                "Which one? <code>/remove Ocean Blue Ruffle Scrunchie</code>",
+                                reply_to=message["message_id"])
+                    else:
+                        try:
+                            gone, image = remove_product(
+                                REPO_ROOT / "index.html",
+                                REPO_ROOT / "video/src/theme.ts",
+                                REPO_ROOT / "images",
+                                query,
+                            )
+                            removed.append(gone)
+                            tg.send(chat_id,
+                                    f"🗑 Removed <b>{html.escape(gone)}</b> and its photo. "
+                                    "Gone from the site in a minute or two.",
+                                    reply_to=message["message_id"])
+                        except SiteEditError as exc:
+                            tg.send(chat_id, f"⚠️ {html.escape(str(exc))}",
+                                    reply_to=message["message_id"])
                 elif text.startswith("/film"):
                     tg.send(chat_id, dispatch_film_render(), reply_to=message["message_id"])
                 elif message.get("photo"):
@@ -207,16 +244,27 @@ def main() -> int:
     finally:
         tg.close()
 
-    if added:
-        summary = "; ".join(added)
-        body = "\n".join(f"- {item}" for item in added)
+    if added or removed:
+        if added and not removed:
+            title = (f"Add {added[0].split(' (')[0]} to the shop"
+                     if len(added) == 1 else f"Add {len(added)} pieces to the shop")
+        elif removed and not added:
+            title = (f"Remove {removed[0]} from the shop"
+                     if len(removed) == 1 else f"Remove {len(removed)} pieces from the shop")
+        else:
+            title = f"Add {len(added)} and remove {len(removed)} pieces"
+
+        body = ""
+        if added:
+            body += "\nAdded via Telegram:\n" + "\n".join(f"- {x}" for x in added)
+        if removed:
+            body += "\nRemoved via Telegram:\n" + "\n".join(f"- {x}" for x in removed)
+
         COMMIT_MSG_FILE.write_text(
-            (f"Add {added[0].split(' (')[0]} to the shop"
-             if len(added) == 1 else f"Add {len(added)} pieces to the shop")
-            + "\n\nUploaded via Telegram:\n" + body
+            title + "\n" + body
             + "\n\nThe film's scene list was updated to match; /film re-renders it.\n"
         )
-        log.info("added: %s", summary)
+        log.info("added: %s | removed: %s", added, removed)
     else:
         log.info("nothing to publish")
 
