@@ -49,10 +49,19 @@ It reads two settings from **Settings → Secrets and variables → Actions**:
 To switch it off, delete the workflow file or disable it from the Actions
 tab. Revoke the token in BotFather if you want it truly dead.
 
-Two things to know about scheduled workflows: GitHub disables them after 60
-days with no repository activity, and `*/5` is a best effort — under load a
-run can be ten minutes late. Neither matters much for a shop that gains a few
-pieces a week.
+> **The workflow file has to be on the default branch.** GitHub only
+> registers `schedule` and `workflow_dispatch` workflows from the default
+> branch (`main`) — a workflow that exists only on another branch is never
+> listed and never fires, with no error to tell you so. The job itself
+> checks out `claude/website-mobile-redesign-xfmicu` explicitly, so it
+> behaves the same wherever the file is stored; it just has to *live* on
+> `main` to run at all. The same goes for `render-film.yml`, which `/film`
+> dispatches.
+
+Two other things to know about scheduled workflows: GitHub disables them
+after 60 days with no repository activity, and `*/5` is a best effort —
+under load a run can be ten minutes late. Neither matters much for a shop
+that gains a few pieces a week.
 
 ### Always on — instant, needs a host
 
