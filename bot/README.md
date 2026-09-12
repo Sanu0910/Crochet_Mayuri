@@ -26,8 +26,29 @@ Without a description the bot writes a plain one you can edit later. Every
 upload gets a "New" badge. Forget the hashtag and it asks for one rather
 than guessing.
 
-**Commands:** `/help`, `/whoami`, `/film` (re-render the video). The
-always-on version below also has `/recent` and `/undo`.
+**Commands:** `/status` (what's on the site, whether the film matches, the
+last change), `/film` (re-render the video), `/remove <name>`, `/whoami`,
+`/help`. The always-on version below also has `/recent` and `/undo`.
+
+### It tells you what it's doing
+
+An upload gets one message that fills itself in as the work happens, rather
+than a burst of separate notifications for a job that takes three seconds:
+
+```
+🧶 Ocean Blue Ruffle Scrunchie
+
+✅ Reading the caption — Scrunchies
+✅ Saving the photo — ocean-blue-ruffle-scrunchie.jpg (156 KB)
+✅ Adding it to the gallery — 24 pieces now
+✅ Adding it to the film — scene added
+✅ Pushing to GitHub — commit a1b2c3d
+✅ Rebuilding the site — live in a minute or two
+```
+
+The last two lines are filled in by `announce.py` after the push has really
+happened, so the message reports what landed rather than what was intended.
+If a step fails, the checklist stops there and says why.
 
 ## Two ways to run it
 

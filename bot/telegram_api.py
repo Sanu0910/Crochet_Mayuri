@@ -56,7 +56,7 @@ class Telegram:
 
     # -- writing ----------------------------------------------------------
 
-    def send(self, chat_id: int, text: str, reply_to: int | None = None) -> None:
+    def send(self, chat_id: int, text: str, reply_to: int | None = None) -> int | None:
         params: dict[str, Any] = {
             "chat_id": chat_id,
             "text": text,
@@ -67,10 +67,29 @@ class Telegram:
             params["reply_to_message_id"] = reply_to
             params["allow_sending_without_reply"] = True
         try:
-            self._call("sendMessage", **params)
+            return self._call("sendMessage", **params)["message_id"]
         except Exception:
             # A reply failing must never cost us the upload that succeeded.
             log.exception("could not send a reply to chat %s", chat_id)
+            return None
+
+    def edit(self, chat_id: int, message_id: int, text: str) -> None:
+        """Update a message in place — the progress checklist rewrites itself
+        rather than sending a new line for every step."""
+        try:
+            self._call(
+                "editMessageText",
+                chat_id=chat_id,
+                message_id=message_id,
+                text=text,
+                parse_mode="HTML",
+                disable_web_page_preview=True,
+            )
+        except Exception as exc:
+            # Telegram rejects an edit that would not change anything; that is
+            # not worth a stack trace.
+            if "not modified" not in str(exc):
+                log.warning("could not edit message %s: %s", message_id, exc)
 
     def close(self) -> None:
         self._client.close()

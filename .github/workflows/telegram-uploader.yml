@@ -51,6 +51,7 @@ jobs:
           GIT_BRANCH: claude/website-mobile-redesign-xfmicu
           SITE_URL: https://sanu0910.github.io/Crochet_Mayuri/
           COMMIT_MSG_FILE: ${{ runner.temp }}/commit-msg.txt
+          ANNOUNCE_FILE: ${{ runner.temp }}/announce.json
         run: python poll_once.py
 
       - name: Publish anything new
@@ -74,15 +75,33 @@ jobs:
           git commit --file "$COMMIT_MSG_FILE"
           git push
           echo "published=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Ask Pages to rebuild
+        id: pages
         # A push made with GITHUB_TOKEN does not set off other workflows, so
         # the Pages build has to be requested by hand or the upload would sit
         # in the branch without ever going live.
         if: steps.publish.outputs.published == 'true'
         run: |
-          curl -sS -X POST \
+          CODE=$(curl -sS -X POST \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/pages/builds" \
-            -o /dev/null -w "Pages build requested: HTTP %{http_code}\n"
+            -o /dev/null -w "%{http_code}")
+          echo "Pages build requested: HTTP $CODE"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+
+      - name: Say so in Telegram
+        # poll_once.py runs before the commit exists, so it can only promise.
+        # This closes the loop on the same message with what actually landed.
+        if: steps.publish.outputs.published == 'true'
+        working-directory: bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+          SITE_URL: https://sanu0910.github.io/Crochet_Mayuri/
+          ANNOUNCE_FILE: ${{ runner.temp }}/announce.json
+          COMMIT_SHA: ${{ steps.publish.outputs.sha }}
+          PAGES_STATUS: ${{ steps.pages.outputs.code }}
+        run: python announce.py
