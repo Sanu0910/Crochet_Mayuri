@@ -11,90 +11,93 @@ photo + caption  →  [category buttons]  →  commit + push  →  GitHub Pages
 
 ## Using it
 
-**Add a piece.** Send a photo. Put the name on the first line of the
-caption and, if you want one, a description on the second:
+Send a photo. First line of the caption is the name, put a category hashtag
+anywhere in it, and add a description underneath if you want one:
 
 ```
-Ocean Blue Ruffle Scrunchie
+Ocean Blue Ruffle Scrunchie #scrunchies
 Deep teal ruffles on a soft white band.
 ```
 
-Then tap a category. Without a description the bot writes a plain one you
-can edit later. Every upload gets a "New" badge.
+Categories: `#scrunchies` `#bows` `#flowers` `#clips` `#keychains`
+`#garlands` `#hearts`
 
-**Commands**
+Without a description the bot writes a plain one you can edit later. Every
+upload gets a "New" badge. Forget the hashtag and it asks for one rather
+than guessing.
 
-| | |
-|---|---|
-| `/recent` | the last few changes |
-| `/undo` | undo the most recent change (reverts and pushes) |
-| `/film` | re-render the video with everything currently in the shop |
-| `/whoami` | your Telegram ID and this chat's ID |
-| `/help` | the above |
+**Commands:** `/help`, `/whoami`, `/film` (re-render the video). The
+always-on version below also has `/recent` and `/undo`.
 
-## What it does not do
+## Two ways to run it
 
-- **It doesn't re-render the film.** Adding a product puts it in the film's
-  scene list, but rendering needs Chrome and a few minutes of CPU, which is
-  more than the bot's host should carry. `/film` hands that to GitHub
-  Actions (`.github/workflows/render-film.yml`) instead, which renders,
-  compresses, refreshes the poster and pushes — about five minutes.
-- **It doesn't check what's in the photo.** Whatever you send goes up.
-  `/undo` is the safety net.
-- **It doesn't create categories.** They're fixed in `catalogue.py` and must
-  match the `CATEGORIES` list in `index.html`. Adding one is a code change.
+The bot is the same either way; only how often it checks differs.
 
-## Running it
+### Scheduled — free, 5–15 minutes (what's set up)
 
-Needs three environment variables:
+`telegram-uploader.yml.example` runs `poll_once.py` on GitHub Actions every
+five minutes: it wakes, publishes whatever arrived, and exits. The
+repository is public so Actions minutes are free, and because the job runs
+*inside* the repo it already has permission to push — **no personal access
+token needed**.
+
+To switch it on:
+
+1. **Settings → Secrets and variables → Actions**
+   - Secret `TELEGRAM_TOKEN` — the token from [@BotFather](https://t.me/BotFather)
+   - Variable `ALLOWED_USER_IDS` — e.g. `924868395,5770732970`
+2. Copy `bot/telegram-uploader.yml.example` to
+   `.github/workflows/telegram-uploader.yml` and commit it.
+
+To switch it off, delete that workflow file.
+
+Two things to know about scheduled workflows: GitHub disables them after 60
+days with no repository activity, and `*/5` is a best effort — under load a
+run can be ten minutes late. Neither matters much for a shop that gains a few
+pieces a week.
+
+### Always on — instant, needs a host
+
+`main.py` is the same bot as a long-running process that holds a connection
+open, so uploads land in seconds and the category can be a tap on a button
+rather than a hashtag. It needs somewhere to run (Railway, Fly, a Raspberry
+Pi) and, because it is outside the repository, a GitHub token:
 
 | Variable | What |
 |---|---|
 | `TELEGRAM_TOKEN` | from [@BotFather](https://t.me/BotFather) |
-| `GITHUB_TOKEN` | fine-grained PAT, see below |
-| `ALLOWED_USER_IDS` | comma-separated Telegram user IDs allowed to publish |
-
-Optional: `GITHUB_REPO` (default `Sanu0910/Crochet_Mayuri`), `GIT_BRANCH`,
-`SITE_URL` (shown in the confirmation message), `WORKDIR`.
-
-> **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from
-> `claude/website-mobile-redesign-xfmicu`, *not* from `main` — that's what
-> the bot defaults to, because a push anywhere else won't appear on the
-> site. If Pages is ever repointed at `main`, change this variable to match
-> or uploads will silently go nowhere visible.
-
-**The GitHub token** should be a fine-grained personal access token scoped
-to this one repository, with:
-
-- **Contents: Read and write** — to push the photo and the edits
-- **Actions: Read and write** — only needed for `/film`
-
-Nothing else. Make it at
-<https://github.com/settings/personal-access-tokens>.
-
-**Locally:**
+| `GITHUB_TOKEN` | fine-grained PAT — **Contents: read and write**, plus **Actions: read and write** for `/film`, scoped to this repository only |
+| `ALLOWED_USER_IDS` | comma-separated Telegram user IDs |
 
 ```bash
 pip install -r requirements.txt
 TELEGRAM_TOKEN=... GITHUB_TOKEN=... ALLOWED_USER_IDS=123,456 python main.py
 ```
 
-**On Railway:** deploy this directory as a service, set the three variables,
-and that's it. It long-polls Telegram, so it needs no public URL and no
-webhook.
+Only one of the two may be live at a time — two pollers fight over the same
+updates and both misbehave.
 
-### Two things that catch people out
+> **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from
+> `claude/website-mobile-redesign-xfmicu`, *not* from `main` — that's what
+> both entry points default to, because a push anywhere else won't appear on
+> the site. If Pages is ever repointed at `main`, change it to match or
+> uploads will silently go nowhere visible.
 
-1. **Group privacy must be off.** In BotFather: `/mybots` → the bot → Bot
-   Settings → Group Privacy → Turn off. On by default, a bot in a group only
-   receives messages that mention it, so your photos never arrive.
-2. **Only one instance may poll at a time.** Two copies running (say, a local
-   one and the deployed one) fight over updates and both misbehave.
+### Group privacy must be off
 
-### If you don't know your Telegram user ID
+In BotFather: `/mybots` → the bot → Bot Settings → Group Privacy → **Turn
+off**. On by default, a bot in a group only receives messages that mention
+it, so your photos never arrive.
 
-Message the bot `/whoami`, or just send it anything — an unrecognised user
-gets told their own ID so it can be added to `ALLOWED_USER_IDS`.
+## What it does not do
+
+- **It doesn't re-render the film.** Adding a product puts it in the film's
+  scene list, but rendering needs Chrome and a few minutes of CPU. `/film`
+  hands that to `.github/workflows/render-film.yml`, which renders,
+  compresses, refreshes the poster and pushes — about five minutes.
+- **It doesn't check what's in the photo.** Whatever you send goes up.
+- **It doesn't create categories.** They're fixed in `catalogue.py` and must
+  match the `CATEGORIES` list in `index.html`. Adding one is a code change.
 
 ## The markers
 

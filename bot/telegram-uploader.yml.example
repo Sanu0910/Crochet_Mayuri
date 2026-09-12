@@ -1,0 +1,100 @@
+# Copy this to .github/workflows/telegram-uploader.yml to switch the bot on.
+#
+# It is kept here, inert, rather than in .github/workflows because putting it
+# there starts a job that runs every five minutes for as long as the
+# repository is active — that should be a deliberate act, not a side effect
+# of a commit. Nothing happens until you move it.
+#
+# Before moving it, set:
+#   Settings -> Secrets and variables -> Actions
+#     Secret   TELEGRAM_TOKEN     the token from @BotFather
+#     Variable ALLOWED_USER_IDS   924868395,5770732970
+#
+# To switch the bot off again, delete the workflow file (or disable it from
+# the Actions tab). Revoke the token in BotFather if you want it truly dead.
+
+name: Telegram uploader
+
+# Checks Telegram for new photos and publishes them to the site.
+#
+# This runs on a schedule rather than as an always-on service because the
+# repository is public, which makes Actions minutes free — no host to pay
+# for. The trade is latency: a photo appears within roughly 5-15 minutes
+# rather than instantly. bot/main.py is the same bot as a long-running
+# process, for if that trade ever stops being worth it.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit and push the new piece
+  pages: write      # ask Pages to rebuild afterwards
+  actions: write    # let /film start the render workflow
+
+# Two runs at once would process the same photos twice.
+concurrency:
+  group: telegram-uploader
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/website-mobile-redesign-xfmicu
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install --quiet httpx==0.28.1 Pillow==11.1.0
+
+      - name: Check Telegram
+        working-directory: bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALLOWED_USER_IDS: ${{ vars.ALLOWED_USER_IDS }}
+          GIT_BRANCH: claude/website-mobile-redesign-xfmicu
+          SITE_URL: https://sanu0910.github.io/Crochet_Mayuri/
+          COMMIT_MSG_FILE: ${{ runner.temp }}/commit-msg.txt
+        run: python poll_once.py
+
+      - name: Publish anything new
+        id: publish
+        env:
+          COMMIT_MSG_FILE: ${{ runner.temp }}/commit-msg.txt
+        run: |
+          if [ ! -f "$COMMIT_MSG_FILE" ]; then
+            echo "Nothing new."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "Mayuri'z bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "A message arrived but changed nothing."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit --file "$COMMIT_MSG_FILE"
+          git push
+          echo "published=true" >> "$GITHUB_OUTPUT"
+
+      - name: Ask Pages to rebuild
+        # A push made with GITHUB_TOKEN does not set off other workflows, so
+        # the Pages build has to be requested by hand or the upload would sit
+        # in the branch without ever going live.
+        if: steps.publish.outputs.published == 'true'
+        run: |
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" \
+            -o /dev/null -w "Pages build requested: HTTP %{http_code}\n"
