@@ -47,9 +47,12 @@ export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
   { image: "sunflower-hair-clips.jpg", name: "Sunflower Hair Clip Pair", tag: "Hair Clips" },
   { image: "sunflower-hair-clips-alt.jpg", name: "Sunflower Clips — Clip Detail", tag: "Hair Clips" },
+  { image: "daisy-snap-clips.jpg", name: "Daisy Snap Clip Pair", tag: "Hair Clips" },
+  { image: "pink-bloom-claw-clip.jpg", name: "Pink Bloom Claw Clip", tag: "Hair Clips" },
   { image: "rose-claw-clip.jpg", name: "Blush Rose Claw Clip", tag: "Claw Clips" },
   { image: "sunflower-keychain.jpg", name: "Sunflower Bloom Keychain", tag: "Keychains" },
   { image: "sunflower-keychain-alt.jpg", name: "Sunflower Keychain, Gift Tagged", tag: "Keychains" },
+  { image: "daisy-hanging-charm.jpg", name: "Daisy Hanging Charm", tag: "Charms" },
   { image: "sunflower-hanging-charm.jpg", name: "Sunflower Hanging Charm", tag: "Charms" },
   { image: "sunflower-bag-charm.jpg", name: "Sunflower Bag Charm", tag: "Charms" },
   { image: "rose-keychain.jpg", name: "Rose Keychain", tag: "Keychains" },
@@ -66,6 +69,7 @@ export const PRODUCTS: readonly Product[] = [
   { image: "classic-maroon-bow.jpg", name: "Classic Maroon & Cream Bow", tag: "Bows" },
   { image: "classic-maroon-bow-alt.jpg", name: "Maroon Scallop Bow", tag: "Bows" },
   { image: "cream-bow.jpg", name: "Simple Cream Bow", tag: "Bows" },
+  { image: "ruby-bow-handbag.jpg", name: "Ruby Bow Handbag", tag: "Bags" },
   { image: "flower-vine-garland.jpg", name: "Yellow Flower Vine Set", tag: "Garlands" },
   { image: "mini-hearts-set.jpg", name: "Sweetheart Mini Set", tag: "Hearts" },
   /* PRODUCTS:END */

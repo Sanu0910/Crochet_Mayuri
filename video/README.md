@@ -34,7 +34,7 @@ card with the order address.
 5. Refresh the poster frame if you want a different one on the page:
 
    ```bash
-   npm run poster       # renders frame 658 — the rose bouquet card
+   npm run poster       # frame is computed by poster-frame.mjs
    ```
 
    Then convert `out/promo-poster.png` to `../media/mayuriz-film-poster.jpg`.

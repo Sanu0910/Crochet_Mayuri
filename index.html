@@ -793,6 +793,7 @@
             <option>Bow</option>
             <option>Flower / Rose</option>
             <option>Keychain</option>
+            <option>Bag / Pouch</option>
             <option>Garland / Hanging</option>
             <option>Heart appliqué</option>
             <option>Something else</option>
@@ -853,6 +854,20 @@
       image: 'images/sunflower-hair-clips-alt.jpg'
     },
     {
+      id: 'daisy-snap-clips',
+      name: 'Daisy Snap Clip Pair',
+      cat: 'clips', tag: 'Hair Clips', badge: 'New',
+      desc: 'Two white daisies with sunny centres on plain snap clips. The kind of small thing that makes getting ready feel nicer.',
+      image: 'images/daisy-snap-clips.jpg'
+    },
+    {
+      id: 'pink-bloom-claw-clip',
+      name: 'Pink Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'New',
+      desc: 'A full pink flower with a cream centre on a claw clip. It holds a twist of hair and looks like a bloom while doing it.',
+      image: 'images/pink-bloom-claw-clip.jpg'
+    },
+    {
       id: 'rose-claw-clip',
       name: 'Blush Rose Claw Clip',
       cat: 'clips', tag: 'Claw Clips',
@@ -872,6 +887,13 @@
       cat: 'keychains', tag: 'Keychains',
       desc: 'The same sunflower, finished with a kraft gift tag — ready to hand straight to someone, no wrapping needed.',
       image: 'images/sunflower-keychain-alt.jpg'
+    },
+    {
+      id: 'daisy-hanging-charm',
+      name: 'Daisy Hanging Charm',
+      cat: 'keychains', tag: 'Charms', badge: 'New',
+      desc: 'A white daisy on a long green stem with two leaves, made to hang somewhere you pass every day.',
+      image: 'images/daisy-hanging-charm.jpg'
     },
     {
       id: 'sunflower-hanging-charm',
@@ -986,6 +1008,13 @@
       image: 'images/cream-bow.jpg'
     },
     {
+      id: 'ruby-bow-handbag',
+      name: 'Ruby Bow Handbag',
+      cat: 'bags', tag: 'Bags', badge: 'New',
+      desc: 'A deep red bag with a white bow and a zip that really closes. Small enough to carry just what you need, sturdy enough for every day.',
+      image: 'images/ruby-bow-handbag.jpg'
+    },
+    {
       id: 'flower-vine-garland',
       name: 'Yellow Flower Vine Set',
       cat: 'garlands', tag: 'Garlands', badge: 'Set of 3',
@@ -1009,6 +1038,7 @@
     { key: 'flowers', label: 'Flowers & Roses' },
     { key: 'clips', label: 'Claw Clips' },
     { key: 'keychains', label: 'Keychains' },
+    { key: 'bags', label: 'Bags' },
     { key: 'garlands', label: 'Garlands' },
     { key: 'hearts', label: 'Hearts' }
   ];
@@ -1281,7 +1311,7 @@
   const orderContextText = document.getElementById('orderContextText');
   const clearOrderContext = document.getElementById('clearOrderContext');
 
-  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', bags: 'Bag / Pouch', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';

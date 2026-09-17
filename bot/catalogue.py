@@ -20,6 +20,7 @@ CATEGORIES: tuple[Category, ...] = (
     Category("flowers", "🌹 Flowers & Roses", "Roses"),
     Category("clips", "📎 Clips", "Hair Clips"),
     Category("keychains", "🔑 Keychains", "Keychains"),
+    Category("bags", "👜 Bags", "Bags"),
     Category("garlands", "🌿 Garlands", "Garlands"),
     Category("hearts", "💗 Hearts", "Hearts"),
 )
