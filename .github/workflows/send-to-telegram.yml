@@ -1,0 +1,41 @@
+name: Send to Telegram
+
+# Delivers a pack of messages (captions, templates) to the team's Telegram
+# group through the bot. Started by hand or by an agent; never on a schedule.
+#
+# The text comes in as an input rather than a file, so marketing copy reaches
+# the group without being committed to the repository the website is built
+# from. See bot/send_pack.py for the pack format.
+on:
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: JSON list of messages — see bot/send_pack.py
+        required: true
+      chat_id:
+        description: Telegram chat to send to
+        required: true
+        default: "-5477226308"
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet httpx==0.28.1
+      - name: Send
+        working-directory: bot
+        env:
+          # Passed through the environment, never pasted into the script, so
+          # nothing in the pack can be executed as shell.
+          PACK: ${{ inputs.pack }}
+          CHAT_ID: ${{ inputs.chat_id }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python send_pack.py
