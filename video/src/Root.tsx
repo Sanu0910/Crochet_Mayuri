@@ -6,6 +6,8 @@ import { Intro } from "./scenes/Intro";
 import { Statement } from "./scenes/Statement";
 import { ProductScene } from "./scenes/Product";
 import { Outro } from "./scenes/Outro";
+import { LAUNCH_DURATION, ReelLaunch } from "./reels/ReelLaunch";
+import { RANGE_DURATION, ReelRange } from "./reels/ReelRange";
 
 const WIDTH = 1080;
 const HEIGHT = 1350;
@@ -21,6 +23,12 @@ export const RemotionRoot: React.FC = () => {
         width={WIDTH}
         height={HEIGHT}
       />
+      <Folder name="LaunchWeekReels">
+        <Composition id="ReelLaunch" component={ReelLaunch} durationInFrames={LAUNCH_DURATION}
+          fps={30} width={1080} height={1920} />
+        <Composition id="ReelRange" component={ReelRange} durationInFrames={RANGE_DURATION}
+          fps={30} width={1080} height={1920} />
+      </Folder>
       <Folder name="Scenes">
         <Composition
           id="Intro"
