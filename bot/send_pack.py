@@ -4,9 +4,13 @@ Used to deliver marketing copy (captions, DM templates) to the team's group
 without that copy ever touching the website: the text arrives as a workflow
 input, not as a file in the repository.
 
-The pack is JSON — a list of items, each either:
+The pack is JSON — a list of items, each one of:
     {"text": "<b>already formatted</b> HTML"}
     {"label": "1 · Launch post", "when": "Wed / Thu, feed", "copy": "plain text"}
+    {"photo": "path/relative/to/the/repo.jpg", "caption": "<b>HTML</b>"}
+
+Photos are read from the checkout the job runs on, so they can live on a
+branch the website is never built from.
 
 A "copy" item is sent inside a <pre> block. In Telegram a monospace block
 copies to the clipboard with a single tap, so whoever posts it gets exactly
@@ -21,8 +25,11 @@ import json
 import os
 import sys
 import time
+from pathlib import Path
 
-LIMIT = 4096  # Telegram's maximum message length
+LIMIT = 4096          # Telegram's maximum message length
+CAPTION_LIMIT = 1024  # ...and its maximum photo caption
+REPO = Path(__file__).resolve().parent.parent
 
 
 def render(item: dict) -> str:
@@ -37,32 +44,47 @@ def render(item: dict) -> str:
 
 def main() -> int:
     pack = json.loads(os.environ["PACK"])
-    messages = [render(item) for item in pack]
 
-    too_long = [i for i, m in enumerate(messages, 1) if len(m) > LIMIT]
-    if too_long:
-        sys.exit(f"message(s) {too_long} exceed Telegram's {LIMIT}-character limit")
+    # Check everything before sending anything, so a bad item can't leave the
+    # group with half a pack.
+    for i, item in enumerate(pack, 1):
+        if "photo" in item:
+            if not (REPO / item["photo"]).is_file():
+                sys.exit(f"item {i}: no such photo {item['photo']}")
+            if len(item.get("caption", "")) > CAPTION_LIMIT:
+                sys.exit(f"item {i}: caption exceeds {CAPTION_LIMIT} characters")
+        elif len(render(item)) > LIMIT:
+            sys.exit(f"item {i} exceeds Telegram's {LIMIT}-character limit")
 
     if "--dry-run" in sys.argv:
-        for i, m in enumerate(messages, 1):
-            print(f"--- {i} ({len(m)} chars) ---\n{m}\n")
+        for i, item in enumerate(pack, 1):
+            body = (f"[photo {item['photo']}] {item.get('caption', '')}"
+                    if "photo" in item else render(item))
+            print(f"--- {i} ---\n{body}\n")
         return 0
 
     import httpx
 
     token = os.environ["TELEGRAM_TOKEN"].strip()
     chat_id = os.environ["CHAT_ID"].strip()
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    api = f"https://api.telegram.org/bot{token}"
 
-    with httpx.Client(timeout=30) as client:
-        for i, text in enumerate(messages, 1):
+    with httpx.Client(timeout=60) as client:
+        for i, item in enumerate(pack, 1):
             for _ in range(2):
-                reply = client.post(url, json={
-                    "chat_id": chat_id, "text": text, "parse_mode": "HTML",
-                    "disable_web_page_preview": True,
-                }).json()
+                if "photo" in item:
+                    path = REPO / item["photo"]
+                    reply = client.post(f"{api}/sendPhoto", data={
+                        "chat_id": chat_id, "caption": item.get("caption", ""),
+                        "parse_mode": "HTML",
+                    }, files={"photo": (path.name, path.read_bytes(), "image/jpeg")}).json()
+                else:
+                    reply = client.post(f"{api}/sendMessage", json={
+                        "chat_id": chat_id, "text": render(item), "parse_mode": "HTML",
+                        "disable_web_page_preview": True,
+                    }).json()
                 if reply.get("ok"):
-                    print(f"sent {i}/{len(messages)}")
+                    print(f"sent {i}/{len(pack)}")
                     break
                 # A group that has been upgraded to a supergroup gets a new id;
                 # Telegram says what it is, so follow it once and carry on.
@@ -73,7 +95,7 @@ def main() -> int:
                     continue
                 sys.exit(f"message {i} failed: {reply.get('description', reply)}")
             time.sleep(0.4)  # stay well under Telegram's per-chat rate limit
-    print(f"done — {len(messages)} messages to chat {chat_id}")
+    print(f"done — {len(pack)} items to chat {chat_id}")
     return 0
 
 
