@@ -1,3 +1,37 @@
+# The domain — mayurisyarntales.online
+
+Registered at Namecheap. The site itself is served by GitHub Pages; the
+`CNAME` file in the repo root is what tells GitHub to answer for this name.
+Don't delete it — the site falls back to the github.io address if you do.
+
+## DNS records (Namecheap → Domain List → Manage → Advanced DNS)
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `sanu0910.github.io.` |
+
+Delete any parking-page records Namecheap added by default (a `URL Redirect`
+on `@` or a `CNAME` for `www` pointing at `parkingpage.namecheap.com`) —
+they will fight the records above.
+
+After the records are in, GitHub → **Settings → Pages**: the custom domain
+should read `mayurisyarntales.online` with a green tick, and once the
+certificate is issued (up to an hour or so) tick **Enforce HTTPS**.
+
+## Keeping the domain safe
+
+- **Auto renew** is off in Namecheap. If it lapses the site goes dark and
+  the name can be bought by someone else. Turn it on.
+- **Verify the domain with GitHub** (profile Settings → Pages → Add a
+  domain → a TXT record at Namecheap). Without it, any GitHub user could in
+  principle point their own site at a subdomain of yours.
+
+---
+
 # Getting order & enquiry emails into both inboxes
 
 This site has no server, so sending an automatic email when someone submits

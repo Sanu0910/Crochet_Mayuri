@@ -2,6 +2,19 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-10-07
+
+- **The site now lives at mayurisyarntales.online.** Added the `CNAME` file
+  GitHub Pages reads to answer for the domain, and the DNS records to set at
+  Namecheap are in `SETUP.md`. The old github.io address redirects to it.
+- **Link previews finally show a picture.** The preview image was a relative
+  path, which WhatsApp, Instagram and Facebook quietly ignore, so every link
+  shared until now appeared with no image. It's now an absolute URL to a
+  purpose-made 1200×630 card (`media/social-preview.jpg`).
+- Added a canonical URL, `robots.txt` and `sitemap.xml` so Google indexes the
+  new address rather than the old one.
+- The Telegram bot's confirmations now link to the new domain.
+
 ## 2026-08-21
 
 - Added five new pieces from the latest photos: **Ocean Blue Ruffle
