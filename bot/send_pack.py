@@ -8,8 +8,10 @@ The pack is JSON — a list of items, each one of:
     {"text": "<b>already formatted</b> HTML"}
     {"label": "1 · Launch post", "when": "Wed / Thu, feed", "copy": "plain text"}
     {"photo": "path/relative/to/the/repo.jpg", "caption": "<b>HTML</b>"}
+    {"video": "path/relative/to/the/repo.mp4", "caption": "<b>HTML</b>",
+     "width": 1080, "height": 1920}
 
-Photos are read from the checkout the job runs on, so they can live on a
+Photos and videos are read from the checkout the job runs on, so they can live on a
 branch the website is never built from.
 
 A "copy" item is sent inside a <pre> block. In Telegram a monospace block
@@ -29,6 +31,7 @@ from pathlib import Path
 
 LIMIT = 4096          # Telegram's maximum message length
 CAPTION_LIMIT = 1024  # ...and its maximum photo caption
+UPLOAD_LIMIT = 50 * 1024 * 1024  # the most a bot may upload in one file
 REPO = Path(__file__).resolve().parent.parent
 
 
@@ -48,9 +51,13 @@ def main() -> int:
     # Check everything before sending anything, so a bad item can't leave the
     # group with half a pack.
     for i, item in enumerate(pack, 1):
-        if "photo" in item:
-            if not (REPO / item["photo"]).is_file():
-                sys.exit(f"item {i}: no such photo {item['photo']}")
+        media = item.get("photo") or item.get("video")
+        if media:
+            path = REPO / media
+            if not path.is_file():
+                sys.exit(f"item {i}: no such file {media}")
+            if path.stat().st_size > UPLOAD_LIMIT:
+                sys.exit(f"item {i}: {media} is over Telegram's 50 MB bot limit")
             if len(item.get("caption", "")) > CAPTION_LIMIT:
                 sys.exit(f"item {i}: caption exceeds {CAPTION_LIMIT} characters")
         elif len(render(item)) > LIMIT:
@@ -58,8 +65,8 @@ def main() -> int:
 
     if "--dry-run" in sys.argv:
         for i, item in enumerate(pack, 1):
-            body = (f"[photo {item['photo']}] {item.get('caption', '')}"
-                    if "photo" in item else render(item))
+            media = item.get("photo") or item.get("video")
+            body = f"[{media}] {item.get('caption', '')}" if media else render(item)
             print(f"--- {i} ---\n{body}\n")
         return 0
 
@@ -78,6 +85,16 @@ def main() -> int:
                         "chat_id": chat_id, "caption": item.get("caption", ""),
                         "parse_mode": "HTML",
                     }, files={"photo": (path.name, path.read_bytes(), "image/jpeg")}).json()
+                elif "video" in item:
+                    # Without the size Telegram shows a portrait Reel as a
+                    # square thumbnail until someone taps it.
+                    path = REPO / item["video"]
+                    data = {"chat_id": chat_id, "caption": item.get("caption", ""),
+                            "parse_mode": "HTML", "supports_streaming": "true"}
+                    data.update({k: str(item[k]) for k in ("width", "height") if k in item})
+                    reply = client.post(f"{api}/sendVideo", data=data, files={
+                        "video": (path.name, path.read_bytes(), "video/mp4"),
+                    }, timeout=300).json()
                 else:
                     reply = client.post(f"{api}/sendMessage", json={
                         "chat_id": chat_id, "text": render(item), "parse_mode": "HTML",
