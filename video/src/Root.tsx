@@ -8,6 +8,8 @@ import { ProductScene } from "./scenes/Product";
 import { Outro } from "./scenes/Outro";
 import { LAUNCH_DURATION, ReelLaunch } from "./reels/ReelLaunch";
 import { RANGE_DURATION, ReelRange } from "./reels/ReelRange";
+import { GIFTS_DURATION, ReelGifts } from "./reels/ReelGifts";
+import { LAST_CHANCE_DURATION, ReelLastChance } from "./reels/ReelLastChance";
 
 const WIDTH = 1080;
 const HEIGHT = 1350;
@@ -27,6 +29,10 @@ export const RemotionRoot: React.FC = () => {
         <Composition id="ReelLaunch" component={ReelLaunch} durationInFrames={LAUNCH_DURATION}
           fps={30} width={1080} height={1920} />
         <Composition id="ReelRange" component={ReelRange} durationInFrames={RANGE_DURATION}
+          fps={30} width={1080} height={1920} />
+        <Composition id="ReelGifts" component={ReelGifts} durationInFrames={GIFTS_DURATION}
+          fps={30} width={1080} height={1920} />
+        <Composition id="ReelLastChance" component={ReelLastChance} durationInFrames={LAST_CHANCE_DURATION}
           fps={30} width={1080} height={1920} />
       </Folder>
       <Folder name="Scenes">

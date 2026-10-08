@@ -114,7 +114,11 @@ export const Photo: React.FC<{
 // pop as text arrives. Kept quiet so they sit under whatever trending track
 // is added in Instagram rather than fighting it.
 // --------------------------------------------------------------------------
-export type Cue = { at: number; sound: "whoosh" | "ding" | "pop"; volume: number };
+export type Cue = {
+  at: number;
+  sound: "whoosh" | "ding" | "pop" | "impact" | "riser" | "shutter" | "whip";
+  volume: number;
+};
 
 export const Sounds: React.FC<{ cues: Cue[] }> = ({ cues }) => (
   <>
