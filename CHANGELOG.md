@@ -6,10 +6,10 @@ A short, dated record of updates to this site. Newest first.
 
 - **The new pieces now look like Mayuri's own styled photos.** Thirteen
   photos that were already styled go up exactly as she made them. The other
-  21, plain phone shots, are placed into backdrops built from her styled
-  photos (sunlit linen, baby's breath, the "Good Things Take Time" book, the
-  scalloped dish), with the Mayuri'z heading and a handwritten line of their
-  own. Gallery cards are now 3:4, the shape of those photos, so nothing is
+  21 are her own phone photos, kept as they were taken but edited: framed to
+  3:4 around the piece, the background softened and warmed like a
+  portrait-mode shot so the piece stands out, and the Mayuri'z heading and a
+  handwritten line of their own added on soft fades. Gallery cards are now 3:4, the shape of those photos, so nothing is
   cropped; photos of any other shape show whole over a soft blur of
   themselves.
 - **34 new pieces, edited into one studio look.** The photos posted to the
