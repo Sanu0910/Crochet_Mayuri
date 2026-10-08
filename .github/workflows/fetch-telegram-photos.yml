@@ -1,0 +1,66 @@
+name: Collect Telegram photos
+
+# Takes the photos waiting in the Telegram group and saves them, untouched,
+# to the incoming/telegram branch — without publishing them. Used when a
+# batch should be edited before it goes on the site. Started by hand only.
+#
+# Photos are marked handled in Telegram only after they are pushed, so the
+# uploader won't later publish the unedited versions, and a failed run
+# leaves them waiting for the next try.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: telegram-uploader   # never at the same time as the uploader
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/website-mobile-redesign-xfmicu
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet httpx==0.28.1
+
+      - name: Fetch waiting photos
+        id: fetch
+        working-directory: bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          ALLOWED_USER_IDS: ${{ vars.ALLOWED_USER_IDS }}
+          OUT_DIR: ${{ runner.temp }}/incoming
+        run: python fetch_incoming.py
+
+      - name: Save them to the incoming/telegram branch
+        if: steps.fetch.outputs.count != '0'
+        env:
+          SRC: ${{ runner.temp }}/incoming
+        run: |
+          git config user.name "Mayuri'z bot"
+          git config user.email "bot@users.noreply.github.com"
+          git fetch origin incoming/telegram
+          git worktree add "$RUNNER_TEMP/branch" FETCH_HEAD
+          DEST="$RUNNER_TEMP/branch/$(date -u +%Y-%m-%d-%H%M)"
+          mkdir -p "$DEST"
+          cp "$SRC"/* "$DEST"/
+          cd "$RUNNER_TEMP/branch"
+          git add -A
+          git commit -m "Collect ${{ steps.fetch.outputs.count }} photo(s) from Telegram"
+          git push origin HEAD:incoming/telegram
+
+      - name: Mark them handled in Telegram
+        if: steps.fetch.outputs.count != '0'
+        working-directory: bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        run: python fetch_incoming.py --ack "${{ steps.fetch.outputs.last_update }}"
