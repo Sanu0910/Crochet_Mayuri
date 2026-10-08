@@ -594,9 +594,141 @@
     .field input,.field select,.field textarea{border-color:var(--hairline);}
     .card-badge,.zoom-hint{background:#fff; border:1px solid var(--hairline); backdrop-filter:none;}
   }
+
+  /* ---------- launch week (shown only until the offer ends; see LAUNCH_END) ---------- */
+  .launch-bar{
+    position:relative; z-index:61;
+    background:linear-gradient(90deg,#a9433a,var(--accent) 45%,#d8665a);
+    color:#fff; font-size:0.82rem; letter-spacing:-0.004em;
+    padding:9px 44px 9px 16px; text-align:center; line-height:1.35;
+  }
+  .launch-bar strong{font-weight:700;}
+  .launch-bar a{text-decoration:underline; text-underline-offset:2px; font-weight:600; white-space:nowrap;}
+  .launch-bar .lb-time{font-variant-numeric:tabular-nums; opacity:0.92; white-space:nowrap;}
+  .launch-bar-close{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    width:30px; height:30px; border:none; border-radius:50%;
+    background:rgba(255,255,255,0.16); color:#fff; font-size:0.9rem; cursor:pointer;
+  }
+  .launch-bar-close:hover{background:rgba(255,255,255,0.28);}
+
+  .launch{padding:clamp(28px,5vw,64px) max(16px,5vw) 0;}
+  .launch-card{
+    position:relative; overflow:hidden; max-width:1120px; margin:0 auto;
+    border-radius:var(--r-lg); color:#fff8f0;
+    background:
+      radial-gradient(70% 90% at 85% 20%, rgba(255,214,150,0.28), rgba(255,214,150,0) 60%),
+      linear-gradient(135deg,#d8665a 0%,var(--accent) 45%,#a9433a 100%);
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:clamp(20px,4vw,48px);
+    padding:clamp(26px,5vw,56px);
+    box-shadow:0 30px 70px -30px rgba(169,67,58,0.55);
+  }
+  .launch-card::after{
+    /* a stitched edge, because everything here is made with thread */
+    content:""; position:absolute; inset:12px; border-radius:calc(var(--r-lg) - 8px);
+    border:2px dashed rgba(255,248,240,0.35); pointer-events:none;
+  }
+  .launch-eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+    background:rgba(255,248,240,0.16); padding:7px 14px; border-radius:980px;
+  }
+  .launch-eyebrow .pulse{width:8px; height:8px; border-radius:50%; background:#7dff9a;
+    box-shadow:0 0 0 0 rgba(125,255,154,0.7); animation:launchPulse 1.6s infinite;}
+  @keyframes launchPulse{70%{box-shadow:0 0 0 9px rgba(125,255,154,0);} 100%{box-shadow:0 0 0 0 rgba(125,255,154,0);}}
+  .launch-title{margin:18px 0 10px; font-weight:700; letter-spacing:-0.035em; line-height:0.95;
+    font-size:clamp(2.3rem,6.2vw,4.2rem);}
+  .launch-title .big{display:block; font-size:clamp(4.6rem,15vw,8.6rem); letter-spacing:-0.06em; line-height:0.86;
+    text-shadow:0 14px 40px rgba(80,20,15,0.3);}
+  .launch-copy p{margin:0 0 20px; max-width:440px; font-size:1.02rem; line-height:1.5; opacity:0.95;}
+  .launch-code{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:22px;}
+  .launch-code code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-weight:800; font-size:1.25rem;
+    letter-spacing:0.12em; color:var(--ink); background:#fff; padding:10px 18px; border-radius:12px;
+    border:2px dashed #8f2f2a;
+  }
+  .launch-code button{
+    border:none; cursor:pointer; font-weight:600; font-size:0.9rem;
+    background:rgba(255,248,240,0.18); color:#fff; padding:11px 16px; border-radius:980px;
+    transition:background .2s ease, transform 100ms var(--ease-out);
+  }
+  .launch-code button:hover{background:rgba(255,248,240,0.3);}
+  .launch-code button:active{transform:scale(0.96);}
+  .countdown{display:flex; gap:10px; margin-bottom:26px;}
+  .countdown div{
+    min-width:64px; text-align:center; background:rgba(46,20,16,0.22); border-radius:14px; padding:10px 8px 8px;
+  }
+  .countdown b{display:block; font-size:1.7rem; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-0.03em; line-height:1;}
+  .countdown span{display:block; margin-top:5px; font-size:0.66rem; letter-spacing:0.14em; text-transform:uppercase; opacity:0.85;}
+  .launch-ctas{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn-cream{
+    display:inline-block; background:#fff8f0; color:#a9433a; font-weight:700; font-size:0.98rem;
+    padding:14px 24px; border-radius:980px; box-shadow:0 10px 24px rgba(80,20,15,0.25);
+    transition:transform 120ms var(--ease-out), box-shadow .2s ease;
+  }
+  .btn-cream:hover{transform:translateY(-1px); box-shadow:0 14px 30px rgba(80,20,15,0.3);}
+  .btn-line{
+    display:inline-block; color:#fff8f0; font-weight:600; font-size:0.98rem;
+    padding:13px 22px; border-radius:980px; border:1.5px solid rgba(255,248,240,0.6);
+  }
+  .btn-line:hover{background:rgba(255,248,240,0.12);}
+
+  .launch-art{position:relative; min-height:380px;}
+  .launch-art figure{
+    position:absolute; margin:0; width:52%; aspect-ratio:1/1; border-radius:18px; overflow:hidden;
+    background:#fff8f0; border:7px solid #fff8f0; box-shadow:0 22px 44px rgba(60,15,10,0.35);
+    transition:transform .5s var(--ease-spring);
+  }
+  .launch-art figure img{width:100%; height:100%; object-fit:cover;}
+  .launch-art figure:nth-child(1){left:2%; top:4%; transform:rotate(-7deg);}
+  .launch-art figure:nth-child(2){right:0; top:0; transform:rotate(6deg);}
+  .launch-art figure:nth-child(3){left:10%; bottom:0; transform:rotate(4deg);}
+  .launch-art figure:nth-child(4){right:4%; bottom:6%; transform:rotate(-5deg);}
+  .launch-art:hover figure{transform:rotate(0deg) scale(1.02);}
+  .launch-sticker{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(-8deg); z-index:3;
+    background:#e8b23d; color:var(--ink); font-weight:800; font-size:0.95rem; text-align:center; line-height:1.1;
+    width:116px; height:116px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 30px rgba(60,15,10,0.35); border:3px dashed rgba(46,31,27,0.35); padding:10px;
+  }
+  .launch-sticker b{display:block; font-size:1.9rem; letter-spacing:-0.04em;}
+
+  @media (max-width:820px){
+    .launch-card{grid-template-columns:1fr;}
+    .launch-art{min-height:0; aspect-ratio:1/0.82; order:-1;}
+  }
+  @media (max-width:420px){
+    .countdown div{min-width:0; flex:1;}
+    .launch-bar{font-size:0.76rem;}
+  }
+
+  /* the sale tag every card wears while the offer is on */
+  .card-sale{
+    position:absolute; top:12px; right:12px; z-index:2; display:none;
+    background:var(--accent); color:#fff; font-size:0.68rem; font-weight:700;
+    padding:5px 10px; border-radius:980px; letter-spacing:0.01em;
+    box-shadow:0 6px 14px rgba(200,86,74,0.35);
+  }
+  body.launch-on .card-sale{display:block;}
+  .card-badge--fresh{background:var(--ink); color:#fff;}
+  .order-promo{
+    display:none; margin:0 0 14px; padding:12px 16px; border-radius:14px;
+    background:var(--accent-soft); color:#8f2f2a; font-size:0.9rem; line-height:1.4;
+  }
+  body.launch-on .order-promo{display:block;}
+  @media (prefers-reduced-motion:reduce){
+    .launch-eyebrow .pulse{animation:none;}
+    .launch-art figure{transition:none;}
+  }
 </style>
 </head>
 <body>
+
+<div class="launch-bar" id="launchBar" hidden>
+  <strong>Launch week:</strong> 20% off everything with code <strong>LAUNCH20</strong>
+  <span class="lb-time" id="launchBarTime"></span> &middot; <a href="#launch">See the offer</a>
+  <button type="button" class="launch-bar-close" id="launchBarClose" aria-label="Hide the offer bar">&#10005;</button>
+</div>
 
 <header>
   <div class="header-bar">
@@ -637,6 +769,38 @@
       <a href="#gallery" class="link">Browse the collection</a>
       <a href="#order" class="link" id="customOrderLink">Request a custom piece</a>
       <a href="#film" class="link">Watch the film</a>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- LAUNCH WEEK (hidden automatically once the offer ends) ---------- -->
+<section class="launch" id="launch" hidden>
+  <div class="launch-card reveal">
+    <div class="launch-copy">
+      <span class="launch-eyebrow"><span class="pulse" aria-hidden="true"></span>Launch week &middot; till Sunday 11 October</span>
+      <h2 class="launch-title"><span class="big">20% off</span>everything.</h2>
+      <p>Our little shop is finally online. To celebrate, every handmade piece is 20% off this week &mdash; including 34 new ones, just in. Mention the code when you order.</p>
+      <div class="launch-code">
+        <code id="launchCode">LAUNCH20</code>
+        <button type="button" id="copyCode">Copy code</button>
+      </div>
+      <div class="countdown" id="countdown" role="timer" aria-label="Time left in the launch offer">
+        <div><b data-u="d">0</b><span>days</span></div>
+        <div><b data-u="h">00</b><span>hours</span></div>
+        <div><b data-u="m">00</b><span>mins</span></div>
+        <div><b data-u="s">00</b><span>secs</span></div>
+      </div>
+      <div class="launch-ctas">
+        <a href="#gallery" class="btn-cream" id="shopNew">Shop what&rsquo;s just in</a>
+        <a href="#order" class="btn-line" id="launchOrder">Order with the code</a>
+      </div>
+    </div>
+    <div class="launch-art" aria-hidden="true">
+      <figure><img src="images/yellow-white-daisy-claw-clip.jpg" alt="Yellow & White Daisy Claw Clip" loading="lazy"></figure>
+      <figure><img src="images/mixed-rose-bouquet.jpg" alt="Mixed Rose Bouquet" loading="lazy"></figure>
+      <figure><img src="images/pink-frost-scrunchie.jpg" alt="Pink Frost Scrunchie" loading="lazy"></figure>
+      <figure><img src="images/evil-eye-hanging-charm.jpg" alt="Evil Eye Hanging Charm" loading="lazy"></figure>
+      <div class="launch-sticker"><span><b>34</b>new pieces</span></div>
     </div>
   </div>
 </section>
@@ -816,6 +980,7 @@
       </div>
       <input type="hidden" id="orderType" name="order_type" value="Custom enquiry">
       <input type="hidden" id="productName" name="product" value="">
+      <p class="order-promo" id="orderPromo">Launch week: 20% off with code <b>LAUNCH20</b>. It&rsquo;s added to your message for you.</p>
       <button type="submit" class="submit-btn" id="submitBtn">Send my request</button>
       <div class="form-status" id="formStatus"></div>
       <p class="form-note">Your request goes straight to Mayuri — you'll hear back personally.</p>
@@ -849,6 +1014,244 @@
      Keep them exactly as they are — see bot/README.md. */
   const PRODUCTS = [
     /* PRODUCTS:START */
+    {
+      id: 'yellow-white-daisy-claw-clip',
+      name: 'Yellow & White Daisy Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'Yellow and white puff daisies on a gold claw clip. A bright, happy clip that turns a plain bun into something special.',
+      image: 'images/yellow-white-daisy-claw-clip.jpg'
+    },
+    {
+      id: 'red-white-bloom-claw-clip',
+      name: 'Red & White Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'Two puff flowers, one red and one white, on a claw clip that holds a twist of hair. A sweet gift that\'s ready to wear.',
+      image: 'images/red-white-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'lilac-white-bloom-claw-clip',
+      name: 'Lilac & White Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'A lilac bloom and a white one, each with a contrasting centre, on a clear claw clip. Soft colours for every day.',
+      image: 'images/lilac-white-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'maroon-cream-bloom-claw-clip',
+      name: 'Maroon & Cream Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'Deep maroon and cream puff flowers on a claw clip. Rich colours that go with everything you wear.',
+      image: 'images/maroon-cream-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'pink-sage-bloom-claw-clip',
+      name: 'Pink & Sage Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'Soft pink and sage puff flowers on a claw clip. Gentle colours for a gentle gift.',
+      image: 'images/pink-sage-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'lime-white-bloom-claw-clip',
+      name: 'Lime & White Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'A cluster of lime-green and white puff flowers on a green claw clip. Fresh and fun for sunny days.',
+      image: 'images/lime-white-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'green-bloom-claw-clip',
+      name: 'Green Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'One puffy green flower with a cream centre on a small claw clip. Fresh as a leaf, and just as light.',
+      image: 'images/green-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'periwinkle-bloom-claw-clip',
+      name: 'Periwinkle Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'A soft periwinkle puff flower with a sunny yellow centre, on a claw clip. Small enough to wear every day.',
+      image: 'images/periwinkle-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'purple-bloom-hair-clip',
+      name: 'Purple Bloom Hair Clip',
+      cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
+      desc: 'A purple puff flower with a blush-pink centre on a hair clip. Small, bright and easy to wear.',
+      image: 'images/purple-bloom-hair-clip.jpg'
+    },
+    {
+      id: 'red-cream-heart-clips',
+      name: 'Red & Cream Heart Clips',
+      cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
+      desc: 'Little crochet hearts in red and cream on hair clips. Sweet on their own, sweeter as a pair to share.',
+      image: 'images/red-cream-heart-clips.jpg'
+    },
+    {
+      id: 'pearl-heart-clips',
+      name: 'Pearl Heart Clips',
+      cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
+      desc: 'Red and white crochet hearts, each finished with a pearl. Sweet little clips for a ponytail or a plait.',
+      image: 'images/pearl-heart-clips.jpg'
+    },
+    {
+      id: 'pink-maroon-ruffle-scrunchie',
+      name: 'Pink & Maroon Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Bubblegum pink with a deep maroon edge. Soft on your hair, and pretty enough to wear on your wrist.',
+      image: 'images/pink-maroon-ruffle-scrunchie.jpg'
+    },
+    {
+      id: 'marigold-ruffle-scrunchie',
+      name: 'Marigold Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Bright marigold orange framed in leaf green. A festive pop for a plain ponytail, and a cheerful little gift.',
+      image: 'images/marigold-ruffle-scrunchie.jpg'
+    },
+    {
+      id: 'lavender-white-scrunchie',
+      name: 'Lavender & White Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Lavender ruffles with a soft white trim. Gentle on hair, and lovely tucked into a gift box.',
+      image: 'images/lavender-white-scrunchie.jpg'
+    },
+    {
+      id: 'peach-puff-scrunchie',
+      name: 'Peach Puff Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'A full, fluffy ruffle in soft peach. It holds without pulling, and looks just as sweet on a wrist.',
+      image: 'images/peach-puff-scrunchie.jpg'
+    },
+    {
+      id: 'pink-frost-scrunchie',
+      name: 'Pink Frost Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Rose pink with a crisp white edge, like frosting. The kind of scrunchie a best friend borrows and keeps.',
+      image: 'images/pink-frost-scrunchie.jpg'
+    },
+    {
+      id: 'sunshine-scrunchie',
+      name: 'Sunshine Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Sunny yellow ruffles with a white trim. Wear a little sunshine, or send some to someone who needs it.',
+      image: 'images/sunshine-scrunchie.jpg'
+    },
+    {
+      id: 'sky-blue-cream-scrunchie',
+      name: 'Sky Blue & Cream Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Bright sky blue with a cream ruffle edge. Fresh, light and easy to love.',
+      image: 'images/sky-blue-cream-scrunchie.jpg'
+    },
+    {
+      id: 'caramel-chocolate-scrunchie',
+      name: 'Caramel & Chocolate Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Warm caramel inside a chocolate-brown ruffle. Cosy colours for any season.',
+      image: 'images/caramel-chocolate-scrunchie.jpg'
+    },
+    {
+      id: 'royal-blue-ruffle-scrunchie',
+      name: 'Royal Blue Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Deep royal blue with a white ruffle edge. Bold colour, soft hold.',
+      image: 'images/royal-blue-ruffle-scrunchie.jpg'
+    },
+    {
+      id: 'cream-maroon-scrunchie',
+      name: 'Cream & Maroon Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Creamy ruffles edged in maroon. Classic, warm and lovely to give.',
+      image: 'images/cream-maroon-scrunchie.jpg'
+    },
+    {
+      id: 'red-white-ruffle-scrunchie',
+      name: 'Red & White Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Bright red with a snowy white inner ruffle. A cheerful pick for festive days and gifts.',
+      image: 'images/red-white-ruffle-scrunchie.jpg'
+    },
+    {
+      id: 'cherry-red-frill-scrunchie',
+      name: 'Cherry Red Frill Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Cherry red with a white frill, made to look full on the wrist and fuller in your hair.',
+      image: 'images/cherry-red-frill-scrunchie.jpg'
+    },
+    {
+      id: 'classic-red-bow',
+      name: 'Classic Red Bow',
+      cat: 'bows', tag: 'Bows', badge: 'Just in', fresh: true,
+      desc: 'A big, bold red bow, stitched to hold its shape all day. Clip it on for a party, or wrap it up for someone who loves red.',
+      image: 'images/classic-red-bow.jpg'
+    },
+    {
+      id: 'mixed-rose-bouquet',
+      name: 'Mixed Rose Bouquet',
+      cat: 'flowers', tag: 'Roses', badge: 'Bouquet', fresh: true,
+      desc: 'Red, pink, peach, cream and one big yellow rose, wrapped and tied. A bouquet that stays fresh for years.',
+      image: 'images/mixed-rose-bouquet.jpg'
+    },
+    {
+      id: 'red-rose-bloom',
+      name: 'Red Rose Bloom',
+      cat: 'flowers', tag: 'Roses', badge: 'Just in', fresh: true,
+      desc: 'One big, full red rose, shaped petal by petal. For the person you\'d give a real rose to.',
+      image: 'images/red-rose-bloom.jpg'
+    },
+    {
+      id: 'white-rose-stem',
+      name: 'White Rose Stem',
+      cat: 'flowers', tag: 'Roses', badge: 'Just in', fresh: true,
+      desc: 'A single white rose on a long green stem. Quiet and elegant, and it never wilts.',
+      image: 'images/white-rose-stem.jpg'
+    },
+    {
+      id: 'mini-rose-trio',
+      name: 'Mini Rose Trio',
+      cat: 'flowers', tag: 'Roses', badge: 'Set of 3', fresh: true,
+      desc: 'Three little roses in blush, cream and red, one with a pearl centre. Pin them, clip them, or tuck them into a gift.',
+      image: 'images/mini-rose-trio.jpg'
+    },
+    {
+      id: 'violet-puff-daisy',
+      name: 'Violet Puff Daisy',
+      cat: 'flowers', tag: 'Flowers', badge: 'Just in', fresh: true,
+      desc: 'A violet puff daisy with a soft yellow centre. Ask me to put it on a clip, a pin or a keychain.',
+      image: 'images/violet-puff-daisy.jpg'
+    },
+    {
+      id: 'evil-eye-hanging-charm',
+      name: 'Evil Eye Hanging Charm',
+      cat: 'keychains', tag: 'Charms', badge: 'Just in', fresh: true,
+      desc: 'A blue evil eye to hang in a car, on a bag or by the door. Made by hand and given with good wishes.',
+      image: 'images/evil-eye-hanging-charm.jpg'
+    },
+    {
+      id: 'red-rose-hanging-charm',
+      name: 'Red Rose Hanging Charm',
+      cat: 'keychains', tag: 'Charms', badge: 'Just in', fresh: true,
+      desc: 'A full red rose on a green loop, to hang on a bag, a mirror or your keys. A rose that stays in bloom.',
+      image: 'images/red-rose-hanging-charm.jpg'
+    },
+    {
+      id: 'sunflower-square-keychain',
+      name: 'Sunflower Square Keychain',
+      cat: 'keychains', tag: 'Keychains', badge: 'Just in', fresh: true,
+      desc: 'A sunflower stitched onto a little square, on a keyring with a ribbon. Bright and sturdy for keys or a bag.',
+      image: 'images/sunflower-square-keychain.jpg'
+    },
+    {
+      id: 'heart-keychain-pair',
+      name: 'Heart Keychain Pair',
+      cat: 'keychains', tag: 'Keychains', badge: 'Set of 2', fresh: true,
+      desc: 'One pink heart and one red, each on its own keyring. Keep one and give the other away.',
+      image: 'images/heart-keychain-pair.jpg'
+    },
+    {
+      id: 'pearl-flower-keychains',
+      name: 'Pearl Flower Keychains',
+      cat: 'keychains', tag: 'Keychains', badge: '4 colours', fresh: true,
+      desc: 'Little five-petal flowers in black, pink, white and red, each with a pearl. Pick your colour, or one for every friend.',
+      image: 'images/pearl-flower-keychains.jpg'
+    },
     {
       id: 'sunflower-clips-pair',
       name: 'Sunflower Hair Clip Pair',
@@ -1064,6 +1467,7 @@
 
   const CATEGORIES = [
     { key: 'all', label: 'All' },
+    { key: 'fresh', label: 'Just in' },
     { key: 'scrunchies', label: 'Scrunchies' },
     { key: 'bows', label: 'Bows' },
     { key: 'flowers', label: 'Flowers & Roses' },
@@ -1090,6 +1494,7 @@
     const card = document.createElement('div');
     card.className = 'card';
     card.dataset.cat = p.cat;
+    if (p.fresh) card.dataset.fresh = '1';
     // stagger by column (mod 4) rather than absolute index, so the cascade
     // reads as "row sweeps in left-to-right" instead of a growing wait for
     // cards further down the page
@@ -1097,7 +1502,8 @@
     card.innerHTML = `
       <button type="button" class="card-art" data-product="${p.id}" aria-label="View ${p.name} full size">
         <img src="${p.image}" alt="${p.name}" loading="lazy">
-        ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ``}
+        ${p.badge ? `<span class="card-badge${p.fresh ? ' card-badge--fresh' : ''}">${p.badge}</span>` : ``}
+        <span class="card-sale">&minus;20%</span>
         <span class="zoom-hint">🔍 View</span>
       </button>
       <div class="card-body">
@@ -1147,7 +1553,8 @@
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       cards.forEach(card => {
-        const show = filter === 'all' || card.dataset.cat === filter;
+        const show = filter === 'all' || card.dataset.cat === filter
+          || (filter === 'fresh' && card.dataset.fresh === '1');
         card.style.display = show ? '' : 'none';
       });
     });
@@ -1346,7 +1753,8 @@
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';
-    detailsField.value = `Hi Mayuri! I'd love to order the "${product.name}". Could you share colour options, sizing and price?`;
+    detailsField.value = `Hi Mayuri! I'd love to order the "${product.name}". Could you share colour options, sizing and price?`
+      + (launchActive() ? ` I'd like to use the launch code LAUNCH20.` : ``);
     orderTypeField.value = 'Order — existing item';
     productNameField.value = product.name;
     orderContextText.textContent = `Ordering: ${product.name}`;
@@ -1384,6 +1792,74 @@
   });
 
   // ---------- floating mobile CTA (hides once the order form is on screen) ----------
+
+  // ---------- launch week ----------
+  // Everything for the offer is hidden in the HTML and only revealed here,
+  // before the deadline — so the page tidies itself up on Monday with no
+  // one having to remember to take the banner down.
+  const LAUNCH_END = new Date('2026-10-11T23:59:59+05:30');
+  function launchActive(){ return Date.now() < LAUNCH_END.getTime(); }
+  (function launchWeek(){
+    if (!launchActive()) return;
+    document.body.classList.add('launch-on');
+    const section = document.getElementById('launch');
+    const bar = document.getElementById('launchBar');
+    section.hidden = false;
+    let barDismissed = false;
+    try { barDismissed = sessionStorage.getItem('launchBarClosed') === '1'; } catch (e) {}
+    bar.hidden = barDismissed;
+    document.getElementById('launchBarClose').addEventListener('click', () => {
+      bar.hidden = true;
+      try { sessionStorage.setItem('launchBarClosed', '1'); } catch (e) {}
+    });
+
+    const units = {};
+    document.querySelectorAll('#countdown [data-u]').forEach(el => { units[el.dataset.u] = el; });
+    const barTime = document.getElementById('launchBarTime');
+    const pad = n => String(n).padStart(2, '0');
+    function tick(){
+      const left = Math.max(0, LAUNCH_END.getTime() - Date.now());
+      if (left === 0) {
+        document.body.classList.remove('launch-on');
+        section.hidden = true; bar.hidden = true;
+        return;
+      }
+      const d = Math.floor(left / 864e5), h = Math.floor(left / 36e5) % 24,
+            m = Math.floor(left / 6e4) % 60, s = Math.floor(left / 1e3) % 60;
+      units.d.textContent = d; units.h.textContent = pad(h);
+      units.m.textContent = pad(m); units.s.textContent = pad(s);
+      barTime.textContent = d > 0 ? `· ends in ${d}d ${h}h` : `· ends in ${h}h ${pad(m)}m`;
+      setTimeout(tick, 1000 - (Date.now() % 1000));
+    }
+    tick();
+
+    const copyBtn = document.getElementById('copyCode');
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('LAUNCH20');
+      } catch (e) {
+        const r = document.createRange();
+        r.selectNodeContents(document.getElementById('launchCode'));
+        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        try { document.execCommand('copy'); } catch (e2) {}
+      }
+      copyBtn.textContent = 'Copied \u2713';
+      setTimeout(() => { copyBtn.textContent = 'Copy code'; }, 2200);
+    });
+
+    // "Shop what's just in" opens the gallery on the new pieces
+    document.getElementById('shopNew').addEventListener('click', () => {
+      const fresh = document.querySelector('.filter-btn[data-filter="fresh"]');
+      if (fresh) fresh.click();
+    });
+    document.getElementById('launchOrder').addEventListener('click', () => {
+      if (!detailsField.value.includes('LAUNCH20')) {
+        detailsField.value = (detailsField.value ? detailsField.value + ' ' : '')
+          + "I'd like to use the launch code LAUNCH20.";
+      }
+    });
+  })();
+
   const floatCta = document.getElementById('floatCta');
   const orderSection = document.getElementById('order');
   const ctaObserver = new IntersectionObserver(entries => {

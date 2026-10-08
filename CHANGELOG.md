@@ -2,6 +2,20 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-10-08
+
+- **34 new pieces, edited into one studio look.** The photos posted to the
+  Telegram group today were cut out, colour-corrected and set on the same warm
+  cream backdrop with a soft shadow, so the new pieces sit together like a
+  catalogue instead of 34 different tabletops. They open the gallery, marked
+  "Just in", with their own filter. Nine photos were left out because they
+  repeat pieces already on the site.
+- **The launch-week offer is on the site.** A bar along the top, and a section
+  under the opening with the code (one tap to copy), a live countdown, and a
+  way straight to the new pieces. Every card wears a −20% tag, and an order
+  started from the site mentions LAUNCH20 for you. All of it hides itself at
+  midnight on Sunday 11 October (India time), so nothing needs taking down.
+
 ## 2026-10-07
 
 - **The site now lives at mayurisyarntales.online.** Added the `CNAME` file
