@@ -41,7 +41,7 @@ const CROPS = {
   redRose: { file: "red-rose-stem.jpg", focus: "52% 42%", zoom: 1.4 },
   tricolour: { file: "tricolour-scrunchie.jpg", focus: "50% 74%", zoom: 1.6 },
   sunKeychain: { file: "sunflower-keychain.jpg", focus: "47% 58%", zoom: 1.7 },
-  hearts: { file: "mini-hearts-set.jpg", focus: "32% 55%", zoom: 1.5 },
+  hearts: { file: "mini-hearts-set.jpg", focus: "28% 58%", zoom: 1.75 },
   blueBlossom: { file: "blue-blossom-scrunchie.jpg", focus: "56% 56%", zoom: 1.5 },
   rubyScrunchie: { file: "ruby-rose-scrunchie.jpg", focus: "50% 42%", zoom: 1.3 },
 } satisfies Record<string, Crop>;
@@ -139,7 +139,7 @@ const Mosaic: React.FC = () => {
       <div style={{ position: "absolute", left: 540 - 150, top: 250 + 525 + 10 - 150 }}>
         <RoundBadge start={2 * BEAT} size={300} bg={COLORS.accent} color="#fff8f0"
           text="100% HANDMADE • MADE TO ORDER • "
-          center={<div style={{ fontFamily: SERIF, fontStyle: "italic", fontWeight: 700, fontSize: 64,
+          center={<div style={{ fontFamily: SERIF, fontStyle: "italic", fontWeight: 700, fontSize: 50,
             color: "#fff8f0", lineHeight: 1 }}>by hand</div>} />
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 1345, textAlign: "center", fontFamily: SERIF,
@@ -226,9 +226,9 @@ const Stamp: React.FC = () => {
       <div style={{ position: "absolute", inset: 0, translate: shake(frame, [STAMP_HIT], 24) }}>
         <div style={{ position: "absolute", left: 0, right: 0, top: 470, textAlign: "center", opacity: frame >= STAMP_HIT - 6 ? 1 : 0,
           scale: s, rotate: "-6deg" }}>
-          <div style={{ display: "inline-block", border: "14px solid #fff8f0", borderRadius: 40, padding: "10px 60px 30px",
+          <div style={{ display: "inline-block", border: "14px solid #fff8f0", borderRadius: 40, padding: "16px 80px 34px",
             color: "#fff8f0", fontFamily: DISPLAY, lineHeight: 0.95, boxShadow: "0 0 0 8px rgba(255,248,240,.25)" }}>
-            <div style={{ fontSize: 330 }}>20%</div>
+            <div style={{ fontSize: 300 }}>20%</div>
             <div style={{ fontSize: 150, letterSpacing: "0.04em" }}>OFF</div>
           </div>
         </div>
