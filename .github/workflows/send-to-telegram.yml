@@ -15,7 +15,7 @@ on:
       chat_id:
         description: Telegram chat to send to
         required: true
-        default: "-5477226308"
+        default: "-1003843804840"
 
 permissions:
   contents: read
