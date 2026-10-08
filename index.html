@@ -339,17 +339,25 @@
   .card.in{opacity:1; transform:translateY(0);}
 
   .card-art{
-    position:relative; aspect-ratio:1/1; overflow:hidden; cursor:pointer;
+    position:relative; aspect-ratio:3/4; overflow:hidden; cursor:pointer;
     display:block; width:100%; border:none; padding:0; margin:0;
     background:var(--surface-alt); -webkit-appearance:none; appearance:none;
     transition:transform 100ms var(--ease-out);
   }
   .card-art:focus-visible{outline:3px solid var(--accent); outline-offset:-3px;}
   .card-art img{
-    width:100%; height:100%; object-fit:cover;
+    position:relative; z-index:1;
+    width:100%; height:100%; object-fit:contain;
     opacity:0; transition:opacity .5s ease, transform .7s var(--ease-out);
   }
   .card-art img.loaded{opacity:1;}
+  /* The styled photos are 3:4 and fill the card exactly. Anything another
+     shape is shown whole, over a soft blur of itself, rather than trimmed. */
+  .card-art img.card-fill{
+    position:absolute; inset:0; z-index:0; object-fit:cover;
+    filter:blur(22px) saturate(1.1); transform:scale(1.15); opacity:0.75;
+  }
+  .card:hover .card-art img.card-fill{transform:scale(1.15);}
   .card:hover .card-art img{transform:scale(1.04);}
   .card-art:active{transform:scale(0.985);}
 
@@ -1501,6 +1509,7 @@
     card.style.transitionDelay = ((i % 4) * 0.08) + 's';
     card.innerHTML = `
       <button type="button" class="card-art" data-product="${p.id}" aria-label="View ${p.name} full size">
+        <img class="card-fill" src="${p.image}" alt="" aria-hidden="true" loading="lazy">
         <img src="${p.image}" alt="${p.name}" loading="lazy">
         ${p.badge ? `<span class="card-badge${p.fresh ? ' card-badge--fresh' : ''}">${p.badge}</span>` : ``}
         <span class="card-sale">&minus;20%</span>

@@ -4,6 +4,14 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-10-08
 
+- **The new pieces now look like Mayuri's own styled photos.** Thirteen
+  photos that were already styled go up exactly as she made them. The other
+  21, plain phone shots, are placed into backdrops built from her styled
+  photos (sunlit linen, baby's breath, the "Good Things Take Time" book, the
+  scalloped dish), with the Mayuri'z heading and a handwritten line of their
+  own. Gallery cards are now 3:4, the shape of those photos, so nothing is
+  cropped; photos of any other shape show whole over a soft blur of
+  themselves.
 - **34 new pieces, edited into one studio look.** The photos posted to the
   Telegram group today were cut out, colour-corrected and set on the same warm
   cream backdrop with a soft shadow, so the new pieces sit together like a
