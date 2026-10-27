@@ -4,10 +4,12 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-10-27
 
-- **New: Black & Red Ruffle Scrunchie.** Posted to the Telegram group today
-  and put up exactly as Mayuri styled it. It sits with the other new
-  scrunchies under "Just in". The film doesn't include it until it's
-  re-rendered (`/film` in Telegram).
+- **Three new pieces, put up exactly as Mayuri styled them:** the **Black &
+  Red Ruffle Scrunchie** (posted to the Telegram group), the **Azure & White
+  Ruffle Scrunchie** and a **Pink Rose Bun Pin**. They sit under "Just in".
+  A third photo sent with them was the Mixed Rose Bouquet, already on the
+  site, so it was left out. The film doesn't include the new pieces until
+  it's re-rendered (`/film` in Telegram).
 
 ## 2026-10-08
 
