@@ -2,6 +2,13 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-10-27
+
+- **New: Black & Red Ruffle Scrunchie.** Posted to the Telegram group today
+  and put up exactly as Mayuri styled it. It sits with the other new
+  scrunchies under "Just in". The film doesn't include it until it's
+  re-rendered (`/film` in Telegram).
+
 ## 2026-10-08
 
 - **The new pieces now look like Mayuri's own styled photos.** Thirteen
