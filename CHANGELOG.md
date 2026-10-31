@@ -2,6 +2,31 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-10-31
+
+- **Three new blue pieces, put up exactly as Mayuri styled them:** a **Blue &
+  White Bloom Claw Clip**, a pair of **Blue Puff Flower Snap Clips** and a
+  **Royal Blue Petal Flower**. Each is a single photo under "Just in". Three
+  other photos sent with them (the Black & Red and Azure & White Ruffle
+  Scrunchies and the Pink Rose Bun Pin) are already on the site, so they
+  were left out. The film doesn't include the new pieces until it's
+  re-rendered (`/film` in Telegram).
+- **New pieces now sit at the top of the page.** A "Just in" row right under
+  the opening banner shows the six newest pieces, whole and uncropped. It
+  swipes sideways on phones, and tapping a photo opens it full size. "See
+  all new pieces" jumps to the gallery with the "Just in" filter on. The row
+  fills itself from the newest entries, so later additions show up there too.
+  The six pieces sent today also lead the gallery.
+
+## 2026-10-27
+
+- **Three new pieces, put up exactly as Mayuri styled them:** the **Black &
+  Red Ruffle Scrunchie** (posted to the Telegram group), the **Azure & White
+  Ruffle Scrunchie** and a **Pink Rose Bun Pin**. They sit under "Just in".
+  A third photo sent with them was the Mixed Rose Bouquet, already on the
+  site, so it was left out. The film doesn't include the new pieces until
+  it's re-rendered (`/film` in Telegram).
+
 ## 2026-10-08
 
 - **The new pieces now look like Mayuri's own styled photos.** Thirteen

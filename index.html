@@ -252,6 +252,44 @@
     .promo-item:nth-child(even){border-left:1px solid var(--hairline);}
   }
 
+  /* ---------- JUST IN ---------- */
+  /* The newest pieces, straight under the hero: a row that swipes sideways
+     on phones and sits as one line of cards on wide screens. */
+  .justin{padding:8px 0 56px; max-width:1180px; margin:0 auto;}
+  .justin-head{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    padding:0 clamp(16px,4vw,32px); margin-bottom:18px;
+  }
+  .justin-title{font-size:clamp(1.6rem,4vw,2.2rem); font-weight:600; letter-spacing:-0.02em; margin:4px 0 0; color:var(--ink);}
+  .justin-head .link{white-space:nowrap; font-size:.95rem;}
+  .justin-row{
+    display:grid; grid-auto-flow:column; grid-auto-columns:minmax(150px,1fr);
+    gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; align-items:start;
+    padding:0 clamp(16px,4vw,32px) 6px; scroll-padding:0 clamp(16px,4vw,32px);
+    scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  }
+  .justin-row::-webkit-scrollbar{display:none;}
+  .justin-item{
+    display:block; scroll-snap-align:start; border:0; padding:0; background:none; font:inherit;
+    color:inherit; text-align:left; cursor:pointer;
+  }
+  .justin-item figure{
+    margin:0; aspect-ratio:3/4; border-radius:18px; overflow:hidden;
+    background:var(--surface-alt); position:relative;
+  }
+  /* the photo shows whole (never cropped) over a soft blur of itself */
+  .justin-item img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; transition:transform .5s var(--ease-out);}
+  .justin-item img.justin-fill{object-fit:cover; filter:blur(18px) saturate(1.1); transform:scale(1.15); opacity:.8;}
+  .justin-item:hover img.justin-fill{transform:scale(1.15);}
+  .justin-item:hover img{transform:scale(1.04);}
+  .justin-item .card-badge{position:absolute; top:10px; left:10px;}
+  .justin-name{display:block; margin-top:10px; font-size:.95rem; font-weight:600; line-height:1.25; color:var(--ink);}
+  .justin-tag{display:block; font-size:.8rem; color:var(--ink-soft); margin-top:2px;}
+  @media (max-width:760px){
+    .justin-row{grid-auto-columns:42%;}
+    .justin-head .link{font-size:.88rem;}
+  }
+
   /* ---------- FEATURE PANELS ---------- */
   /* Apple's hero-product blocks: one product, big image, short line, link */
   .feature{
@@ -781,6 +819,18 @@
   </div>
 </section>
 
+<!-- ---------- JUST IN: the newest pieces, filled from PRODUCTS ---------- -->
+<section class="justin" id="just-in" aria-labelledby="justInTitle">
+  <div class="justin-head">
+    <div>
+      <span class="eyebrow">Just in</span>
+      <h2 class="justin-title" id="justInTitle">New this week.</h2>
+    </div>
+    <a href="#gallery" class="link" id="justInAll">See all new pieces</a>
+  </div>
+  <div class="justin-row" id="justInRow"></div>
+</section>
+
 <!-- ---------- LAUNCH WEEK (hidden automatically once the offer ends) ---------- -->
 <section class="launch" id="launch" hidden>
   <div class="launch-card reveal">
@@ -1022,6 +1072,48 @@
      Keep them exactly as they are — see bot/README.md. */
   const PRODUCTS = [
     /* PRODUCTS:START */
+    {
+      id: 'blue-white-bloom-claw-clip',
+      name: 'Blue & White Bloom Claw Clip',
+      cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
+      desc: 'A royal blue puff flower and a white one, each with the other colour at its heart, on a soft white claw clip. Fresh and pretty for every day.',
+      image: 'images/blue-white-bloom-claw-clip.jpg'
+    },
+    {
+      id: 'blue-puff-flower-snap-clips',
+      name: 'Blue Puff Flower Snap Clips',
+      cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
+      desc: 'A pair of royal blue puff flowers with fluffy white centres on black snap clips. Easy to slide in, and sweet as a matching pair.',
+      image: 'images/blue-puff-flower-snap-clips.jpg'
+    },
+    {
+      id: 'royal-blue-petal-flower',
+      name: 'Royal Blue Petal Flower',
+      cat: 'flowers', tag: 'Flowers', badge: 'Just in', fresh: true,
+      desc: 'A flat crochet flower with a cream centre and wavy royal blue petals. Ask me to put it on a clip, a brooch or a keychain.',
+      image: 'images/royal-blue-petal-flower.jpg'
+    },
+    {
+      id: 'pink-rose-bun-pin',
+      name: 'Pink Rose Bun Pin',
+      cat: 'clips', tag: 'Hair Pins', badge: 'Just in', fresh: true,
+      desc: 'A pink scalloped ring with a crochet rose, and a white stick that slides through to hold your bun. Light, comfy and pretty from behind.',
+      image: 'images/pink-rose-bun-pin.jpg'
+    },
+    {
+      id: 'azure-white-ruffle-scrunchie',
+      name: 'Azure & White Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Bright azure blue with big, wavy white ruffles. Fresh as a summer sky, and soft enough to wear all day.',
+      image: 'images/azure-white-ruffle-scrunchie.jpg'
+    },
+    {
+      id: 'black-red-ruffle-scrunchie',
+      name: 'Black & Red Ruffle Scrunchie',
+      cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
+      desc: 'Black ruffles with a bright red edge. Soft yarn that holds every kind of hair gently, and looks just as good on your wrist.',
+      image: 'images/black-red-ruffle-scrunchie.jpg'
+    },
     {
       id: 'yellow-white-daisy-claw-clip',
       name: 'Yellow & White Daisy Claw Clip',
@@ -1687,8 +1779,8 @@
     lbNext.style.display = many ? 'flex' : 'none';
   }
 
-  function openLightbox(productId, triggerEl){
-    browseList = visibleProductIds();
+  function openLightbox(productId, triggerEl, list){
+    browseList = list || visibleProductIds();
     activeIndex = Math.max(0, browseList.indexOf(productId));
     lightboxTrigger = triggerEl || document.activeElement;
     renderLightbox();
@@ -1716,6 +1808,36 @@
     const art = e.target.closest('.card-art');
     if (art) { openLightbox(art.dataset.product, art); return; }
   });
+  // ---------- just in: the newest pieces, at the top of the page ----------
+  /* New pieces are added at the top of PRODUCTS, so the first six are the
+     newest. Tapping one opens it full size and swipes through the six. */
+  const JUST_IN = PRODUCTS.filter(p => p.fresh).slice(0, 6);
+  const justInRow = document.getElementById('justInRow');
+  JUST_IN.forEach(p => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'justin-item';
+    b.dataset.product = p.id;
+    b.setAttribute('aria-label', `View ${p.name} full size`);
+    b.innerHTML = `
+      <figure>
+        <img class="justin-fill" src="${p.image}" alt="" aria-hidden="true" loading="lazy">
+        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        <span class="card-badge card-badge--fresh">New</span>
+      </figure>
+      <span class="justin-name">${p.name}</span>
+      <span class="justin-tag">${p.tag}</span>`;
+    justInRow.appendChild(b);
+  });
+  justInRow.addEventListener('click', (e) => {
+    const item = e.target.closest('.justin-item');
+    if (item) openLightbox(item.dataset.product, item, JUST_IN.map(p => p.id));
+  });
+  document.getElementById('justInAll').addEventListener('click', () => {
+    const fresh = document.querySelector('.filter-btn[data-filter="fresh"]');
+    if (fresh) fresh.click();
+  });
+
   lbClose.addEventListener('click', closeLightbox);
   lbNext.addEventListener('click', nextPhoto);
   lbPrev.addEventListener('click', prevPhoto);
