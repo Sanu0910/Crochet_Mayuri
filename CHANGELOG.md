@@ -4,6 +4,8 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-10-31
 
+- **Removed the Black & Red Ruffle Scrunchie** from the site.
+  The "Just in" row now shows the next newest piece in its place.
 - **Three new blue pieces, put up exactly as Mayuri styled them:** a **Blue &
   White Bloom Claw Clip**, a pair of **Blue Puff Flower Snap Clips** and a
   **Royal Blue Petal Flower**. Each is a single photo under "Just in". Three

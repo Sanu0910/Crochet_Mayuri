@@ -50,7 +50,6 @@ export const PRODUCTS: readonly Product[] = [
   { image: "royal-blue-petal-flower.jpg", name: "Royal Blue Petal Flower", tag: "Flowers" },
   { image: "pink-rose-bun-pin.jpg", name: "Pink Rose Bun Pin", tag: "Hair Pins" },
   { image: "azure-white-ruffle-scrunchie.jpg", name: "Azure & White Ruffle Scrunchie", tag: "Scrunchies" },
-  { image: "black-red-ruffle-scrunchie.jpg", name: "Black & Red Ruffle Scrunchie", tag: "Scrunchies" },
   { image: "yellow-white-daisy-claw-clip.jpg", name: "Yellow & White Daisy Claw Clip", tag: "Claw Clips" },
   { image: "red-white-bloom-claw-clip.jpg", name: "Red & White Bloom Claw Clip", tag: "Claw Clips" },
   { image: "lilac-white-bloom-claw-clip.jpg", name: "Lilac & White Bloom Claw Clip", tag: "Claw Clips" },
