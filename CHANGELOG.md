@@ -11,6 +11,12 @@ A short, dated record of updates to this site. Newest first.
   Scrunchies and the Pink Rose Bun Pin) are already on the site, so they
   were left out. The film doesn't include the new pieces until it's
   re-rendered (`/film` in Telegram).
+- **New pieces now sit at the top of the page.** A "Just in" row right under
+  the opening banner shows the six newest pieces, whole and uncropped. It
+  swipes sideways on phones, and tapping a photo opens it full size. "See
+  all new pieces" jumps to the gallery with the "Just in" filter on. The row
+  fills itself from the newest entries, so later additions show up there too.
+  The six pieces sent today also lead the gallery.
 
 ## 2026-10-27
 
