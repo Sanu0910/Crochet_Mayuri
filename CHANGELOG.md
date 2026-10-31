@@ -2,6 +2,16 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-10-31
+
+- **Three new blue pieces, put up exactly as Mayuri styled them:** a **Blue &
+  White Bloom Claw Clip**, a pair of **Blue Puff Flower Snap Clips** and a
+  **Royal Blue Petal Flower**. Each is a single photo under "Just in". Three
+  other photos sent with them (the Black & Red and Azure & White Ruffle
+  Scrunchies and the Pink Rose Bun Pin) are already on the site, so they
+  were left out. The film doesn't include the new pieces until it's
+  re-rendered (`/film` in Telegram).
+
 ## 2026-10-27
 
 - **Three new pieces, put up exactly as Mayuri styled them:** the **Black &

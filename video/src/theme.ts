@@ -45,6 +45,9 @@ export type Product = {
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
+  { image: "blue-white-bloom-claw-clip.jpg", name: "Blue & White Bloom Claw Clip", tag: "Claw Clips" },
+  { image: "blue-puff-flower-snap-clips.jpg", name: "Blue Puff Flower Snap Clips", tag: "Hair Clips" },
+  { image: "royal-blue-petal-flower.jpg", name: "Royal Blue Petal Flower", tag: "Flowers" },
   { image: "pink-rose-bun-pin.jpg", name: "Pink Rose Bun Pin", tag: "Hair Pins" },
   { image: "yellow-white-daisy-claw-clip.jpg", name: "Yellow & White Daisy Claw Clip", tag: "Claw Clips" },
   { image: "red-white-bloom-claw-clip.jpg", name: "Red & White Bloom Claw Clip", tag: "Claw Clips" },
