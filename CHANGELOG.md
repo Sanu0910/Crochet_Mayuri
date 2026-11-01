@@ -2,6 +2,12 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-01
+
+- **Two pieces at the top of "Just in", with new styled photos:** the **Evil
+  Eye Hanging Charm** (its old photo is replaced by the new one) and the
+  **Black & Red Ruffle Scrunchie**, back on the site with a fresh photo.
+
 ## 2026-10-31
 
 - **Removed the Black & Red Ruffle Scrunchie** from the site.

@@ -45,6 +45,8 @@ export type Product = {
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
+  { image: "evil-eye-hanging-charm-styled.jpg", name: "Evil Eye Hanging Charm", tag: "Charms" },
+  { image: "black-red-ruffle-scrunchie.jpg", name: "Black & Red Ruffle Scrunchie", tag: "Scrunchies" },
   { image: "blue-white-bloom-claw-clip.jpg", name: "Blue & White Bloom Claw Clip", tag: "Claw Clips" },
   { image: "blue-puff-flower-snap-clips.jpg", name: "Blue Puff Flower Snap Clips", tag: "Hair Clips" },
   { image: "royal-blue-petal-flower.jpg", name: "Royal Blue Petal Flower", tag: "Flowers" },
@@ -79,7 +81,6 @@ export const PRODUCTS: readonly Product[] = [
   { image: "white-rose-stem.jpg", name: "White Rose Stem", tag: "Roses" },
   { image: "mini-rose-trio.jpg", name: "Mini Rose Trio", tag: "Roses" },
   { image: "violet-puff-daisy.jpg", name: "Violet Puff Daisy", tag: "Flowers" },
-  { image: "evil-eye-hanging-charm.jpg", name: "Evil Eye Hanging Charm", tag: "Charms" },
   { image: "red-rose-hanging-charm.jpg", name: "Red Rose Hanging Charm", tag: "Charms" },
   { image: "sunflower-square-keychain.jpg", name: "Sunflower Square Keychain", tag: "Keychains" },
   { image: "heart-keychain-pair.jpg", name: "Heart Keychain Pair", tag: "Keychains" },
