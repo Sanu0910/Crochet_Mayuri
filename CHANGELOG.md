@@ -4,6 +4,13 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-05
 
+- **Every product has a code**, like `MZ-SCR-007` (Mayuri'z · Scrunchies ·
+  7th). It shows on each card next to the type, in the full-size view, and in
+  order requests, so an order always names the exact piece. Codes never
+  change or get reused; the Telegram bot gives each new upload the next
+  code in its group. `bot/price_list.py` builds the price list workbook
+  from the site (kept out of the repo, since it holds costs).
+- **The order form lists Coasters and Bangles.**
 - **Eight new pieces at the top of "Just in"**, each a single photo exactly
   as Mayuri styled it: Maroon & Yellow Bobble Coaster, Daisy Chain Hair Band,
   Sunflower Hair Band, Sunflower Coaster, Green & White Scalloped Bangles,

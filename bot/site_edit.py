@@ -9,7 +9,7 @@ row at the top of the page.
 import re
 from pathlib import Path
 
-from catalogue import BY_KEY
+from catalogue import BY_KEY, SKU_PREFIX, group_code
 
 START = "PRODUCTS:START"
 END = "PRODUCTS:END"
@@ -51,6 +51,14 @@ def product_ids(index_html: str) -> list[str]:
     return re.findall(r"^\s*id: '([^']+)'", index_html, re.MULTILINE)
 
 
+def next_sku(index_html: str, tag: str) -> str:
+    """The next unused code for a product type, e.g. MZ-SCR-022."""
+    code = group_code(tag)
+    used = [int(n) for n in re.findall(
+        r"sku: '%s-%s-(\d+)'" % (SKU_PREFIX, code), index_html)]
+    return f"{SKU_PREFIX}-{code}-{max(used, default=0) + 1:03d}"
+
+
 def insert_into_index(
     path: Path, *, product_id: str, name: str, cat: str, desc: str, image: str
 ) -> None:
@@ -59,9 +67,11 @@ def insert_into_index(
         raise SiteEditError(f"a product with the id '{product_id}' already exists")
 
     category = BY_KEY[cat]
+    sku = next_sku(text, category.tag)
     entry = (
         f"    {{\n"
         f"      id: '{_js_string(product_id)}',\n"
+        f"      sku: '{sku}',\n"
         f"      name: '{_js_string(name)}',\n"
         f"      cat: '{cat}', tag: '{_js_string(category.tag)}', badge: 'Just in', fresh: true,\n"
         f"      desc: '{_js_string(desc)}',\n"

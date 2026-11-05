@@ -28,6 +28,10 @@ Piece", with no hashtag the category is guessed from the name (or left as
 "New"), and with no description the bot writes a plain one. Fix any of it
 afterwards with `/rename` and `/caption`.
 
+Each upload also gets the next product code for its type, e.g. `MZ-SCR-022`
+for a scrunchie. Codes never change and are never reused; see `GROUP_CODES`
+in `catalogue.py`.
+
 ### Commands
 
 | | |

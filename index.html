@@ -428,6 +428,7 @@
     line-height:1.45; letter-spacing:-0.008em;
   }
   .card-foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .card-sku{margin-left:8px; padding-left:8px; border-left:1px solid var(--hairline); font-variant-numeric:tabular-nums; letter-spacing:.02em;}
   .card-note{font-size:0.76rem; color:var(--ink-faint); white-space:nowrap;}
   .card-order-btn{
     background:none; border:none; cursor:pointer; padding:0;
@@ -1025,6 +1026,8 @@
             <option>Bow</option>
             <option>Flower / Rose</option>
             <option>Keychain</option>
+            <option>Coaster</option>
+            <option>Bangle</option>
             <option>Bag / Pouch</option>
             <option>Garland / Hanging</option>
             <option>Heart appliqué</option>
@@ -1074,6 +1077,7 @@
     /* PRODUCTS:START */
     {
       id: 'maroon-yellow-bobble-coaster',
+      sku: 'MZ-CST-003',
       name: 'Maroon & Yellow Bobble Coaster',
       cat: 'coasters', tag: 'Coasters', badge: 'Just in', fresh: true,
       desc: 'A deep maroon coaster ringed with golden bobbles. Small piece, big charm, and a cosy touch for your tea table.',
@@ -1081,6 +1085,7 @@
     },
     {
       id: 'daisy-chain-hair-band',
+      sku: 'MZ-HBD-002',
       name: 'Daisy Chain Hair Band',
       cat: 'clips', tag: 'Hair Bands', badge: 'Just in', fresh: true,
       desc: 'A chain of white daisies with sunny centres, on black ties with little bobble ends. Tie it round a bun, a plait or your wrist.',
@@ -1088,6 +1093,7 @@
     },
     {
       id: 'sunflower-hair-band',
+      sku: 'MZ-HBD-001',
       name: 'Sunflower Hair Band',
       cat: 'clips', tag: 'Hair Bands', badge: 'Just in', fresh: true,
       desc: 'Six bright sunflowers on a green crochet tie with yellow bobble ends. A touch of sunshine for your hair.',
@@ -1095,6 +1101,7 @@
     },
     {
       id: 'sunflower-coaster',
+      sku: 'MZ-CST-002',
       name: 'Sunflower Coaster',
       cat: 'coasters', tag: 'Coasters', badge: 'Just in', fresh: true,
       desc: 'A big sunflower coaster with a chocolate-brown centre and pointed golden petals. Makes every cup of chai feel a little sunnier.',
@@ -1102,6 +1109,7 @@
     },
     {
       id: 'green-white-scalloped-bangles',
+      sku: 'MZ-BNG-001',
       name: 'Green & White Scalloped Bangles',
       cat: 'jewellery', tag: 'Bangles', badge: 'Just in', fresh: true,
       desc: 'A pair of bangles wrapped in leaf-green crochet with a soft white scalloped edge. Light, soft and easy to wear every day.',
@@ -1109,6 +1117,7 @@
     },
     {
       id: 'rose-hair-pins',
+      sku: 'MZ-HPN-002',
       name: 'Rose Hair Pins',
       cat: 'clips', tag: 'Hair Pins', badge: 'Just in', fresh: true,
       desc: 'Little crochet roses on hair pins, in pink, white, cream, yellow, orange and red. Tuck one into a bun or a plait, or pick a few colours.',
@@ -1116,6 +1125,7 @@
     },
     {
       id: 'heart-coaster-pair',
+      sku: 'MZ-CST-001',
       name: 'Heart Coaster Pair',
       cat: 'coasters', tag: 'Coasters', badge: 'Just in', fresh: true,
       desc: 'Two cream coasters, each with a little red heart. Small handmade happiness for your table, and a thoughtful gift.',
@@ -1123,6 +1133,7 @@
     },
     {
       id: 'lotus-hair-clip',
+      sku: 'MZ-HCL-008',
       name: 'Lotus Hair Clip',
       cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
       desc: 'A layered lotus in pink, magenta and cream on a hair clip, with two pearl-tipped tassels. Pretty for festivals and every day.',
@@ -1130,6 +1141,7 @@
     },
     {
       id: 'evil-eye-hanging-charm',
+      sku: 'MZ-CHM-005',
       name: 'Evil Eye Hanging Charm',
       cat: 'keychains', tag: 'Charms', badge: 'Just in', fresh: true,
       desc: 'A blue evil eye on a long loop, to hang in a car, on a bag or by the door. Good vibes only, made by hand and lovely to gift.',
@@ -1137,6 +1149,7 @@
     },
     {
       id: 'black-red-ruffle-scrunchie',
+      sku: 'MZ-SCR-021',
       name: 'Black & Red Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Soft black ruffles with a bright red edge. Light, comfy and made for everyday style, in your hair or on your wrist.',
@@ -1144,6 +1157,7 @@
     },
     {
       id: 'blue-white-bloom-claw-clip',
+      sku: 'MZ-CLW-011',
       name: 'Blue & White Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'A royal blue puff flower and a white one, each with the other colour at its heart, on a soft white claw clip. Fresh and pretty for every day.',
@@ -1151,6 +1165,7 @@
     },
     {
       id: 'blue-puff-flower-snap-clips',
+      sku: 'MZ-HCL-007',
       name: 'Blue Puff Flower Snap Clips',
       cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
       desc: 'A pair of royal blue puff flowers with fluffy white centres on black snap clips. Easy to slide in, and sweet as a matching pair.',
@@ -1158,6 +1173,7 @@
     },
     {
       id: 'royal-blue-petal-flower',
+      sku: 'MZ-FLW-003',
       name: 'Royal Blue Petal Flower',
       cat: 'flowers', tag: 'Flowers', badge: 'Just in', fresh: true,
       desc: 'A flat crochet flower with a cream centre and wavy royal blue petals. Ask me to put it on a clip, a brooch or a keychain.',
@@ -1165,6 +1181,7 @@
     },
     {
       id: 'pink-rose-bun-pin',
+      sku: 'MZ-HPN-001',
       name: 'Pink Rose Bun Pin',
       cat: 'clips', tag: 'Hair Pins', badge: 'Just in', fresh: true,
       desc: 'A pink scalloped ring with a crochet rose, and a white stick that slides through to hold your bun. Light, comfy and pretty from behind.',
@@ -1172,6 +1189,7 @@
     },
     {
       id: 'azure-white-ruffle-scrunchie',
+      sku: 'MZ-SCR-020',
       name: 'Azure & White Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Bright azure blue with big, wavy white ruffles. Fresh as a summer sky, and soft enough to wear all day.',
@@ -1179,6 +1197,7 @@
     },
     {
       id: 'yellow-white-daisy-claw-clip',
+      sku: 'MZ-CLW-010',
       name: 'Yellow & White Daisy Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'Yellow and white puff daisies on a gold claw clip. A bright, happy clip that turns a plain bun into something special.',
@@ -1186,6 +1205,7 @@
     },
     {
       id: 'red-white-bloom-claw-clip',
+      sku: 'MZ-CLW-009',
       name: 'Red & White Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'Two puff flowers, one red and one white, on a claw clip that holds a twist of hair. A sweet gift that\'s ready to wear.',
@@ -1193,6 +1213,7 @@
     },
     {
       id: 'lilac-white-bloom-claw-clip',
+      sku: 'MZ-CLW-008',
       name: 'Lilac & White Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'A lilac bloom and a white one, each with a contrasting centre, on a clear claw clip. Soft colours for every day.',
@@ -1200,6 +1221,7 @@
     },
     {
       id: 'maroon-cream-bloom-claw-clip',
+      sku: 'MZ-CLW-007',
       name: 'Maroon & Cream Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'Deep maroon and cream puff flowers on a claw clip. Rich colours that go with everything you wear.',
@@ -1207,6 +1229,7 @@
     },
     {
       id: 'pink-sage-bloom-claw-clip',
+      sku: 'MZ-CLW-006',
       name: 'Pink & Sage Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'Soft pink and sage puff flowers on a claw clip. Gentle colours for a gentle gift.',
@@ -1214,6 +1237,7 @@
     },
     {
       id: 'lime-white-bloom-claw-clip',
+      sku: 'MZ-CLW-005',
       name: 'Lime & White Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'A cluster of lime-green and white puff flowers on a green claw clip. Fresh and fun for sunny days.',
@@ -1221,6 +1245,7 @@
     },
     {
       id: 'green-bloom-claw-clip',
+      sku: 'MZ-CLW-004',
       name: 'Green Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'One puffy green flower with a cream centre on a small claw clip. Fresh as a leaf, and just as light.',
@@ -1228,6 +1253,7 @@
     },
     {
       id: 'periwinkle-bloom-claw-clip',
+      sku: 'MZ-CLW-003',
       name: 'Periwinkle Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'Just in', fresh: true,
       desc: 'A soft periwinkle puff flower with a sunny yellow centre, on a claw clip. Small enough to wear every day.',
@@ -1235,6 +1261,7 @@
     },
     {
       id: 'purple-bloom-hair-clip',
+      sku: 'MZ-HCL-006',
       name: 'Purple Bloom Hair Clip',
       cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
       desc: 'A purple puff flower with a blush-pink centre on a hair clip. Small, bright and easy to wear.',
@@ -1242,6 +1269,7 @@
     },
     {
       id: 'red-cream-heart-clips',
+      sku: 'MZ-HCL-005',
       name: 'Red & Cream Heart Clips',
       cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
       desc: 'Little crochet hearts in red and cream on hair clips. Sweet on their own, sweeter as a pair to share.',
@@ -1249,6 +1277,7 @@
     },
     {
       id: 'pearl-heart-clips',
+      sku: 'MZ-HCL-004',
       name: 'Pearl Heart Clips',
       cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
       desc: 'Red and white crochet hearts, each finished with a pearl. Sweet little clips for a ponytail or a plait.',
@@ -1256,6 +1285,7 @@
     },
     {
       id: 'pink-maroon-ruffle-scrunchie',
+      sku: 'MZ-SCR-019',
       name: 'Pink & Maroon Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Bubblegum pink with a deep maroon edge. Soft on your hair, and pretty enough to wear on your wrist.',
@@ -1263,6 +1293,7 @@
     },
     {
       id: 'marigold-ruffle-scrunchie',
+      sku: 'MZ-SCR-018',
       name: 'Marigold Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Bright marigold orange framed in leaf green. A festive pop for a plain ponytail, and a cheerful little gift.',
@@ -1270,6 +1301,7 @@
     },
     {
       id: 'lavender-white-scrunchie',
+      sku: 'MZ-SCR-017',
       name: 'Lavender & White Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Lavender ruffles with a soft white trim. Gentle on hair, and lovely tucked into a gift box.',
@@ -1277,6 +1309,7 @@
     },
     {
       id: 'peach-puff-scrunchie',
+      sku: 'MZ-SCR-016',
       name: 'Peach Puff Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'A full, fluffy ruffle in soft peach. It holds without pulling, and looks just as sweet on a wrist.',
@@ -1284,6 +1317,7 @@
     },
     {
       id: 'pink-frost-scrunchie',
+      sku: 'MZ-SCR-015',
       name: 'Pink Frost Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Rose pink with a crisp white edge, like frosting. The kind of scrunchie a best friend borrows and keeps.',
@@ -1291,6 +1325,7 @@
     },
     {
       id: 'sunshine-scrunchie',
+      sku: 'MZ-SCR-014',
       name: 'Sunshine Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Sunny yellow ruffles with a white trim. Wear a little sunshine, or send some to someone who needs it.',
@@ -1298,6 +1333,7 @@
     },
     {
       id: 'sky-blue-cream-scrunchie',
+      sku: 'MZ-SCR-013',
       name: 'Sky Blue & Cream Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Bright sky blue with a cream ruffle edge. Fresh, light and easy to love.',
@@ -1305,6 +1341,7 @@
     },
     {
       id: 'caramel-chocolate-scrunchie',
+      sku: 'MZ-SCR-012',
       name: 'Caramel & Chocolate Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Warm caramel inside a chocolate-brown ruffle. Cosy colours for any season.',
@@ -1312,6 +1349,7 @@
     },
     {
       id: 'royal-blue-ruffle-scrunchie',
+      sku: 'MZ-SCR-011',
       name: 'Royal Blue Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Deep royal blue with a white ruffle edge. Bold colour, soft hold.',
@@ -1319,6 +1357,7 @@
     },
     {
       id: 'cream-maroon-scrunchie',
+      sku: 'MZ-SCR-010',
       name: 'Cream & Maroon Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Creamy ruffles edged in maroon. Classic, warm and lovely to give.',
@@ -1326,6 +1365,7 @@
     },
     {
       id: 'red-white-ruffle-scrunchie',
+      sku: 'MZ-SCR-009',
       name: 'Red & White Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Bright red with a snowy white inner ruffle. A cheerful pick for festive days and gifts.',
@@ -1333,6 +1373,7 @@
     },
     {
       id: 'cherry-red-frill-scrunchie',
+      sku: 'MZ-SCR-008',
       name: 'Cherry Red Frill Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'Just in', fresh: true,
       desc: 'Cherry red with a white frill, made to look full on the wrist and fuller in your hair.',
@@ -1340,6 +1381,7 @@
     },
     {
       id: 'classic-red-bow',
+      sku: 'MZ-BOW-005',
       name: 'Classic Red Bow',
       cat: 'bows', tag: 'Bows', badge: 'Just in', fresh: true,
       desc: 'A big, bold red bow, stitched to hold its shape all day. Clip it on for a party, or wrap it up for someone who loves red.',
@@ -1347,6 +1389,7 @@
     },
     {
       id: 'mixed-rose-bouquet',
+      sku: 'MZ-ROS-008',
       name: 'Mixed Rose Bouquet',
       cat: 'flowers', tag: 'Roses', badge: 'Bouquet', fresh: true,
       desc: 'Red, pink, peach, cream and one big yellow rose, wrapped and tied. A bouquet that stays fresh for years.',
@@ -1354,6 +1397,7 @@
     },
     {
       id: 'red-rose-bloom',
+      sku: 'MZ-ROS-007',
       name: 'Red Rose Bloom',
       cat: 'flowers', tag: 'Roses', badge: 'Just in', fresh: true,
       desc: 'One big, full red rose, shaped petal by petal. For the person you\'d give a real rose to.',
@@ -1361,6 +1405,7 @@
     },
     {
       id: 'white-rose-stem',
+      sku: 'MZ-ROS-006',
       name: 'White Rose Stem',
       cat: 'flowers', tag: 'Roses', badge: 'Just in', fresh: true,
       desc: 'A single white rose on a long green stem. Quiet and elegant, and it never wilts.',
@@ -1368,6 +1413,7 @@
     },
     {
       id: 'mini-rose-trio',
+      sku: 'MZ-ROS-005',
       name: 'Mini Rose Trio',
       cat: 'flowers', tag: 'Roses', badge: 'Set of 3', fresh: true,
       desc: 'Three little roses in blush, cream and red, one with a pearl centre. Pin them, clip them, or tuck them into a gift.',
@@ -1375,6 +1421,7 @@
     },
     {
       id: 'violet-puff-daisy',
+      sku: 'MZ-FLW-002',
       name: 'Violet Puff Daisy',
       cat: 'flowers', tag: 'Flowers', badge: 'Just in', fresh: true,
       desc: 'A violet puff daisy with a soft yellow centre. Ask me to put it on a clip, a pin or a keychain.',
@@ -1382,6 +1429,7 @@
     },
     {
       id: 'red-rose-hanging-charm',
+      sku: 'MZ-CHM-004',
       name: 'Red Rose Hanging Charm',
       cat: 'keychains', tag: 'Charms', badge: 'Just in', fresh: true,
       desc: 'A full red rose on a green loop, to hang on a bag, a mirror or your keys. A rose that stays in bloom.',
@@ -1389,6 +1437,7 @@
     },
     {
       id: 'sunflower-square-keychain',
+      sku: 'MZ-KEY-006',
       name: 'Sunflower Square Keychain',
       cat: 'keychains', tag: 'Keychains', badge: 'Just in', fresh: true,
       desc: 'A sunflower stitched onto a little square, on a keyring with a ribbon. Bright and sturdy for keys or a bag.',
@@ -1396,6 +1445,7 @@
     },
     {
       id: 'heart-keychain-pair',
+      sku: 'MZ-KEY-005',
       name: 'Heart Keychain Pair',
       cat: 'keychains', tag: 'Keychains', badge: 'Set of 2', fresh: true,
       desc: 'One pink heart and one red, each on its own keyring. Keep one and give the other away.',
@@ -1403,6 +1453,7 @@
     },
     {
       id: 'pearl-flower-keychains',
+      sku: 'MZ-KEY-004',
       name: 'Pearl Flower Keychains',
       cat: 'keychains', tag: 'Keychains', badge: '4 colours', fresh: true,
       desc: 'Little five-petal flowers in black, pink, white and red, each with a pearl. Pick your colour, or one for every friend.',
@@ -1410,6 +1461,7 @@
     },
     {
       id: 'sunflower-clips-pair',
+      sku: 'MZ-HCL-003',
       name: 'Sunflower Hair Clip Pair',
       cat: 'clips', tag: 'Hair Clips', badge: 'New',
       desc: 'I stitch each sunflower petal by petal onto a secure clip. There are two, so one can be a gift and one can stay yours.',
@@ -1417,6 +1469,7 @@
     },
     {
       id: 'sunflower-clips-detail',
+      sku: 'MZ-HCL-002',
       name: 'Sunflower Clips — Clip Detail',
       cat: 'clips', tag: 'Hair Clips', badge: 'New',
       desc: 'The back of each sunflower — an alligator clip sewn in by hand, so it holds all day instead of sliding out by lunchtime.',
@@ -1424,6 +1477,7 @@
     },
     {
       id: 'daisy-snap-clips',
+      sku: 'MZ-HCL-001',
       name: 'Daisy Snap Clip Pair',
       cat: 'clips', tag: 'Hair Clips', badge: 'New',
       desc: 'Two white daisies with sunny centres on plain snap clips. The kind of small thing that makes getting ready feel nicer.',
@@ -1431,6 +1485,7 @@
     },
     {
       id: 'pink-bloom-claw-clip',
+      sku: 'MZ-CLW-002',
       name: 'Pink Bloom Claw Clip',
       cat: 'clips', tag: 'Claw Clips', badge: 'New',
       desc: 'A full pink flower with a cream centre on a claw clip. It holds a twist of hair and looks like a bloom while doing it.',
@@ -1438,6 +1493,7 @@
     },
     {
       id: 'rose-claw-clip',
+      sku: 'MZ-CLW-001',
       name: 'Blush Rose Claw Clip',
       cat: 'clips', tag: 'Claw Clips',
       desc: 'A layered rose in blush, cream and cocoa on a wooden claw. Half your hair up in one twist, and it looks like you tried.',
@@ -1445,6 +1501,7 @@
     },
     {
       id: 'sunflower-keychain',
+      sku: 'MZ-KEY-003',
       name: 'Sunflower Bloom Keychain',
       cat: 'keychains', tag: 'Keychains',
       desc: 'A little sun for your keys. This is the one I like giving to someone who\'s had a long week.',
@@ -1452,6 +1509,7 @@
     },
     {
       id: 'sunflower-keychain-tagged',
+      sku: 'MZ-KEY-002',
       name: 'Sunflower Keychain, Gift Tagged',
       cat: 'keychains', tag: 'Keychains',
       desc: 'The same sunflower, finished with a kraft gift tag — ready to hand straight to someone, no wrapping needed.',
@@ -1459,6 +1517,7 @@
     },
     {
       id: 'daisy-hanging-charm',
+      sku: 'MZ-CHM-003',
       name: 'Daisy Hanging Charm',
       cat: 'keychains', tag: 'Charms', badge: 'New',
       desc: 'A white daisy on a long green stem with two leaves, made to hang somewhere you pass every day.',
@@ -1466,6 +1525,7 @@
     },
     {
       id: 'sunflower-hanging-charm',
+      sku: 'MZ-CHM-002',
       name: 'Sunflower Hanging Charm',
       cat: 'keychains', tag: 'Charms',
       desc: 'A sunflower on a long leafy loop, made to hang somewhere you pass often: a hook, a mirror, the strap of a bag.',
@@ -1473,6 +1533,7 @@
     },
     {
       id: 'sunflower-bag-charm',
+      sku: 'MZ-CHM-001',
       name: 'Sunflower Bag Charm',
       cat: 'keychains', tag: 'Charms',
       desc: 'The leafy sunflower tied onto a tote. Small enough to be a thank-you, cheerful enough to be remembered.',
@@ -1480,6 +1541,7 @@
     },
     {
       id: 'rose-keychain',
+      sku: 'MZ-KEY-001',
       name: 'Rose Keychain',
       cat: 'keychains', tag: 'Keychains',
       desc: 'A deep maroon rose on a keyring — a rose you can carry around with you and never have to put in water.',
@@ -1487,6 +1549,7 @@
     },
     {
       id: 'peach-blossom-scrunchie',
+      sku: 'MZ-SCR-007',
       name: 'Peach Blossom Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
       desc: 'Soft peach and cream petals all the way round — the sort of colours that go with whatever you already own.',
@@ -1494,6 +1557,7 @@
     },
     {
       id: 'cocoa-cream-scrunchie',
+      sku: 'MZ-SCR-006',
       name: 'Cocoa & Cream Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
       desc: 'Deep cocoa with a cream scalloped edge. The quiet one, for mornings when you would rather not think about it.',
@@ -1501,6 +1565,7 @@
     },
     {
       id: 'ocean-blue-scrunchie',
+      sku: 'MZ-SCR-005',
       name: 'Ocean Blue Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
       desc: 'Deep teal ruffles gathered onto a soft white band. Holds thick hair without pulling, and leaves no crease when you take it out.',
@@ -1508,6 +1573,7 @@
     },
     {
       id: 'blue-blossom-scrunchie',
+      sku: 'MZ-SCR-004',
       name: 'Blue Blossom Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
       desc: 'A ring of little flowers in three shades of blue with green leaves between them — quiet enough for every day, pretty enough to be noticed.',
@@ -1515,6 +1581,7 @@
     },
     {
       id: 'tricolour-scrunchie',
+      sku: 'MZ-SCR-003',
       name: 'Tricolour Ruffle Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies', badge: 'New',
       desc: 'Saffron, white and green worked in bands, for the days when everyone is wearing the same three colours.',
@@ -1522,6 +1589,7 @@
     },
     {
       id: 'sage-scrunchie',
+      sku: 'MZ-SCR-002',
       name: 'Sage Bloom Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies',
       desc: 'Soft moss-green and cream with a ruffled petal edge. The easy one — it goes with almost anything you already own.',
@@ -1529,6 +1597,7 @@
     },
     {
       id: 'ruby-rose-scrunchie',
+      sku: 'MZ-SCR-001',
       name: 'Ruby Rose Scrunchie',
       cat: 'scrunchies', tag: 'Scrunchies',
       desc: 'A full ring of ruby petals on a fresh green band. A scrunchie that behaves like a flower crown for your hair.',
@@ -1536,6 +1605,7 @@
     },
     {
       id: 'golden-sunflower',
+      sku: 'MZ-FLW-001',
       name: 'Golden Sunflower',
       cat: 'flowers', tag: 'Flowers', badge: 'New',
       desc: 'A big golden sunflower with a deep maroon centre, worked flat. Photographed out among the chilli plants, which rather suits it.',
@@ -1543,6 +1613,7 @@
     },
     {
       id: 'rose-duo',
+      sku: 'MZ-ROS-004',
       name: 'Red & Pink Rose Duo',
       cat: 'flowers', tag: 'Roses', badge: 'Set of 2',
       desc: 'Two roses, deep red and blush pink, each on its own leafy stem. Give one away and keep the other.',
@@ -1550,6 +1621,7 @@
     },
     {
       id: 'coral-rose',
+      sku: 'MZ-ROS-003',
       name: 'Coral Rose Stem',
       cat: 'flowers', tag: 'Roses',
       desc: 'A single coral rose, shaped petal by petal. The kind of small gift that ends up sitting on someone\'s desk for years.',
@@ -1557,6 +1629,7 @@
     },
     {
       id: 'red-rose-stem',
+      sku: 'MZ-ROS-002',
       name: 'Red Rose Stem',
       cat: 'flowers', tag: 'Roses',
       desc: 'A classic red rose on a long leafy stem. It says the same thing a real one does, and it keeps saying it.',
@@ -1564,6 +1637,7 @@
     },
     {
       id: 'rose-bouquet',
+      sku: 'MZ-ROS-001',
       name: 'Red Rose Bouquet',
       cat: 'flowers', tag: 'Roses', badge: 'Bouquet of 5',
       desc: 'Five roses, hand-tied on leafy stems. For someone you\'d like to still have their flowers next year.',
@@ -1571,6 +1645,7 @@
     },
     {
       id: 'caramel-cream-bow',
+      sku: 'MZ-BOW-004',
       name: 'Caramel & Cream Bow',
       cat: 'bows', tag: 'Bows', badge: 'New',
       desc: 'Chunky cream with a caramel edge all the way round and a soft knotted centre. It goes with more than you\'d expect.',
@@ -1578,6 +1653,7 @@
     },
     {
       id: 'classic-bow',
+      sku: 'MZ-BOW-003',
       name: 'Classic Maroon & Cream Bow',
       cat: 'bows', tag: 'Bows',
       desc: 'Cream with a rich maroon edge — light enough to wear all day, and stitched firmly enough to keep its shape.',
@@ -1585,6 +1661,7 @@
     },
     {
       id: 'scallop-bow',
+      sku: 'MZ-BOW-002',
       name: 'Maroon Scallop Bow',
       cat: 'bows', tag: 'Bows',
       desc: 'The scalloped maroon trim, up close. This is the detail people notice when you\'re wearing it.',
@@ -1592,6 +1669,7 @@
     },
     {
       id: 'cream-bow',
+      sku: 'MZ-BOW-001',
       name: 'Simple Cream Bow',
       cat: 'bows', tag: 'Bows',
       desc: 'Solid cream, textured and understated — for someone who doesn\'t want their hair clip to be the loudest thing about them.',
@@ -1599,6 +1677,7 @@
     },
     {
       id: 'ruby-bow-handbag',
+      sku: 'MZ-BAG-001',
       name: 'Ruby Bow Handbag',
       cat: 'bags', tag: 'Bags', badge: 'New',
       desc: 'A deep red bag with a white bow and a zip that really closes. Small enough to carry just what you need, sturdy enough for every day.',
@@ -1606,6 +1685,7 @@
     },
     {
       id: 'flower-vine-garland',
+      sku: 'MZ-GAR-001',
       name: 'Yellow Flower Vine Set',
       cat: 'garlands', tag: 'Garlands', badge: 'Set of 3',
       desc: 'Three vines of little yellow flowers, each ending in a tassel. For the corner of a room that always felt a bit bare.',
@@ -1613,6 +1693,7 @@
     },
     {
       id: 'mini-hearts',
+      sku: 'MZ-HRT-001',
       name: 'Sweetheart Mini Set',
       cat: 'hearts', tag: 'Hearts', badge: 'Set of 4',
       desc: 'Four tiny hearts in buttery cream and pink. Small enough to sew onto anything, sweet enough to simply hand over.',
@@ -1666,7 +1747,7 @@
         <span class="zoom-hint">🔍 View</span>
       </button>
       <div class="card-body">
-        <span class="card-tag">${p.tag}</span>
+        <span class="card-tag">${p.tag}<span class="card-sku">${p.sku}</span></span>
         <h3>${p.name}</h3>
         <p>${p.desc}</p>
         <div class="card-foot">
@@ -1829,7 +1910,7 @@
     if (!p) return;
     lbImage.src = p.image;
     lbImage.alt = p.name;
-    lbCaption.textContent = p.name;
+    lbCaption.textContent = `${p.name} · ${p.sku}`;
     lbCounter.textContent = browseList.length > 1 ? `${activeIndex + 1} / ${browseList.length}` : '';
     lbDots.innerHTML = '';
     const many = browseList.length > 1;
@@ -1938,15 +2019,15 @@
   const orderContextText = document.getElementById('orderContextText');
   const clearOrderContext = document.getElementById('clearOrderContext');
 
-  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', bags: 'Bag / Pouch', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', coasters: 'Coaster', jewellery: 'Bangle', bags: 'Bag / Pouch', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';
-    detailsField.value = `Hi Mayuri! I'd love to order the "${product.name}". Could you share colour options, sizing and price?`
+    detailsField.value = `Hi Mayuri! I'd love to order the "${product.name}" (code ${product.sku}). Could you share colour options, sizing and price?`
       + (launchActive() ? ` I'd like to use the launch code LAUNCH20.` : ``);
     orderTypeField.value = 'Order — existing item';
-    productNameField.value = product.name;
-    orderContextText.textContent = `Ordering: ${product.name}`;
+    productNameField.value = `${product.name} (${product.sku})`;
+    orderContextText.textContent = `Ordering: ${product.name} · ${product.sku}`;
     orderContext.classList.add('show');
   }
 
