@@ -62,7 +62,12 @@ def main() -> int:
         check("tag: 'Bows'" in text, "card tag comes from the category")
 
         check(product_ids(text)[0] == "test-bow", "the new piece is first in the list")
-        check(re.search(r"id: 'test-bow',\n.*\n.*badge: 'Just in', fresh: true", text) is not None,
+        bow_codes = re.findall(r"sku: 'MZ-BOW-(\d+)'", text)
+        check(re.search(r"id: 'test-bow',\n      sku: 'MZ-BOW-\d{3}',", text) is not None,
+              "the new piece gets a product code")
+        check(len(bow_codes) == len(set(bow_codes)), "no two bows share a code")
+        check(int(bow_codes[0]) == max(int(n) for n in bow_codes), "the new code is the next number up")
+        check(re.search(r"id: 'test-bow',\n(?:.*\n){2}.*badge: 'Just in', fresh: true", text) is not None,
               "the new piece is marked Just in")
         check(cat_order(index)[-1] == "hearts", "the hearts entry is still last")
 

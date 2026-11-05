@@ -50,3 +50,31 @@ def guess_category(text: str) -> str:
     return "new"
 
 BY_KEY = {c.key: c for c in CATEGORIES}
+
+# Every product gets a code: MZ-<group>-<number>, e.g. MZ-SCR-007. The group
+# is the product type shown on the card ("shows under"), so pieces of the
+# same type share a price group in the price list. Numbers only ever go up,
+# so a code is never reused after a piece is removed.
+SKU_PREFIX = "MZ"
+GROUP_CODES: dict[str, str] = {
+    "Scrunchies": "SCR",
+    "Bows": "BOW",
+    "Claw Clips": "CLW",
+    "Hair Clips": "HCL",
+    "Hair Pins": "HPN",
+    "Hair Bands": "HBD",
+    "Roses": "ROS",
+    "Flowers": "FLW",
+    "Keychains": "KEY",
+    "Charms": "CHM",
+    "Bags": "BAG",
+    "Garlands": "GAR",
+    "Hearts": "HRT",
+    "Coasters": "CST",
+    "Bangles": "BNG",
+    "New": "NEW",
+}
+
+
+def group_code(tag: str) -> str:
+    return GROUP_CODES.get(tag, "NEW")
