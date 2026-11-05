@@ -22,7 +22,7 @@ from pathlib import Path
 
 import httpx
 
-from catalogue import BY_KEY, CATEGORIES
+from catalogue import BY_KEY, CATEGORIES, guess_category
 from media import save_photo, slugify, unique_slug
 from pricing import find_price
 from site_edit import (
@@ -41,7 +41,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TOKEN = os.environ.get("TELEGRAM_TOKEN", "").strip()
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
 GITHUB_REPO = os.environ.get("GITHUB_REPO", "Sanu0910/Crochet_Mayuri").strip()
-BRANCH = os.environ.get("GIT_BRANCH", "claude/website-mobile-redesign-xfmicu").strip()
+BRANCH = os.environ.get("GIT_BRANCH", "main").strip()
 SITE_URL = os.environ.get("SITE_URL", "").strip()
 COMMIT_MSG_FILE = Path(os.environ.get("COMMIT_MSG_FILE", "/tmp/commit-msg.txt"))
 ANNOUNCE_FILE = Path(os.environ.get("ANNOUNCE_FILE", "/tmp/announce.json"))
@@ -199,25 +199,14 @@ def handle_photo(tg: Telegram, message: dict, added: list[str],
     message_id = message["message_id"]
     caption = (message.get("caption") or "").strip()
 
-    if not caption:
-        tg.send(chat_id,
-                "I need a name and a category in the caption.\n\n" + HELP,
-                reply_to=message_id)
-        return
-
+    # Every photo goes up under "Just in", caption or not. A missing name
+    # becomes "New Piece" and a missing hashtag is guessed from the name;
+    # /rename and /caption tidy either up afterwards.
     category_key, name, desc, price = parse_caption(caption)
     if not name:
-        tg.send(chat_id, "I couldn't find a name in that caption.\n\n" + HELP,
-                reply_to=message_id)
-        return
+        name = "New Piece"
     if category_key is None:
-        tg.send(
-            chat_id,
-            f"<b>{html.escape(name)}</b> — which shelf?\n\n"
-            f"Send it again with one of: {TAGS}",
-            reply_to=message_id,
-        )
-        return
+        category_key = guess_category(name)
 
     desc = desc or f"{name} — handmade to order, in any colour you like."
     photo = message["photo"][-1]  # the largest size Telegram kept

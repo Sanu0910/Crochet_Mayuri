@@ -1,9 +1,9 @@
 """Inserting a product into the site and into the film's scene list.
 
 Both files keep their product list between `PRODUCTS:START` and
-`PRODUCTS:END` markers. New entries are placed just before the first
-existing entry in the same category so the gallery stays grouped; if the
-category has no entries yet, the new one goes at the end of the list.
+`PRODUCTS:END` markers. New entries go first in the list, marked
+"Just in" (`fresh: true`), so they lead the gallery and fill the "Just in"
+row at the top of the page.
 """
 
 import re
@@ -63,24 +63,14 @@ def insert_into_index(
         f"    {{\n"
         f"      id: '{_js_string(product_id)}',\n"
         f"      name: '{_js_string(name)}',\n"
-        f"      cat: '{cat}', tag: '{_js_string(category.tag)}', badge: 'New',\n"
+        f"      cat: '{cat}', tag: '{_js_string(category.tag)}', badge: 'Just in', fresh: true,\n"
         f"      desc: '{_js_string(desc)}',\n"
         f"      image: 'images/{image}'\n"
         f"    }},\n"
     )
 
-    block_start, block_end = _marker_span(text, path)
-    block = text[block_start:block_end]
-
-    # Sit with the rest of the category if it already has members.
-    match = re.search(r"^    \{\n(?:.*\n)*?.*cat: '%s'.*$" % re.escape(cat), block, re.MULTILINE)
-    if match:
-        # Walk back to the opening brace of that entry.
-        entry_start = block.rindex("    {\n", 0, match.end())
-        at = block_start + entry_start
-    else:
-        at = block_end
-
+    # Newest first: straight after the START marker.
+    at, _ = _marker_span(text, path)
     path.write_text(text[:at] + entry + text[at:])
 
 
@@ -94,16 +84,7 @@ def insert_into_film(path: Path, *, name: str, cat: str, image: str) -> None:
         f'tag: "{category.tag}" }},\n'
     )
 
-    block_start, block_end = _marker_span(text, path)
-    block = text[block_start:block_end]
-
-    match = re.search(r'^  \{ image: .*tag: "%s" \},$' % re.escape(category.tag),
-                      block, re.MULTILINE)
-    if match:
-        at = block_start + block.rindex("  { image:", 0, match.end())
-    else:
-        at = block_end
-
+    at, _ = _marker_span(text, path)
     path.write_text(text[:at] + entry + text[at:])
 
 

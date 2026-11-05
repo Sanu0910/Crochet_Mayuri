@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: claude/website-mobile-redesign-xfmicu
+          ref: main   # GitHub Pages publishes the site from main
 
       - uses: actions/setup-python@v5
         with:
@@ -57,7 +57,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ALLOWED_USER_IDS: ${{ vars.ALLOWED_USER_IDS }}
-          GIT_BRANCH: claude/website-mobile-redesign-xfmicu
+          GIT_BRANCH: main
           SITE_URL: https://mayurisyarntales.online/
           COMMIT_MSG_FILE: ${{ runner.temp }}/commit-msg.txt
           ANNOUNCE_FILE: ${{ runner.temp }}/announce.json

@@ -50,7 +50,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as d:
         tmp = Path(d)
 
-        # --- a category that already has members: group with them ---
+        # --- a new piece goes first, marked Just in ---
         index, theme = fresh(tmp)
         before = len(product_ids(index.read_text()))
         insert_into_index(index, product_id="test-bow", name="Test Bow",
@@ -61,13 +61,12 @@ def main() -> int:
         check("images/test-bow.jpg" in text, "photo path lands in index.html")
         check("tag: 'Bows'" in text, "card tag comes from the category")
 
-        order = cat_order(index)
-        first_bow = order.index("bows")
-        check(order[first_bow] == "bows" and order[first_bow + 1] == "bows",
-              "new bow sits with the other bows, not at the end")
-        check(order[-1] == "hearts", "the hearts entry is still last")
+        check(product_ids(text)[0] == "test-bow", "the new piece is first in the list")
+        check(re.search(r"id: 'test-bow',\n.*\n.*badge: 'Just in', fresh: true", text) is not None,
+              "the new piece is marked Just in")
+        check(cat_order(index)[-1] == "hearts", "the hearts entry is still last")
 
-        # --- a category with no members yet: goes at the end ---
+        # --- a second insert on a clean copy ---
         index2, theme2 = fresh(tmp / "b" if (tmp / "b").mkdir() or True else tmp)
         insert_into_index(index2, product_id="test-heartless", name="Nothing Like It",
                           cat="clips", desc="A test.", image="x.jpg")
@@ -100,9 +99,14 @@ def main() -> int:
         film = theme.read_text()
         check('{ image: "test-bow.jpg", name: "Test Bow", tag: "Bows" },' in film,
               "the film scene list gains the piece")
-        tags = re.findall(r'tag: "([A-Za-z ]+)"', film)
-        first_bows = tags.index("Bows")
-        check(tags[first_bows + 1] == "Bows", "the new film scene sits with the other bows")
+        first_scene = re.search(r'\{ image: "([^"]+)"', film).group(1)
+        check(first_scene == "test-bow.jpg", "the new film scene comes first")
+
+        # --- photos without a hashtag still find a shelf ---
+        from catalogue import guess_category
+        check(guess_category("Blue Ruffle Scrunchie") == "scrunchies", "a scrunchie is guessed from its name")
+        check(guess_category("Pink Rose Bun Pin") == "clips", "a pin is guessed as a clip")
+        check(guess_category("New Piece") == "new", "an unknown name falls back to New")
 
         # --- missing markers are a clear error, not a corrupted file ---
         broken = tmp / "broken.html"
