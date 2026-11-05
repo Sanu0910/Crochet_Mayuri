@@ -22,9 +22,11 @@ Deep teal ruffles on a soft white band.
 Categories: `#scrunchies` `#bows` `#flowers` `#clips` `#keychains`
 `#garlands` `#hearts`
 
-Without a description the bot writes a plain one you can edit later. Every
-upload gets a "New" badge. Forget the hashtag and it asks for one rather
-than guessing.
+Every photo goes up, first in the gallery and in the "Just in" row at the
+top of the page. The caption is optional: with no name it is called "New
+Piece", with no hashtag the category is guessed from the name (or left as
+"New"), and with no description the bot writes a plain one. Fix any of it
+afterwards with `/rename` and `/caption`.
 
 ### Commands
 
@@ -143,9 +145,9 @@ open. Categories become buttons to tap rather than hashtags. It needs a host
 (~$5/month) and the same three variables. Only one of the three modes may be
 live at a time: two things polling the same bot fight over updates.
 
-> **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from
-> `claude/website-mobile-redesign-xfmicu`, *not* from `main`. If Pages is
-> ever repointed at `main`, change it to match or uploads go nowhere visible.
+> **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from `main`,
+> so the bot commits there. If Pages is ever repointed at another branch,
+> change it to match or uploads go nowhere visible.
 
 ## What it does not do
 

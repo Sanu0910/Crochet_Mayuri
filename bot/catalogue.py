@@ -23,6 +23,27 @@ CATEGORIES: tuple[Category, ...] = (
     Category("bags", "👜 Bags", "Bags"),
     Category("garlands", "🌿 Garlands", "Garlands"),
     Category("hearts", "💗 Hearts", "Hearts"),
+    # For a photo sent with no category: it still goes up under "Just in"
+    # and can be moved later. No gallery filter of its own, on purpose.
+    Category("new", "✨ New", "New"),
 )
+
+# Words in a name that settle the category when no hashtag was given.
+KEYWORDS: tuple[tuple[str, str], ...] = (
+    ("scrunchie", "scrunchies"), ("bow", "bows"), ("clip", "clips"),
+    ("pin", "clips"), ("keychain", "keychains"), ("charm", "keychains"),
+    ("bag", "bags"), ("garland", "garlands"), ("heart", "hearts"),
+    ("rose", "flowers"), ("flower", "flowers"), ("daisy", "flowers"),
+    ("sunflower", "flowers"), ("bouquet", "flowers"),
+)
+
+
+def guess_category(text: str) -> str:
+    """The category a name points to, or 'new' when nothing matches."""
+    low = text.lower()
+    for word, key in KEYWORDS:
+        if word in low:
+            return key
+    return "new"
 
 BY_KEY = {c.key: c for c in CATEGORIES}
