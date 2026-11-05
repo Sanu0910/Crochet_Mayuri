@@ -2,6 +2,18 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-05
+
+- **Eight new pieces at the top of "Just in"**, each a single photo exactly
+  as Mayuri styled it: Maroon & Yellow Bobble Coaster, Daisy Chain Hair Band,
+  Sunflower Hair Band, Sunflower Coaster, Green & White Scalloped Bangles,
+  Rose Hair Pins, Heart Coaster Pair and Lotus Hair Clip. A second photo of
+  the bobble coaster was left out so it isn't listed twice.
+- **Two new gallery filters: Coasters and Bangles.** The Telegram bot knows
+  them too (`#coasters`, `#jewellery`).
+- **The Telegram bot now puts every photo straight into "Just in"** on the
+  live site, with or without a caption.
+
 ## 2026-11-01
 
 - **Two pieces at the top of "Just in", with new styled photos:** the **Evil

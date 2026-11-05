@@ -45,6 +45,14 @@ export type Product = {
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
+  { image: "maroon-yellow-bobble-coaster.jpg", name: "Maroon & Yellow Bobble Coaster", tag: "Coasters" },
+  { image: "daisy-chain-hair-band.jpg", name: "Daisy Chain Hair Band", tag: "Hair Bands" },
+  { image: "sunflower-hair-band.jpg", name: "Sunflower Hair Band", tag: "Hair Bands" },
+  { image: "sunflower-coaster.jpg", name: "Sunflower Coaster", tag: "Coasters" },
+  { image: "green-white-scalloped-bangles.jpg", name: "Green & White Scalloped Bangles", tag: "Bangles" },
+  { image: "rose-hair-pins.jpg", name: "Rose Hair Pins", tag: "Hair Pins" },
+  { image: "heart-coaster-pair.jpg", name: "Heart Coaster Pair", tag: "Coasters" },
+  { image: "lotus-hair-clip.jpg", name: "Lotus Hair Clip", tag: "Hair Clips" },
   { image: "evil-eye-hanging-charm-styled.jpg", name: "Evil Eye Hanging Charm", tag: "Charms" },
   { image: "black-red-ruffle-scrunchie.jpg", name: "Black & Red Ruffle Scrunchie", tag: "Scrunchies" },
   { image: "blue-white-bloom-claw-clip.jpg", name: "Blue & White Bloom Claw Clip", tag: "Claw Clips" },

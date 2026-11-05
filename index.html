@@ -1073,6 +1073,62 @@
   const PRODUCTS = [
     /* PRODUCTS:START */
     {
+      id: 'maroon-yellow-bobble-coaster',
+      name: 'Maroon & Yellow Bobble Coaster',
+      cat: 'coasters', tag: 'Coasters', badge: 'Just in', fresh: true,
+      desc: 'A deep maroon coaster ringed with golden bobbles. Small piece, big charm, and a cosy touch for your tea table.',
+      image: 'images/maroon-yellow-bobble-coaster.jpg'
+    },
+    {
+      id: 'daisy-chain-hair-band',
+      name: 'Daisy Chain Hair Band',
+      cat: 'clips', tag: 'Hair Bands', badge: 'Just in', fresh: true,
+      desc: 'A chain of white daisies with sunny centres, on black ties with little bobble ends. Tie it round a bun, a plait or your wrist.',
+      image: 'images/daisy-chain-hair-band.jpg'
+    },
+    {
+      id: 'sunflower-hair-band',
+      name: 'Sunflower Hair Band',
+      cat: 'clips', tag: 'Hair Bands', badge: 'Just in', fresh: true,
+      desc: 'Six bright sunflowers on a green crochet tie with yellow bobble ends. A touch of sunshine for your hair.',
+      image: 'images/sunflower-hair-band.jpg'
+    },
+    {
+      id: 'sunflower-coaster',
+      name: 'Sunflower Coaster',
+      cat: 'coasters', tag: 'Coasters', badge: 'Just in', fresh: true,
+      desc: 'A big sunflower coaster with a chocolate-brown centre and pointed golden petals. Makes every cup of chai feel a little sunnier.',
+      image: 'images/sunflower-coaster.jpg'
+    },
+    {
+      id: 'green-white-scalloped-bangles',
+      name: 'Green & White Scalloped Bangles',
+      cat: 'jewellery', tag: 'Bangles', badge: 'Just in', fresh: true,
+      desc: 'A pair of bangles wrapped in leaf-green crochet with a soft white scalloped edge. Light, soft and easy to wear every day.',
+      image: 'images/green-white-scalloped-bangles.jpg'
+    },
+    {
+      id: 'rose-hair-pins',
+      name: 'Rose Hair Pins',
+      cat: 'clips', tag: 'Hair Pins', badge: 'Just in', fresh: true,
+      desc: 'Little crochet roses on hair pins, in pink, white, cream, yellow, orange and red. Tuck one into a bun or a plait, or pick a few colours.',
+      image: 'images/rose-hair-pins.jpg'
+    },
+    {
+      id: 'heart-coaster-pair',
+      name: 'Heart Coaster Pair',
+      cat: 'coasters', tag: 'Coasters', badge: 'Just in', fresh: true,
+      desc: 'Two cream coasters, each with a little red heart. Small handmade happiness for your table, and a thoughtful gift.',
+      image: 'images/heart-coaster-pair.jpg'
+    },
+    {
+      id: 'lotus-hair-clip',
+      name: 'Lotus Hair Clip',
+      cat: 'clips', tag: 'Hair Clips', badge: 'Just in', fresh: true,
+      desc: 'A layered lotus in pink, magenta and cream on a hair clip, with two pearl-tipped tassels. Pretty for festivals and every day.',
+      image: 'images/lotus-hair-clip.jpg'
+    },
+    {
       id: 'evil-eye-hanging-charm',
       name: 'Evil Eye Hanging Charm',
       cat: 'keychains', tag: 'Charms', badge: 'Just in', fresh: true,
@@ -1573,6 +1629,8 @@
     { key: 'flowers', label: 'Flowers & Roses' },
     { key: 'clips', label: 'Claw Clips' },
     { key: 'keychains', label: 'Keychains' },
+    { key: 'coasters', label: 'Coasters' },
+    { key: 'jewellery', label: 'Bangles' },
     { key: 'bags', label: 'Bags' },
     { key: 'garlands', label: 'Garlands' },
     { key: 'hearts', label: 'Hearts' }
@@ -1809,9 +1867,9 @@
     if (art) { openLightbox(art.dataset.product, art); return; }
   });
   // ---------- just in: the newest pieces, at the top of the page ----------
-  /* New pieces are added at the top of PRODUCTS, so the first six are the
-     newest. Tapping one opens it full size and swipes through the six. */
-  const JUST_IN = PRODUCTS.filter(p => p.fresh).slice(0, 6);
+  /* New pieces are added at the top of PRODUCTS, so the first ten are the
+     newest. Tapping one opens it full size and swipes through them. */
+  const JUST_IN = PRODUCTS.filter(p => p.fresh).slice(0, 10);
   const justInRow = document.getElementById('justInRow');
   JUST_IN.forEach(p => {
     const b = document.createElement('button');
