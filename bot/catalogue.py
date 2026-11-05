@@ -23,6 +23,8 @@ CATEGORIES: tuple[Category, ...] = (
     Category("bags", "👜 Bags", "Bags"),
     Category("garlands", "🌿 Garlands", "Garlands"),
     Category("hearts", "💗 Hearts", "Hearts"),
+    Category("coasters", "☕ Coasters", "Coasters"),
+    Category("jewellery", "💍 Bangles", "Bangles"),
     # For a photo sent with no category: it still goes up under "Just in"
     # and can be moved later. No gallery filter of its own, on purpose.
     Category("new", "✨ New", "New"),
@@ -32,7 +34,8 @@ CATEGORIES: tuple[Category, ...] = (
 KEYWORDS: tuple[tuple[str, str], ...] = (
     ("scrunchie", "scrunchies"), ("bow", "bows"), ("clip", "clips"),
     ("pin", "clips"), ("keychain", "keychains"), ("charm", "keychains"),
-    ("bag", "bags"), ("garland", "garlands"), ("heart", "hearts"),
+    ("coaster", "coasters"), ("bangle", "jewellery"), ("bracelet", "jewellery"),
+    ("band", "clips"), ("bag", "bags"), ("garland", "garlands"), ("heart", "hearts"),
     ("rose", "flowers"), ("flower", "flowers"), ("daisy", "flowers"),
     ("sunflower", "flowers"), ("bouquet", "flowers"),
 )
