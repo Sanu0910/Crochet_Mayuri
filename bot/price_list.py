@@ -144,15 +144,47 @@ c = ws.cell(r, 2, "The website's code is public on GitHub, so this sheet (with y
 c.font = base; c.alignment = wrap
 ws.merge_cells(start_row=r, start_column=2, end_row=r, end_column=7); ws.row_dimensions[r].height = 28
 
+# ================= Tax & GST =================
+tx = wb.create_sheet("Tax & GST")
+tx.sheet_view.showGridLines = False
+tx.column_dimensions["A"].width = 3; tx.column_dimensions["B"].width = 30; tx.column_dimensions["C"].width = 95
+tx["B2"] = "Tax & GST — plain-language notes for Mayuri'z"; tx["B2"].font = title
+tx["B3"] = "Written by Claude from Indian GST and income-tax rules as of late 2025. Not advice from a licensed CA: rules and rates change, so check anything marked 'confirm' before relying on it."
+tx["B3"].font = sub; tx["B3"].alignment = wrap; tx.merge_cells("B3:C3"); tx.row_dimensions[3].height = 28
+r = 5
+for h in ("Topic", "What applies to you"):
+    c = tx.cell(r, 2 if h == "Topic" else 3, h); c.font = head; c.fill = HEAD; c.border = box
+r += 1
+notes = [
+    ("Do I charge GST?", "No, not while Mayuri'z is unregistered. An unregistered seller must not add GST to prices or show a GSTIN. Your website price is the full price the customer pays (plus shipping). GST % stays 0 on the Price Groups sheet."),
+    ("When must I register?", "Selling within your own state: once total sales in a financial year cross ₹40 lakh for goods (₹20 lakh in a few states — confirm for yours)."),
+    ("Selling to other states (confirm)", "The GST law normally requires registration for any seller of goods to another state, whatever the sales. There is an exemption for notified handicraft goods made by hand below the ₹40 lakh limit. Whether hand-made crochet accessories count is the one question to settle. Call the free GST helpline 1800-103-4786 and ask: 'I make crochet hair accessories, coasters and keychains by hand and sell them online from my own website to buyers in other states, with yearly sales under ₹40 lakh. Do I need GST registration, or does the handicraft exemption apply?' Note the answer and the date here."),
+    ("If registration is needed", "Register on gst.gov.in (free, with PAN, Aadhaar, bank account and address proof). Choose the regular scheme: the composition scheme does not allow selling to other states. Then fill GST % per group, add GST to invoices and file returns (GSTR-1 and GSTR-3B). Most crochet textile articles priced up to ₹2,500 fall in the 5% slab — check each HSN code in the rate finder on cbic-gst.gov.in."),
+    ("Income tax", "Shop profit is the maker's income and goes on their own income tax return (ITR-4 Sugam). Under section 44AD you can declare 6% of sales received online (8% of cash sales) as profit instead of keeping full accounts. In the new tax regime, total income up to ₹12 lakh pays no tax for FY 2025-26, but file the return anyway once you have shop sales."),
+    ("Records to keep", "Every order (product code, price, shipping, date, buyer's state), Razorpay settlement reports, and receipts for yarn, clips and packing. Razorpay's reports cover most of this; keep them for 6 years."),
+    ("Razorpay", "Razorpay accepts unregistered individuals: sign up with PAN, Aadhaar and a bank account in the same name. GSTIN is optional. Razorpay charges about 2% per payment plus 18% GST on that fee; that fee is a cost, not something you charge the buyer."),
+    ("Bank account", "Use one account only for the shop (a savings account in the maker's name is fine to start). It keeps sales and expenses easy to show if anyone asks."),
+]
+for t, v in notes:
+    a = tx.cell(r, 2, t); a.font = bold; a.alignment = wrap; a.border = box
+    b = tx.cell(r, 3, v); b.font = base; b.alignment = wrap; b.border = box
+    tx.row_dimensions[r].height = max(30, 15 * (len(v) // 95 + 1))
+    r += 1
+r += 1
+tx.cell(r, 2, "Helpline answer").font = bold
+c = tx.cell(r, 3, ""); c.fill = YELLOW; c.font = inp; c.border = box
+tx.cell(r + 1, 2, "Date asked").font = bold
+c = tx.cell(r + 1, 3, ""); c.fill = YELLOW; c.font = inp; c.border = box
+
 # ================= Price Groups =================
 pg = wb.create_sheet("Price Groups")
 cols = [("Group Code", 11), ("Shows Under", 15), ("Website Filter", 16), ("No. of Products", 11),
         ("Selling Price ₹", 13), ("MRP ₹", 11), ("Discount %", 10), ("Making Cost ₹", 13),
         ("Profit per Piece ₹", 13), ("Profit %", 10), ("Making Time (days)", 12),
-        ("Weight with Packing (g)", 13), ("HSN Code (suggested)", 13), ("GST %", 9), ("Notes", 36)]
+        ("Weight with Packing (g)", 13), ("HSN Code (for later)", 13), ("GST % (0 = not registered)", 12), ("Notes", 36)]
 pg.sheet_view.showGridLines = False
 pg["A1"] = "Price Groups — one price for each kind of product"; pg["A1"].font = title
-pg["A2"] = "Yellow cells are yours. 'No. of Products' counts the Products sheet. HSN codes are suggestions — confirm them and the GST % with your CA before invoicing."
+pg["A2"] = "Yellow cells are yours. 'No. of Products' counts the Products sheet. GST is 0% while Mayuri'z is not GST registered — see the Tax & GST sheet."
 pg["A2"].font = sub
 HR = 4
 for j, (h, w) in enumerate(cols, 1):
@@ -167,7 +199,7 @@ for i, (code, shows, web, hsn) in enumerate(GROUPS):
             7: f"=IF(AND(E{r}>0,F{r}>E{r}),(F{r}-E{r})/F{r},0)",
             9: f"=IF(E{r}>0,E{r}-H{r},0)",
             10: f"=IF(E{r}>0,(E{r}-H{r})/E{r},0)",
-            13: hsn}
+            13: hsn, 14: 0}
     for j in range(1, len(cols) + 1):
         c = pg.cell(r, j, vals.get(j)); c.font = base; c.border = box
         if j in (5, 6, 8, 11, 12, 14, 15):
@@ -189,10 +221,10 @@ pg["E4"].comment = Comment("What the customer pays for one piece of this kind. E
 pg["F4"].comment = Comment("Optional 'was' price shown crossed out. Leave empty for no discount.", "Claude")
 pg["H4"].comment = Comment("Yarn + clip/pin/hardware + packing for one piece.", "Claude")
 pg["L4"].comment = Comment("Weight of one packed piece. Razorpay shipping partners (Shiprocket etc.) charge by weight.", "Claude")
-pg["M4"].comment = Comment("Suggested from the type of product: 6117 crocheted accessories, 9615 hair clips/pins, 6702 artificial flowers, 6307 made-up textile articles, 6304 crocheted furnishings, 7117 imitation jewellery, 4202 bags. Confirm with your CA.", "Claude")
+pg["M4"].comment = Comment("Only needed once Mayuri'z is GST registered (it goes on tax invoices). Picked by what the product is made of and used for: 6117 crocheted clothing accessories, 9615 hair clips/pins, 6702 artificial flowers, 6307 other made-up textile articles, 6304 crocheted furnishings, 7117 imitation jewellery, 4202 bags. Check each against the rate finder on cbic-gst.gov.in when you register.", "Claude")
 pg.freeze_panes = pg.cell(first, 3)
 gst = DataValidation(type="decimal", operator="between", formula1="0", formula2="0.28", allow_blank=True,
-                     error="Type GST as a percent, e.g. 5% or 12%.", errorTitle="GST %")
+                     error="Type GST as a percent, e.g. 0% or 5%.", errorTitle="GST %")
 pg.add_data_validation(gst); gst.add(f"N{first}:N{last}")
 pos = DataValidation(type="decimal", operator="greaterThanOrEqual", formula1="0", allow_blank=True)
 pg.add_data_validation(pos); pos.add(f"E{first}:F{last}"); pos.add(f"H{first}:H{last}"); pos.add(f"K{first}:L{last}")
@@ -279,7 +311,8 @@ steps = [
     ("Colour choice", "Pieces are 'any colour you like'. Decide: fixed colour as shown, or a colour choice at checkout (adds a variant per colour).", "You decide", "To do"),
     ("Shipping charges & delivery time", "Flat fee, free above an amount, or by weight? Which areas you ship to, and how many days. Fill Weight and Making Time per group.", "You", "To do"),
     ("Policy pages", "Razorpay checks the website for: Contact Us (with address), Terms & Conditions, Privacy Policy, Refund & Cancellation, Shipping & Delivery. Without them the account is not approved.", "Claude writes, you approve", "To do"),
-    ("Razorpay account & KYC", "Business type, PAN, bank account, and GSTIN if registered. Ask your CA whether you need GST registration for selling online.", "You", "To do"),
+    ("Settle GST registration", "Selling to other states can need GST registration even below ₹40 lakh, unless crochet pieces count as exempt handicrafts. Ask the free GST helpline 1800-103-4786 the exact question on the Tax & GST sheet, then mark this done.", "You", "To do"),
+    ("Razorpay account & KYC", "Sign up as an individual / unregistered business: PAN, bank account in the same name, Aadhaar, and the website. No GSTIN is needed for this. See the Tax & GST sheet for the one GST question to settle first.", "You", "To do"),
     ("Payment backend", "The website is static (GitHub Pages). Razorpay needs a small server to create each order and verify the payment with the secret key — the existing Cloudflare Worker can do it. The secret key must never go into the website.", "Claude", "To do"),
     ("Cart & checkout", "Add to cart, quantity, address form, order summary, Razorpay checkout, thank-you page.", "Claude", "To do"),
     ("Order records & emails", "Each paid order saved (Google Sheet or database) and a confirmation email to the customer and to you. EmailJS is already set up for enquiries.", "Claude", "To do"),
