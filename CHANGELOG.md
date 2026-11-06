@@ -2,6 +2,16 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-06
+
+- **Bookmarks, a new kind of piece, at the top of "Just in":** a Flower
+  Bookmark Set of 4 (`MZ-BMK-001`), a White Daisy Bookmark (`MZ-BMK-002`)
+  and a Pink Flower Bookmark Pair (`MZ-BMK-003`), each a single photo as
+  Mayuri styled it. They replace the four unnamed "New Piece" listings the
+  Telegram bot made from the same photos sent without captions. A second photo of the white daisy was
+  left out so it isn't listed twice. The gallery, order form, Telegram bot (`#bookmarks`)
+  and price list all know the new type.
+
 ## 2026-11-05
 
 - **Every product has a code**, like `MZ-SCR-007` (Mayuri'z · Scrunchies ·
