@@ -20,7 +20,7 @@ Deep teal ruffles on a soft white band.
 ```
 
 Categories: `#scrunchies` `#bows` `#flowers` `#clips` `#keychains`
-`#garlands` `#hearts` `#coasters` `#jewellery` (bangles)
+`#garlands` `#hearts` `#coasters` `#jewellery` (bangles) `#bookmarks`
 
 Every photo goes up, first in the gallery and in the "Just in" row at the
 top of the page. The caption is optional: with no name it is called "New

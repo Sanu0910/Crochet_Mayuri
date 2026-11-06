@@ -45,10 +45,9 @@ export type Product = {
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
-  { image: "new-piece-4.jpg", name: "New Piece", tag: "New" },
-  { image: "new-piece-3.jpg", name: "New Piece", tag: "New" },
-  { image: "new-piece-2.jpg", name: "New Piece", tag: "New" },
-  { image: "new-piece.jpg", name: "New Piece", tag: "New" },
+  { image: "flower-bookmark-set.jpg", name: "Flower Bookmark Set of 4", tag: "Bookmarks" },
+  { image: "white-daisy-bookmark.jpg", name: "White Daisy Bookmark", tag: "Bookmarks" },
+  { image: "pink-flower-bookmark-pair.jpg", name: "Pink Flower Bookmark Pair", tag: "Bookmarks" },
   { image: "maroon-yellow-bobble-coaster.jpg", name: "Maroon & Yellow Bobble Coaster", tag: "Coasters" },
   { image: "daisy-chain-hair-band.jpg", name: "Daisy Chain Hair Band", tag: "Hair Bands" },
   { image: "sunflower-hair-band.jpg", name: "Sunflower Hair Band", tag: "Hair Bands" },

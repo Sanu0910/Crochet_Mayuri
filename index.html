@@ -1026,6 +1026,7 @@
             <option>Bow</option>
             <option>Flower / Rose</option>
             <option>Keychain</option>
+            <option>Bookmark</option>
             <option>Coaster</option>
             <option>Bangle</option>
             <option>Bag / Pouch</option>
@@ -1076,36 +1077,28 @@
   const PRODUCTS = [
     /* PRODUCTS:START */
     {
-      id: 'new-piece-4',
-      sku: 'MZ-NEW-004',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
-      image: 'images/new-piece-4.jpg'
+      id: 'flower-bookmark-set',
+      sku: 'MZ-BMK-001',
+      name: 'Flower Bookmark Set of 4',
+      cat: 'bookmarks', tag: 'Bookmarks', badge: 'Set of 4', fresh: true,
+      desc: 'Four flower bookmarks in pink, white, red and magenta, each with a sunny centre and a long green stem that hangs out of your book. Good books, happy me.',
+      image: 'images/flower-bookmark-set.jpg'
     },
     {
-      id: 'new-piece-3',
-      sku: 'MZ-NEW-003',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
-      image: 'images/new-piece-3.jpg'
+      id: 'white-daisy-bookmark',
+      sku: 'MZ-BMK-002',
+      name: 'White Daisy Bookmark',
+      cat: 'bookmarks', tag: 'Bookmarks', badge: 'Just in', fresh: true,
+      desc: 'A white daisy with a golden centre on a soft green stem. The flower peeks over the top of the page so you never lose your place.',
+      image: 'images/white-daisy-bookmark.jpg'
     },
     {
-      id: 'new-piece-2',
-      sku: 'MZ-NEW-002',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
-      image: 'images/new-piece-2.jpg'
-    },
-    {
-      id: 'new-piece',
-      sku: 'MZ-NEW-001',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
-      image: 'images/new-piece.jpg'
+      id: 'pink-flower-bookmark-pair',
+      sku: 'MZ-BMK-003',
+      name: 'Pink Flower Bookmark Pair',
+      cat: 'bookmarks', tag: 'Bookmarks', badge: 'Pair', fresh: true,
+      desc: 'A pair of flower bookmarks, one deep pink and one blush, on green crochet stems. One for you and one for a fellow reader.',
+      image: 'images/pink-flower-bookmark-pair.jpg'
     },
     {
       id: 'maroon-yellow-bobble-coaster',
@@ -1742,6 +1735,7 @@
     { key: 'flowers', label: 'Flowers & Roses' },
     { key: 'clips', label: 'Claw Clips' },
     { key: 'keychains', label: 'Keychains' },
+    { key: 'bookmarks', label: 'Bookmarks' },
     { key: 'coasters', label: 'Coasters' },
     { key: 'jewellery', label: 'Bangles' },
     { key: 'bags', label: 'Bags' },
@@ -2051,7 +2045,7 @@
   const orderContextText = document.getElementById('orderContextText');
   const clearOrderContext = document.getElementById('clearOrderContext');
 
-  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', coasters: 'Coaster', jewellery: 'Bangle', bags: 'Bag / Pouch', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
+  const CATEGORY_MAP = { scrunchies: 'Scrunchie', clips: 'Hair clip / Claw clip', bows: 'Bow', flowers: 'Flower / Rose', keychains: 'Keychain', bookmarks: 'Bookmark', coasters: 'Coaster', jewellery: 'Bangle', bags: 'Bag / Pouch', garlands: 'Garland / Hanging', hearts: 'Heart appliqué' };
 
   function fillOrderContext(product){
     categorySelect.value = CATEGORY_MAP[product.cat] || 'Something else';

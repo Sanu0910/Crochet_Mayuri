@@ -41,6 +41,7 @@ GROUPS = [  # code, shows under, website category, suggested HSN
     ("KEY", "Keychains", "Keychains", "6307"),
     ("CHM", "Charms", "Keychains", "6307"),
     ("HRT", "Hearts", "Hearts", "6307"),
+    ("BMK", "Bookmarks", "Bookmarks", "6307"),
     ("CST", "Coasters", "Coasters", "6304"),
     ("BNG", "Bangles", "Bangles", "7117"),
     ("BAG", "Bags", "Bags", "4202"),
