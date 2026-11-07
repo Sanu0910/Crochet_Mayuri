@@ -24,10 +24,12 @@ function Ok($t)   { Write-Host "   OK  $t" -ForegroundColor Green }
 function Warn($t) { Write-Host "   !!  $t" -ForegroundColor Yellow }
 
 function GitHub-Workflow($action) {
-    # One line per item, no BOM: Windows PowerShell 5 otherwise sends a BOM
-    # in front of "protocol=" and git refuses the request.
-    $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
-    $answer = @("protocol=https", "host=github.com", "") | git credential fill 2>$null
+    # Fed from a file through cmd: Windows PowerShell 5 puts a BOM in front of
+    # anything it pipes to git, and git then refuses the request.
+    $tmpIn = [IO.Path]::GetTempFileName()
+    [IO.File]::WriteAllText($tmpIn, "protocol=https`nhost=github.com`n`n")
+    $answer = cmd.exe /d /c "git credential fill < `"$tmpIn`" 2>nul"
+    [IO.File]::Delete($tmpIn)
     $token = ($answer | Where-Object { $_ -like "password=*" }) -replace '^password=', ''
     if (-not $token) { Warn "No GitHub login on this PC; $action the 'Telegram uploader' workflow by hand in the Actions tab."; return }
     try {

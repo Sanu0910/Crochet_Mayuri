@@ -71,10 +71,12 @@ $ReportChats = if ($settings["REPORT_CHATS"]) { $settings["REPORT_CHATS"] } else
 
 function GitHub-Token {
     # The same login `git push` uses, read from Windows' credential manager.
-    # One line per item, no BOM: Windows PowerShell 5 otherwise sends a BOM
-    # in front of "protocol=" and git refuses the request.
-    $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
-    $answer = @("protocol=https", "host=github.com", "") | git credential fill 2>$null
+    # Fed from a file through cmd: Windows PowerShell 5 puts a BOM in front of
+    # anything it pipes to git, and git then refuses the request.
+    $tmpIn = [IO.Path]::GetTempFileName()
+    [IO.File]::WriteAllText($tmpIn, "protocol=https`nhost=github.com`n`n")
+    $answer = cmd.exe /d /c "git credential fill < `"$tmpIn`" 2>nul"
+    [IO.File]::Delete($tmpIn)
     foreach ($l in $answer) { if ($l -like "password=*") { return $l.Substring(9) } }
     return ""
 }
