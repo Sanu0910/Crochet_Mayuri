@@ -314,6 +314,19 @@ def main() -> int:
                 chat_id = message["chat"]["id"]
                 text = (message.get("text") or "").strip()
 
+                # One line per message in the PC's log, so "what came in?"
+                # can be answered later (Telegram can't replay old messages).
+                sender = message.get("from", {})
+                chat = message["chat"]
+                body = text or (message.get("caption") or "").strip()
+                kind = "photo" if message.get("photo") else "document" if message.get("document") else "text"
+                log.info(
+                    "message from %s (%s) in %s: %s %s",
+                    sender.get("first_name") or sender.get("username") or "?", user_id,
+                    chat.get("title") or "private chat", kind,
+                    (body[:80] + "…") if len(body) > 80 else body,
+                )
+
                 if user_id not in ALLOWED:
                     # Tell them their id so the allow-list is easy to fill in,
                     # but only when they actually addressed the bot.
