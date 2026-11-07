@@ -149,6 +149,32 @@ open. Categories become buttons to tap rather than hashtags. It needs a host
 (~$5/month) and the same three variables. Only one of the three modes may be
 live at a time: two things polling the same bot fight over updates.
 
+### Running it on a PC — what Mayuri'z uses now
+
+`tools/run-bot.ps1` does the GitHub workflow's job on a Windows PC, in a
+loop: it waits on Telegram (replies in a second or two), runs
+`poll_once.py`, commits, pushes to `main` with the PC's own GitHub login,
+and runs `announce.py`. It works in its own clone at
+`%LOCALAPPDATA%\MayurizBot\site`, reset to GitHub before every upload, so it
+never touches the folder you edit by hand and always runs the latest bot
+code.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\install-bot.ps1          # set up + start
+powershell -ExecutionPolicy Bypass -File tools\install-bot.ps1 -Remove  # hand back to GitHub
+```
+
+The first run opens `%USERPROFILE%\.mayuriz\bot.env` in Notepad for the
+token from @BotFather; save it and run the installer again. It then adds a
+"Mayuriz Telegram bot" task that starts hidden at every logon, removes the
+Telegram webhook (the Worker), and disables the GitHub "Telegram uploader"
+workflow so only one thing reads the bot.
+
+- **The PC must be on and online.** While it's off, photos wait in Telegram
+  (up to 24 hours) and go up as soon as it's back.
+- Log: `%LOCALAPPDATA%\MayurizBot\bot.log`. Stop it for now:
+  `Stop-ScheduledTask "Mayuriz Telegram bot"`.
+
 > **`GIT_BRANCH` matters.** GitHub Pages publishes this repo from `main`,
 > so the bot commits there. If Pages is ever repointed at another branch,
 > change it to match or uploads go nowhere visible.

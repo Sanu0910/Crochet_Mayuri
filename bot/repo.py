@@ -37,7 +37,7 @@ class Repo:
             ["git", *args],
             cwd=self.path,
             capture_output=True,
-            text=True,
+            text=True, encoding="utf-8", errors="replace",
             timeout=300,
         )
         if check and result.returncode != 0:
@@ -59,7 +59,7 @@ class Repo:
         result = subprocess.run(
             ["git", "clone", "--depth", "50", "--branch", self.branch,
              self._authed_url, str(self.path)],
-            capture_output=True, text=True, timeout=600,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600,
         )
         if result.returncode != 0:
             raise GitError(f"clone failed: {self._redact(result.stderr).strip()}")
@@ -95,7 +95,7 @@ class Repo:
         for attempt in range(3):
             result = subprocess.run(
                 ["git", "push", "origin", self.branch],
-                cwd=self.path, capture_output=True, text=True, timeout=300,
+                cwd=self.path, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300,
             )
             if result.returncode == 0:
                 return sha
@@ -103,7 +103,7 @@ class Repo:
             log.warning("push rejected (attempt %d), rebasing", attempt + 1)
             rebase = subprocess.run(
                 ["git", "pull", "--rebase", "origin", self.branch],
-                cwd=self.path, capture_output=True, text=True, timeout=300,
+                cwd=self.path, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300,
             )
             if rebase.returncode != 0:
                 self._git("rebase", "--abort", check=False)
@@ -121,7 +121,7 @@ class Repo:
         sha = self._git("rev-parse", "--short", "HEAD")
         result = subprocess.run(
             ["git", "push", "origin", self.branch],
-            cwd=self.path, capture_output=True, text=True, timeout=300,
+            cwd=self.path, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300,
         )
         if result.returncode != 0:
             raise GitError(f"couldn't push the undo: {self._redact(result.stderr).strip()}")

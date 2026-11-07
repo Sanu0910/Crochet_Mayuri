@@ -62,7 +62,7 @@ def next_sku(index_html: str, tag: str) -> str:
 def insert_into_index(
     path: Path, *, product_id: str, name: str, cat: str, desc: str, image: str
 ) -> None:
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     if f"id: '{product_id}'" in text:
         raise SiteEditError(f"a product with the id '{product_id}' already exists")
 
@@ -81,12 +81,12 @@ def insert_into_index(
 
     # Newest first: straight after the START marker.
     at, _ = _marker_span(text, path)
-    path.write_text(text[:at] + entry + text[at:])
+    path.write_text(text[:at] + entry + text[at:], encoding="utf-8", newline="")
 
 
 def insert_into_film(path: Path, *, name: str, cat: str, image: str) -> None:
     """Keep video/src/theme.ts in step, so the next render includes the piece."""
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     category = BY_KEY[cat]
     entry = (
         f'  {{ image: "{image}", '
@@ -95,7 +95,7 @@ def insert_into_film(path: Path, *, name: str, cat: str, image: str) -> None:
     )
 
     at, _ = _marker_span(text, path)
-    path.write_text(text[:at] + entry + text[at:])
+    path.write_text(text[:at] + entry + text[at:], encoding="utf-8", newline="")
 
 
 def _ts_string(value: str) -> str:
@@ -113,7 +113,7 @@ def remove_product(
     a partial name is only accepted when it picks out exactly one piece.
     "priced" must not quietly match "Unpriced Bow".
     """
-    text = index_path.read_text()
+    text = index_path.read_text(encoding="utf-8")
     entries = re.findall(r"    \{\n(?:.*\n)*?    \},\n", text)
 
     found = []
@@ -146,13 +146,13 @@ def remove_product(
         )
 
     entry, _, name, image = matches[0]
-    index_path.write_text(text.replace(entry, "", 1))
+    index_path.write_text(text.replace(entry, "", 1), encoding="utf-8", newline="")
 
-    theme = theme_path.read_text()
+    theme = theme_path.read_text(encoding="utf-8")
     theme_line = re.search(r'^  \{ image: "%s".*\},\n' % re.escape(image),
                            theme, re.MULTILINE)
     if theme_line:
-        theme_path.write_text(theme.replace(theme_line.group(0), "", 1))
+        theme_path.write_text(theme.replace(theme_line.group(0), "", 1), encoding="utf-8", newline="")
 
     photo = images_dir / image
     if photo.exists():
@@ -199,7 +199,7 @@ def update_product(
     gallery, the film and any link already point at, and renaming them to
     follow a wording change would break more than it tidies.
     """
-    text = index_path.read_text()
+    text = index_path.read_text(encoding="utf-8")
     entry, _, old_name, image = _find_entry(text, query)
 
     updated = entry
@@ -209,16 +209,16 @@ def update_product(
     if desc:
         updated = re.sub(r"(desc: ')[^']*(')", lambda m: m.group(1) + _js_string(desc) + m.group(2),
                          updated, count=1)
-    index_path.write_text(text.replace(entry, updated, 1))
+    index_path.write_text(text.replace(entry, updated, 1), encoding="utf-8", newline="")
 
     if name:
-        theme = theme_path.read_text()
+        theme = theme_path.read_text(encoding="utf-8")
         line = re.search(r'^  \{ image: "%s", name: "[^"]*"' % re.escape(image),
                          theme, re.MULTILINE)
         if line:
             # The match runs from the start of the line through the closing
             # quote of the old name, so the replacement rebuilds exactly that.
             replacement = f'  {{ image: "{image}", name: {_ts_string(name)}'
-            theme_path.write_text(theme.replace(line.group(0), replacement, 1))
+            theme_path.write_text(theme.replace(line.group(0), replacement, 1), encoding="utf-8", newline="")
 
     return old_name, (name or old_name)

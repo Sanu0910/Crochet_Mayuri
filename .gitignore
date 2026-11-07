@@ -3,6 +3,11 @@
 *.xlsx
 ~$*
 
+# Secrets live on the PC, never in this public repository.
+.env
+*.env
+bot.env
+
 # Python and editor clutter
 __pycache__/
 *.pyc

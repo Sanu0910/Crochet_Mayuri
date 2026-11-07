@@ -120,7 +120,7 @@ def parse_caption(caption: str) -> tuple[str | None, str, str | None, str | None
 
 def shop_list() -> str:
     """Every piece, by category — the names /remove and /caption expect."""
-    index = (REPO_ROOT / "index.html").read_text()
+    index = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
     entries = re.findall(r"name: '([^']+)',\n      cat: '([a-z]+)'", index)
     if not entries:
         return "Nothing on the site yet."
@@ -144,15 +144,15 @@ def shop_status() -> str:
     import subprocess
     from collections import Counter
 
-    index = (REPO_ROOT / "index.html").read_text()
+    index = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
     cats = Counter(re.findall(r"cat: '([a-z]+)'", index))
     photos = len(list((REPO_ROOT / "images").glob("*.jpg")))
-    film_scenes = len(re.findall(r'image: "', (REPO_ROOT / "video/src/theme.ts").read_text()))
+    film_scenes = len(re.findall(r'image: "', (REPO_ROOT / "video/src/theme.ts").read_text(encoding="utf-8")))
 
     try:
         last = subprocess.run(
             ["git", "log", "-1", "--pretty=%h \u00b7 %s \u00b7 %cr"],
-            cwd=REPO_ROOT, capture_output=True, text=True, timeout=30).stdout.strip()
+            cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30).stdout.strip()
     except Exception:
         last = "unknown"
 
@@ -431,7 +431,8 @@ def main() -> int:
 
         COMMIT_MSG_FILE.write_text(
             title + "\n" + body
-            + "\n\nThe film's scene list was updated to match; /film re-renders it.\n"
+            + "\n\nThe film's scene list was updated to match; /film re-renders it.\n",
+            encoding="utf-8",
         )
         ANNOUNCE_FILE.write_text(json.dumps({
             "notices": notices,
@@ -439,7 +440,7 @@ def main() -> int:
             "added": [a.split(" (")[0] for a in added],
             "removed": removed,
             "edited": edited,
-        }))
+        }), encoding="utf-8")
         log.info("added: %s | removed: %s | edited: %s", added, removed, edited)
     else:
         log.info("nothing to publish")

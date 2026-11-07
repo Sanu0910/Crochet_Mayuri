@@ -33,7 +33,7 @@ def main() -> int:
         log.warning("no TELEGRAM_TOKEN, skipping the announcement")
         return 0
 
-    plan = json.loads(ANNOUNCE_FILE.read_text())
+    plan = json.loads(ANNOUNCE_FILE.read_text(encoding="utf-8"))
     notices = plan.get("notices") or []
     chats = plan.get("chats") or []
     removed = plan.get("removed") or []

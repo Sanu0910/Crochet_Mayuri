@@ -16,6 +16,19 @@ in `images/`, no build step.
 - After a change: check the page at phone width (390px) and desktop, then
   commit with a clear message and push to `main`.
 
+## What lives where
+
+| On GitHub (public) | Only on the PC (never commit) |
+|---|---|
+| the site: `index.html`, `images/`, `media/`, `CNAME`, `robots.txt`, `sitemap.xml` | Telegram token: `%USERPROFILE%\.mayuriz\bot.env` |
+| bot code `bot/`, film `video/`, scripts `tools/`, docs | GitHub login: Windows Credential Manager |
+| workflows `.github/` (film render; Telegram uploader is **disabled** while the PC runs the bot) | filled price list `*.xlsx` (costs, profit), kept outside the repo |
+| | bot's working clone + log: `%LOCALAPPDATA%\MayurizBot\` |
+| | `video/node_modules`, rendered `video/out/` |
+
+The Telegram bot runs on this PC (`tools/run-bot.ps1`, started at logon by
+`tools/install-bot.ps1`), not on GitHub. See `bot/README.md`.
+
 ## Products
 
 All products live in the `PRODUCTS` array in `index.html`, between the

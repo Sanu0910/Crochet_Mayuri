@@ -44,7 +44,7 @@ def main() -> int:
         subprocess.run(["git", "clone", "--bare", "--no-local", str(REPO), str(origin)],
                        check=True, capture_output=True)
         branch = subprocess.run(["git", "-C", str(REPO), "branch", "--show-current"],
-                                check=True, capture_output=True, text=True).stdout.strip()
+                                check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout.strip()
 
         repo = Repo(url=f"file://{origin}", token="unused", branch=branch,
                     workdir=tmp / "work")
@@ -59,9 +59,12 @@ def main() -> int:
         check(slug == "peacock-blue-test-bow", "name becomes a sensible file slug")
 
         filename = save_photo(raw, repo.path / "images", slug)
-        saved = Image.open(repo.path / "images" / filename)
-        check(saved.width == 1100, f"photo is resized to 1100px wide (got {saved.width})")
-        check(saved.height == 1467, f"aspect ratio is kept (got {saved.height})")
+        # Closed straight away: Windows won't let git replace a file that is
+        # still open, and the race test below rebases over this one.
+        with Image.open(repo.path / "images" / filename) as saved:
+            width, height = saved.size
+        check(width == 1100, f"photo is resized to 1100px wide (got {width})")
+        check(height == 1467, f"aspect ratio is kept (got {height})")
 
         insert_into_index(repo.path / "index.html", product_id=slug,
                           name="Peacock Blue Test Bow", cat="bows",
@@ -75,18 +78,18 @@ def main() -> int:
         # --- did it actually land on the "remote"? ---
         pushed = subprocess.run(
             ["git", "-C", str(origin), "show", f"{branch}:index.html"],
-            check=True, capture_output=True, text=True).stdout
+            check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
         check(f"images/{filename}" in pushed, "the remote's index.html has the new photo")
         check("id: 'peacock-blue-test-bow'" in pushed, "the remote's index.html has the new product")
 
         pushed_theme = subprocess.run(
             ["git", "-C", str(origin), "show", f"{branch}:video/src/theme.ts"],
-            check=True, capture_output=True, text=True).stdout
+            check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
         check(f'image: "{filename}"' in pushed_theme, "the remote's film list has the new scene")
 
         blob = subprocess.run(
             ["git", "-C", str(origin), "cat-file", "-s", f"{branch}:images/{filename}"],
-            check=True, capture_output=True, text=True).stdout.strip()
+            check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout.strip()
         check(int(blob) > 1000, f"the photo itself was pushed ({int(blob)//1024} KB)")
 
         after_images = len(list((repo.path / "images").glob("*.jpg")))
@@ -105,11 +108,11 @@ def main() -> int:
         check("Peacock Blue" in subject, "undo reports what it undid")
         reverted = subprocess.run(
             ["git", "-C", str(origin), "show", f"{branch}:index.html"],
-            check=True, capture_output=True, text=True).stdout
+            check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
         check("peacock-blue-test-bow" not in reverted, "undo removes the product from the remote")
         remaining = subprocess.run(
             ["git", "-C", str(origin), "ls-tree", f"{branch}", "images/"],
-            check=True, capture_output=True, text=True).stdout
+            check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
         check(filename not in remaining, "undo removes the photo too")
 
         # --- a push that races another push still lands ---
@@ -117,7 +120,7 @@ def main() -> int:
         subprocess.run(["git", "clone", str(origin), str(other)], check=True, capture_output=True)
         subprocess.run(["git", "-C", str(other), "config", "user.email", "t@t"], check=True)
         subprocess.run(["git", "-C", str(other), "config", "user.name", "t"], check=True)
-        (other / "SOMEONE_ELSE.md").write_text("landed first\n")
+        (other / "SOMEONE_ELSE.md").write_text("landed first\n", encoding="utf-8", newline="")
         subprocess.run(["git", "-C", str(other), "add", "-A"], check=True)
         subprocess.run(["git", "-C", str(other), "commit", "-m", "someone else"],
                        check=True, capture_output=True)
@@ -127,7 +130,7 @@ def main() -> int:
         race_sha = repo.commit_and_push("Add a piece during a race")
         check(bool(race_sha), "a push that lost a race is rebased and retried")
         final = subprocess.run(["git", "-C", str(origin), "ls-tree", f"{branch}"],
-                               check=True, capture_output=True, text=True).stdout
+                               check=True, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
         check("SOMEONE_ELSE.md" in final, "the other person's commit survived the race")
 
     print()

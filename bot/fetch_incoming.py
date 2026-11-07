@@ -77,11 +77,11 @@ def main() -> int:
         log.info("saved %s (%d KB) from %s: %r", name, len(raw) // 1024,
                  manifest[-1]["from"], caption[:80])
 
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8", newline="")
     last = max((u["update_id"] for u in updates), default=None)
     summary = os.environ.get("GITHUB_OUTPUT")
     if summary:
-        with open(summary, "a") as fh:
+        with open(summary, "a", encoding="utf-8") as fh:
             fh.write(f"count={len(manifest)}\n")
             fh.write(f"last_update={last if last is not None else ''}\n")
     log.info("%d photo(s) collected", len(manifest))

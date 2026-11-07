@@ -2,6 +2,15 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-07
+
+- **The Telegram bot can run on the shop's PC** instead of GitHub:
+  `tools/install-bot.ps1` starts it at every logon (`tools/run-bot.ps1`), so
+  replies come in seconds. The token stays on the PC, never in the repo.
+- **The bot now works on Windows.** It read and wrote `index.html` in the
+  PC's default encoding and crashed on the first ₹ or emoji; everything is
+  UTF-8 now, and both bot tests pass on Windows.
+
 ## 2026-11-06
 
 - **Bookmarks, a new kind of piece, at the top of "Just in":** a Flower
