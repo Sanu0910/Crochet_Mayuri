@@ -1,4 +1,4 @@
-# Mayuri'z: make this PC the Telegram bot, starting by itself at every logon.
+﻿# Mayuri'z: make this PC the Telegram bot, starting by itself at every logon.
 #
 #   powershell -ExecutionPolicy Bypass -File tools\install-bot.ps1            # install / restart
 #   powershell -ExecutionPolicy Bypass -File tools\install-bot.ps1 -Remove    # hand back to GitHub

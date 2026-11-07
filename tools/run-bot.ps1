@@ -1,4 +1,4 @@
-# Mayuri'z: run the Telegram uploader on this PC instead of on GitHub.
+﻿# Mayuri'z: run the Telegram uploader on this PC instead of on GitHub.
 #
 # Does what .github/workflows/telegram-uploader.yml does, in a loop:
 #   check Telegram -> resize photo, edit index.html + theme.ts -> commit ->
@@ -96,6 +96,61 @@ try {
     Log "Can't reach Telegram with that token: $($_.Exception.Message)"
     exit 1
 }
+
+function Send-Report {
+    # A short "website manager" report to everyone on the allow-list, each
+    # time the bot starts: is the site up, what's on it, is the bot healthy.
+    $esc = { param($s) [System.Net.WebUtility]::HtmlEncode("$s") }
+    try {
+        $code = (Invoke-WebRequest -UseBasicParsing -TimeoutSec 20 $SiteUrl).StatusCode
+        $siteLine = if ($code -eq 200) { "✅ Live and loading (HTTP 200)" } else { "⚠️ Answered HTTP $code" }
+    } catch { $siteLine = "❌ Not loading: $(& $esc $_.Exception.Message)" }
+
+    $index  = Get-Content (Join-Path $Site "index.html") -Raw -Encoding utf8
+    $pieces = ([regex]::Matches($index, "sku: 'MZ-")).Count
+    $fresh  = ([regex]::Matches($index, "fresh: true")).Count
+    $photos = @(Get-ChildItem (Join-Path $Site "images") -Filter *.jpg).Count
+    $match  = if ($pieces -eq $photos) { "✅ Every photo has one card" } else { "⚠️ $pieces cards vs $photos photos" }
+    $last   = (git -C $Site log -1 --pretty="%h · %s · %cr") -join ""
+    $now    = Get-Date -Format "d MMM yyyy, h:mm tt"
+
+    $text = @"
+🧶 <b>Mayuri'z · Website report</b>
+<i>$now</i>
+
+<b>Website</b>
+$siteLine
+✅ $pieces pieces in the shop, $fresh marked "Just in"
+$match
+📝 Last change: <code>$(& $esc $last)</code>
+
+<b>Telegram bot</b>
+✅ Online on the shop PC, replies in seconds
+✅ GitHub copy switched off, so nothing posts twice
+⚠️ Works only while the PC is on and online
+
+<b>Commands</b>
+/status · /list · /rename · /caption · /remove · /film · /help
+
+<b>To add a piece:</b> send a photo with a caption like
+<code>Ocean Blue Scrunchie #scrunchies
+Soft teal ruffles on a white band.</code>
+$SiteUrl
+"@
+    foreach ($id in $Allowed.Split(",")) {
+        try {
+            Invoke-RestMethod -Method Post -ContentType "application/json; charset=utf-8" `
+                -Uri "https://api.telegram.org/bot$Token/sendMessage" `
+                -Body ([System.Text.Encoding]::UTF8.GetBytes((@{ chat_id = $id.Trim(); text = $text; parse_mode = "HTML"; disable_web_page_preview = $true } | ConvertTo-Json))) | Out-Null
+            Log "Report sent to $id"
+        } catch {
+            # 403: that person hasn't pressed Start in the bot's chat yet.
+            Log "Report not delivered to ${id}: $($_.Exception.Message)"
+        }
+    }
+}
+
+try { Send-Report } catch { Log "Report failed: $($_.Exception.Message)" }
 
 $CommitMsg = Join-Path $Tmp "commit-msg.txt"
 $Announce  = Join-Path $Tmp "announce.json"
