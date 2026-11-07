@@ -101,6 +101,11 @@ Both must print `all passed` before pushing changes to `bot/` or to the
 
 - `CHANGELOG.md`: add a short dated entry, newest first, for visible changes.
 - `STATUS.md`: latest health check (site, tests, bot); update it after each check.
+- **Telegram notes:** after every pushed change, health check, or other notable
+  event (setup, problem found/fixed, something the owner must do), post a
+  short plain-language note to the team group:
+  `pwsh tools/telegram-note.ps1 "first point" "second point"` (one bullet per
+  argument, 1–4 bullets). Never put secrets, keys or costs in a note.
 - `bot/README.md`: how the Telegram bot works (captions, `#category`
   hashtags, `/rename`, `/caption`, `/remove`, `/film`).
 - `SETUP.md`: domain DNS and EmailJS. Don't delete `CNAME`.
