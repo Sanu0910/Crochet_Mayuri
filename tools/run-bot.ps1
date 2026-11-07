@@ -66,10 +66,15 @@ foreach ($line in Get-Content $Config) {
 $Token = $settings["TELEGRAM_TOKEN"]
 if (-not $Token -or $Token -like "*paste*") { Log "TELEGRAM_TOKEN is not filled in in $Config."; exit 1 }
 $Allowed = if ($settings["ALLOWED_USER_IDS"]) { $settings["ALLOWED_USER_IDS"] } else { "924868395,5770732970" }
+# Where the start-up report goes: the team group "Mayuri's Yarn Tales Updates".
+$ReportChats = if ($settings["REPORT_CHATS"]) { $settings["REPORT_CHATS"] } else { "-1003843804840" }
 
 function GitHub-Token {
     # The same login `git push` uses, read from Windows' credential manager.
-    $answer = "protocol=https`nhost=github.com`n`n" | git credential fill 2>$null
+    # One line per item, no BOM: Windows PowerShell 5 otherwise sends a BOM
+    # in front of "protocol=" and git refuses the request.
+    $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+    $answer = @("protocol=https", "host=github.com", "") | git credential fill 2>$null
     foreach ($l in $answer) { if ($l -like "password=*") { return $l.Substring(9) } }
     return ""
 }
@@ -98,7 +103,7 @@ try {
 }
 
 function Send-Report {
-    # A short "website manager" report to everyone on the allow-list, each
+    # A short "website manager" report to the team group (REPORT_CHATS), each
     # time the bot starts: is the site up, what's on it, is the bot healthy.
     $esc = { param($s) [System.Net.WebUtility]::HtmlEncode("$s") }
     try {
@@ -137,20 +142,27 @@ $match
 Soft teal ruffles on a white band.</code>
 $SiteUrl
 "@
-    foreach ($id in $Allowed.Split(",")) {
+    foreach ($id in $ReportChats.Split(",")) {
         try {
             Invoke-RestMethod -Method Post -ContentType "application/json; charset=utf-8" `
                 -Uri "https://api.telegram.org/bot$Token/sendMessage" `
                 -Body ([System.Text.Encoding]::UTF8.GetBytes((@{ chat_id = $id.Trim(); text = $text; parse_mode = "HTML"; disable_web_page_preview = $true } | ConvertTo-Json))) | Out-Null
             Log "Report sent to $id"
         } catch {
-            # 403: that person hasn't pressed Start in the bot's chat yet.
+            # 403/400: the bot was removed from that group, or a person hasn't pressed Start.
             Log "Report not delivered to ${id}: $($_.Exception.Message)"
         }
     }
 }
 
-try { Send-Report } catch { Log "Report failed: $($_.Exception.Message)" }
+# At most one report every 6 hours, so restarts (crash, reboot, logon) never
+# flood the group.
+$Stamp = Join-Path $Home_ "last-report.txt"
+$due = -not (Test-Path $Stamp) -or ((Get-Date) - (Get-Item $Stamp).LastWriteTime).TotalHours -ge 6
+if ($due) {
+    try { Send-Report; Set-Content $Stamp (Get-Date -Format o) }
+    catch { Log "Report failed: $($_.Exception.Message)" }
+}
 
 $CommitMsg = Join-Path $Tmp "commit-msg.txt"
 $Announce  = Join-Path $Tmp "announce.json"

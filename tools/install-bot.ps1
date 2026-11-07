@@ -24,7 +24,10 @@ function Ok($t)   { Write-Host "   OK  $t" -ForegroundColor Green }
 function Warn($t) { Write-Host "   !!  $t" -ForegroundColor Yellow }
 
 function GitHub-Workflow($action) {
-    $answer = "protocol=https`nhost=github.com`n`n" | git credential fill 2>$null
+    # One line per item, no BOM: Windows PowerShell 5 otherwise sends a BOM
+    # in front of "protocol=" and git refuses the request.
+    $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+    $answer = @("protocol=https", "host=github.com", "") | git credential fill 2>$null
     $token = ($answer | Where-Object { $_ -like "password=*" }) -replace '^password=', ''
     if (-not $token) { Warn "No GitHub login on this PC; $action the 'Telegram uploader' workflow by hand in the Actions tab."; return }
     try {
@@ -64,7 +67,10 @@ if ((Get-Content $Config -Raw) -match "TELEGRAM_TOKEN=paste") {
 }
 
 # 2. A logon task that runs the bot hidden, and restarts it if it stops.
-$action   = New-ScheduledTaskAction -Execute "powershell.exe" `
+# PowerShell 7 if it's there: Windows PowerShell 5 garbles what it pipes to git.
+$shell    = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
+if (-not $shell) { $shell = "powershell.exe" }
+$action   = New-ScheduledTaskAction -Execute $shell `
             -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$Runner`""
 $trigger  = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
