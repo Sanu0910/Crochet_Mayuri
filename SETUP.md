@@ -107,6 +107,29 @@ checkbox on the form. That needs its own free reCAPTCHA v2 site key from
 [google.com/recaptcha](https://www.google.com/recaptcha/about/) plus a
 small code change here — ask for that to be wired in if/when it's needed.
 
+# New-arrivals sign-ups (the welcome popup)
+
+A few seconds after someone opens the site, a popup shows the **two newest
+pieces** (the first two in `PRODUCTS`) and asks for their email to hear about
+new arrivals. It shows once, then again after 7 days or when a newer piece is
+added, and never again after the visitor signs up.
+
+Sign-ups are sent by **Web3Forms** (free) to the shop inbox, one email per
+person ("New subscriber for new arrivals: …"). One-time setup:
+
+1. Go to [web3forms.com](https://web3forms.com), enter the shop email
+   (`mayurighoshblg@gmail.com`) and press **Create Access Key**.
+2. Copy the key from the email they send you.
+3. In `index.html`, find `WEB3FORMS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY"` and paste
+   the key in place of `YOUR_WEB3FORMS_ACCESS_KEY`. Commit and push.
+
+The key is meant to be public (it can only send mail to that one inbox), so
+it's fine in the website code. Until it's added, "Notify me" opens the
+visitor's email app with a ready "Subscribe me" email instead.
+
+To see the popup again while testing, open the site with `?welcome=1` on the
+end, e.g. `https://mayurisyarntales.online/?welcome=1`.
+
 ## Adding more product photos
 
 In `index.html`, each gallery item lives in the `PRODUCTS` array inside the

@@ -4,6 +4,10 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-07
 
+- **A welcome popup with the two newest pieces** and a "Notify me" box so
+  visitors can leave their email to hear about new arrivals. Shown once,
+  then weekly or when something new is added; never after signing up.
+  Sign-ups go to the shop inbox through Web3Forms (setup in `SETUP.md`).
 - **A crochet hook for a mouse pointer.** On computers the cursor is now a
   small crochet hook in the brand red (with the usual hand over links and
   buttons). Text boxes keep the normal text cursor; phones are unchanged.

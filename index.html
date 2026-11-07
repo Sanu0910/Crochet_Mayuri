@@ -658,6 +658,56 @@
     .card-badge,.zoom-hint{background:#fff; border:1px solid var(--hairline); backdrop-filter:none;}
   }
 
+  /* ---------- welcome popup: two newest pieces + email sign-up ---------- */
+  .welcome{
+    position:fixed; inset:0; z-index:210;
+    background:rgba(29,29,31,0.45); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center; padding:16px;
+    opacity:0; visibility:hidden;
+    transition:opacity .3s var(--ease-out), visibility 0s linear .3s;
+  }
+  .welcome[hidden]{display:none;}
+  .welcome.open{opacity:1; visibility:visible; transition:opacity .3s var(--ease-out);}
+  .welcome-card{
+    position:relative; width:100%; max-width:440px; max-height:calc(100vh - 32px); overflow-y:auto;
+    background:var(--surface); border-radius:var(--r-lg); padding:28px 24px 22px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.25);
+    transform:translateY(16px) scale(0.97); transition:transform .4s var(--ease-out);
+  }
+  .welcome.open .welcome-card{transform:none;}
+  .welcome-close{
+    position:absolute; top:12px; right:12px; width:36px; height:36px; border:none; border-radius:50%;
+    background:rgba(0,0,0,0.06); color:var(--ink); font-size:1rem; cursor:var(--pointer);
+  }
+  .welcome-close:hover{background:rgba(0,0,0,0.12);}
+  .welcome-eyebrow{font-family:'Caveat',cursive; font-weight:700; font-size:1.35rem; color:var(--accent); margin:0;}
+  .welcome-title{margin:2px 0 4px; font-size:1.45rem; font-weight:700; letter-spacing:-0.022em; line-height:1.2; color:var(--ink);}
+  .welcome-sub{margin:0 0 16px; font-size:.92rem; color:var(--ink-soft); line-height:1.45;}
+  .welcome-items{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;}
+  .welcome-items .justin-name{font-size:.88rem;}
+  .welcome-form{border:0; border-top:1px solid var(--hairline); border-radius:0; padding:18px 0 0; background:none;}
+  .welcome-form label{display:block; font-size:.95rem; font-weight:600; color:var(--ink); margin-bottom:4px;}
+  .welcome-form p{margin:0 0 12px; font-size:.85rem; color:var(--ink-soft); line-height:1.4;}
+  .welcome-row{display:flex; gap:8px;}
+  .welcome-row input{
+    flex:1; min-width:0; padding:12px 14px; border-radius:980px;
+    border:1px solid var(--hairline); background:var(--surface);
+    font-family:var(--sans); font-size:16px; color:var(--ink);
+  }
+  .welcome-row input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}
+  .welcome-row .submit-btn{width:auto; padding:12px 18px; white-space:nowrap;}
+  .welcome-hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0;}
+  .welcome-status{margin:10px 0 0 !important; font-size:.88rem !important; font-weight:500;}
+  .welcome-status:empty{display:none;}
+  .welcome-status.ok{color:#2e7d4f !important;}
+  .welcome-status.err{color:#b3261e !important;}
+  .welcome-note{margin:8px 0 0 !important; font-size:.76rem !important; color:var(--ink-faint) !important;}
+  @media (max-width:380px){
+    .welcome-row{flex-direction:column;}
+    .welcome-row .submit-btn{width:100%;}
+  }
+  @media (prefers-reduced-transparency: reduce){ .welcome{backdrop-filter:none; background:rgba(29,29,31,0.6);} }
+
   /* ---------- launch week (shown only until the offer ends; see LAUNCH_END) ---------- */
   .launch-bar{
     position:relative; z-index:61;
@@ -976,6 +1026,28 @@
     <div class="lb-caption" id="lbCaption"></div>
     <div class="lb-counter" id="lbCounter"></div>
     <div class="lb-dots" id="lbDots"></div>
+  </div>
+</div>
+
+<!-- ---------- WELCOME POPUP (newest two pieces + email sign-up) ---------- -->
+<div class="welcome" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" hidden>
+  <div class="welcome-card">
+    <button type="button" class="welcome-close" id="welcomeClose" aria-label="Close">✕</button>
+    <p class="welcome-eyebrow">Fresh off the hook</p>
+    <h2 class="welcome-title" id="welcomeTitle">New arrivals</h2>
+    <p class="welcome-sub">The latest pieces Mayuri just finished. Tap one to see it up close.</p>
+    <div class="welcome-items" id="welcomeItems"></div>
+    <form class="welcome-form" id="welcomeForm" novalidate>
+      <label for="welcomeEmail">Hear about new pieces first</label>
+      <p>Leave your email and we&rsquo;ll let you know when something new is made.</p>
+      <div class="welcome-row">
+        <input type="email" id="welcomeEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+        <button type="submit" class="submit-btn" id="welcomeBtn">Notify me</button>
+      </div>
+      <input type="checkbox" name="botcheck" class="welcome-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="welcome-status" id="welcomeStatus" role="status" aria-live="polite"></p>
+      <p class="welcome-note">Only new-arrival updates. No spam, and you can ask to stop any time.</p>
+    </form>
   </div>
 </div>
 
@@ -2282,6 +2354,156 @@
     submitBtn.disabled = false;
     submitBtn.textContent = '🧶 Send my request';
   });
+
+  // ============================================================
+  // WELCOME POPUP: the two newest pieces + "email me new arrivals"
+  //
+  // Sign-ups are sent by Web3Forms (free, web3forms.com) to the shop
+  // inbox. Paste the access key from Web3Forms below. The key is safe to
+  // be public: it can only send mail to the inbox it was made for.
+  // Until it's filled in, "Notify me" opens the visitor's email app with
+  // a ready "Subscribe me" email instead.
+  //
+  // Shown once, a few seconds after the page opens; again after 7 days
+  // (or sooner if a newer piece has been added); never again once the
+  // visitor has signed up.
+  // ============================================================
+  const WEB3FORMS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+  const web3Ready = !WEB3FORMS_KEY.startsWith('YOUR_');
+  const WELCOME_KEY = 'mz-welcome';
+  const WELCOME_GAP_DAYS = 7;
+
+  const welcome = document.getElementById('welcome');
+  const welcomeItems = document.getElementById('welcomeItems');
+  const welcomeForm = document.getElementById('welcomeForm');
+  const welcomeEmail = document.getElementById('welcomeEmail');
+  const welcomeBtn = document.getElementById('welcomeBtn');
+  const welcomeStatus = document.getElementById('welcomeStatus');
+  const NEWEST = PRODUCTS.slice(0, 2);
+  let welcomeOpener = null;
+
+  function readWelcome(){
+    try { return JSON.parse(localStorage.getItem(WELCOME_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function saveWelcome(extra){
+    try {
+      localStorage.setItem(WELCOME_KEY, JSON.stringify(
+        Object.assign(readWelcome(), { seen: Date.now(), newest: NEWEST[0] && NEWEST[0].id }, extra)));
+    } catch (e) { /* private mode: popup simply shows again next visit */ }
+  }
+  function shouldShowWelcome(){
+    if (!NEWEST.length) return false;
+    if (/[?&]welcome=1\b/.test(location.search)) return true;   // for testing
+    const s = readWelcome();
+    if (s.subscribed) return false;
+    if (!s.seen) return true;
+    if (s.newest !== NEWEST[0].id) return true;
+    return Date.now() - s.seen > WELCOME_GAP_DAYS * 864e5;
+  }
+
+  NEWEST.forEach(p => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'justin-item';
+    b.dataset.product = p.id;
+    b.setAttribute('aria-label', `View ${p.name} full size`);
+    b.innerHTML = `
+      <figure>
+        <img class="justin-fill" src="${p.image}" alt="" aria-hidden="true" loading="lazy">
+        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        <span class="card-badge card-badge--fresh">New</span>
+      </figure>
+      <span class="justin-name">${p.name}</span>
+      <span class="justin-tag">${p.tag}</span>`;
+    welcomeItems.appendChild(b);
+  });
+
+  function openWelcome(){
+    welcomeOpener = document.activeElement;
+    welcome.hidden = false;
+    requestAnimationFrame(() => welcome.classList.add('open'));
+    document.body.style.overflow = 'hidden';
+    saveWelcome();
+    setTimeout(() => document.getElementById('welcomeClose').focus(), 50);
+  }
+  function closeWelcome(){
+    if (!welcome.classList.contains('open')) return;
+    welcome.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { welcome.hidden = true; }, 300);
+    if (welcomeOpener && welcomeOpener.focus) welcomeOpener.focus();
+  }
+
+  document.getElementById('welcomeClose').addEventListener('click', closeWelcome);
+  welcome.addEventListener('click', (e) => { if (e.target === welcome) closeWelcome(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && welcome.classList.contains('open')) closeWelcome();
+  });
+  welcomeItems.addEventListener('click', (e) => {
+    const item = e.target.closest('.justin-item');
+    if (!item) return;
+    closeWelcome();
+    openLightbox(item.dataset.product, item, NEWEST.map(p => p.id));
+  });
+
+  welcomeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    welcomeStatus.className = 'welcome-status';
+    const email = welcomeEmail.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      welcomeStatus.textContent = 'Please enter a valid email address.';
+      welcomeStatus.classList.add('err');
+      welcomeEmail.focus();
+      return;
+    }
+    if (welcomeForm.botcheck.checked) return;   // a bot filled the hidden box
+
+    if (!web3Ready) {
+      const subject = encodeURIComponent('Subscribe me to new arrivals');
+      const body = encodeURIComponent('Please email me at ' + email + ' when new pieces are added.');
+      window.location.href = `mailto:${NOTIFY_EMAILS[0]}?subject=${subject}&body=${body}`;
+      welcomeStatus.textContent = 'Opening your email app. Just press send!';
+      welcomeStatus.classList.add('ok');
+      saveWelcome({ subscribed: true });
+      return;
+    }
+
+    welcomeBtn.disabled = true;
+    welcomeBtn.textContent = 'Sending...';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: 'New subscriber for new arrivals: ' + email,
+          from_name: "Mayuri'z website",
+          email: email,
+          message: email + ' wants to hear about new pieces.',
+          botcheck: false
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) throw new Error(data.message || 'send failed');
+      welcomeStatus.textContent = "You're on the list! We'll email you when something new is made. 💌";
+      welcomeStatus.classList.add('ok');
+      welcomeForm.reset();
+      saveWelcome({ subscribed: true });
+      setTimeout(closeWelcome, 2200);
+    } catch (err) {
+      welcomeStatus.textContent = 'Sorry, that didn’t go through. Please try again in a moment.';
+      welcomeStatus.classList.add('err');
+    } finally {
+      welcomeBtn.disabled = false;
+      welcomeBtn.textContent = 'Notify me';
+    }
+  });
+
+  if (shouldShowWelcome()) setTimeout(() => {
+    // don't interrupt someone already looking at a photo
+    if (lightbox.classList.contains('open')) return;
+    openWelcome();
+  }, 2500);
 </script>
 
 </body>
