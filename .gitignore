@@ -1,0 +1,13 @@
+# The filled price list holds costs and profit, and this repository is
+# public, so spreadsheets never get committed. Keep yours outside the repo.
+*.xlsx
+~$*
+
+# Python and editor clutter
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
