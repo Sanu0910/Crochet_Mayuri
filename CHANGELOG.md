@@ -4,6 +4,9 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-07
 
+- **A crochet hook for a mouse pointer.** On computers the cursor is now a
+  small crochet hook in the brand red (with the usual hand over links and
+  buttons). Text boxes keep the normal text cursor; phones are unchanged.
 - **The Telegram bot can run on the shop's PC** instead of GitHub:
   `tools/install-bot.ps1` starts it at every logon (`tools/run-bot.ps1`), so
   replies come in seconds. The token stays on the PC, never in the repo.

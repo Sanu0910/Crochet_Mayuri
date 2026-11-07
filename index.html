@@ -57,6 +57,22 @@
            'Helvetica Neue',Helvetica,Arial,sans-serif;
   }
 
+  /* Crochet-hook mouse cursor (desktop only; phones have no cursor).
+     Hotspot is the hook's tip. --pointer is used wherever the site would
+     show the hand, so links and buttons still feel clickable. */
+  :root{
+    --hook:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 4.5 Q3 2.5 4.6 1.6 Q6.4 0.9 7.4 3.4 L27 23' stroke='%23fff' stroke-width='5'/%3E%3Cpath d='M15.5 13.5 L28.5 26.5' stroke='%23fff' stroke-width='8'/%3E%3Cpath d='M5.5 4.5 Q3 2.5 4.6 1.6 Q6.4 0.9 7.4 3.4 L27 23' stroke='%239aa0a8' stroke-width='2.2'/%3E%3Cpath d='M15.5 13.5 L28.5 26.5' stroke='%23c8564a' stroke-width='5.4'/%3E%3Cpath d='M15 13 L16.4 14.4' stroke='%23f3d9d5' stroke-width='5.4' stroke-linecap='butt'/%3E%3C/g%3E%3C/svg%3E") 4 2;
+    --cursor:auto;
+    --pointer:pointer;
+  }
+  @media (hover:hover) and (pointer:fine){
+    :root{ --cursor:var(--hook), auto; --pointer:var(--hook), pointer; }
+    html{ cursor:var(--cursor); }
+    a, button, label, select, summary, [role="button"]{ cursor:var(--pointer); }
+    input, textarea{ cursor:text; }
+    input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"]{ cursor:var(--pointer); }
+  }
+
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
   body{
@@ -153,7 +169,7 @@
   .nav-cta:hover{filter:brightness(1.08);}
   .nav-cta:active{transform:scale(0.97);}
   .menu-btn{
-    display:none; background:none; border:none; font-size:1.15rem; cursor:pointer;
+    display:none; background:none; border:none; font-size:1.15rem; cursor:var(--pointer);
     color:var(--ink); width:44px; height:44px; align-items:center; justify-content:center;
     position:relative; z-index:61;
   }
@@ -271,7 +287,7 @@
   .justin-row::-webkit-scrollbar{display:none;}
   .justin-item{
     display:block; scroll-snap-align:start; border:0; padding:0; background:none; font:inherit;
-    color:inherit; text-align:left; cursor:pointer;
+    color:inherit; text-align:left; cursor:var(--pointer);
   }
   .justin-item figure{
     margin:0; aspect-ratio:3/4; border-radius:18px; overflow:hidden;
@@ -331,7 +347,7 @@
   .film-play{
     position:absolute; inset:0; width:100%; height:100%;
     display:grid; place-items:center;
-    border:0; padding:0; cursor:pointer; background:transparent; font:inherit;
+    border:0; padding:0; cursor:var(--pointer); background:transparent; font:inherit;
     transition:opacity .35s var(--ease-out);
   }
   .film-stage.playing .film-play{opacity:0; pointer-events:none;}
@@ -353,7 +369,7 @@
   }
   .filter-btn{
     padding:7px 16px; border-radius:980px; border:1px solid var(--hairline);
-    background:transparent; font-size:0.85rem; font-weight:400; cursor:pointer;
+    background:transparent; font-size:0.85rem; font-weight:400; cursor:var(--pointer);
     color:var(--ink); letter-spacing:-0.008em;
     transition:background .2s ease, color .2s ease, border-color .2s ease,
                transform 100ms var(--ease-out);
@@ -377,7 +393,7 @@
   .card.in{opacity:1; transform:translateY(0);}
 
   .card-art{
-    position:relative; aspect-ratio:3/4; overflow:hidden; cursor:pointer;
+    position:relative; aspect-ratio:3/4; overflow:hidden; cursor:var(--pointer);
     display:block; width:100%; border:none; padding:0; margin:0;
     background:var(--surface-alt); -webkit-appearance:none; appearance:none;
     transition:transform 100ms var(--ease-out);
@@ -431,7 +447,7 @@
   .card-sku{margin-left:8px; padding-left:8px; border-left:1px solid var(--hairline); font-variant-numeric:tabular-nums; letter-spacing:.02em;}
   .card-note{font-size:0.76rem; color:var(--ink-faint); white-space:nowrap;}
   .card-order-btn{
-    background:none; border:none; cursor:pointer; padding:0;
+    background:none; border:none; cursor:var(--pointer); padding:0;
     color:var(--accent); font-size:0.92rem; font-weight:400;
     display:inline-flex; align-items:center; gap:4px; white-space:nowrap;
     letter-spacing:-0.012em;
@@ -468,7 +484,7 @@
   .lb-counter{color:var(--ink-faint); font-size:0.82rem; margin-top:4px;}
   .lb-dots{display:none;}
   .lb-close,.lb-nav{
-    position:absolute; z-index:2; border:none; cursor:pointer;
+    position:absolute; z-index:2; border:none; cursor:var(--pointer);
     background:rgba(0,0,0,0.06); color:var(--ink); border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     transition:background .2s ease, transform 100ms var(--ease-out);
@@ -533,7 +549,7 @@
   .order-context.show{display:flex;}
   .order-context button{
     background:none; border:none; color:var(--accent);
-    font-weight:500; cursor:pointer; font-size:0.82rem;
+    font-weight:500; cursor:var(--pointer); font-size:0.82rem;
   }
   .form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   .field{margin-bottom:14px;}
@@ -556,7 +572,7 @@
   .submit-btn{
     width:100%; padding:15px; border-radius:980px; border:none;
     background:var(--accent); color:#fff; font-weight:500; font-size:1rem;
-    letter-spacing:-0.012em; cursor:pointer;
+    letter-spacing:-0.012em; cursor:var(--pointer);
     display:flex; align-items:center; justify-content:center; gap:8px;
     transition:filter .2s ease, transform 100ms var(--ease-out);
   }
@@ -655,7 +671,7 @@
   .launch-bar-close{
     position:absolute; right:8px; top:50%; transform:translateY(-50%);
     width:30px; height:30px; border:none; border-radius:50%;
-    background:rgba(255,255,255,0.16); color:#fff; font-size:0.9rem; cursor:pointer;
+    background:rgba(255,255,255,0.16); color:#fff; font-size:0.9rem; cursor:var(--pointer);
   }
   .launch-bar-close:hover{background:rgba(255,255,255,0.28);}
 
@@ -695,7 +711,7 @@
     border:2px dashed #8f2f2a;
   }
   .launch-code button{
-    border:none; cursor:pointer; font-weight:600; font-size:0.9rem;
+    border:none; cursor:var(--pointer); font-weight:600; font-size:0.9rem;
     background:rgba(255,248,240,0.18); color:#fff; padding:11px 16px; border-radius:980px;
     transition:background .2s ease, transform 100ms var(--ease-out);
   }
