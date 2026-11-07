@@ -35,6 +35,8 @@ from site_edit import (
 from telegram_api import Telegram
 
 logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
+# httpx logs every request URL at INFO, and Telegram URLs contain the bot token.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger("uploader")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
