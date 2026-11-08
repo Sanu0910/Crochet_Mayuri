@@ -25,7 +25,7 @@ in `images/`, no build step.
 | workflows `.github/` (film render; Telegram uploader is **disabled** while the PC runs the bot) | filled price list `*.xlsx` (costs, profit), kept outside the repo |
 | | bot's working clone + log: `%LOCALAPPDATA%\MayurizBot\` |
 | | `video/node_modules`, rendered `video/out/` |
-| | Flutter SDK `E:\devlutter`, Android SDK `E:\devndroid-sdk`, `app/build/` |
+| | Flutter SDK `E:\dev\flutter`, Android SDK `E:\dev\android-sdk`, `app/build/` |
 
 The Telegram bot runs on this PC (`tools/run-bot.ps1`, started at logon by
 `tools/install-bot.ps1`), not on GitHub. See `bot/README.md`.
