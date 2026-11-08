@@ -24,6 +24,39 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://mayurisyarntales.online/media/social-preview.jpg">
 
+<!-- Structured data for Google: who the shop is and what it makes.
+     Product entries (with price) get added once prices go on the site;
+     Google flags Product data that has no price as an error. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "OnlineStore",
+      "@id": "https://mayurisyarntales.online/#store",
+      "name": "Mayuri'z",
+      "alternateName": "Mayuri's Yarn Tales",
+      "url": "https://mayurisyarntales.online/",
+      "image": "https://mayurisyarntales.online/media/social-preview.jpg",
+      "description": "Handmade crochet scrunchies, hair clips, bows, roses, charms, keychains, bookmarks and bags. Every piece hooked by hand and made to order, in any colour you like.",
+      "email": "mayurighoshblg@gmail.com",
+      "founder": { "@type": "Person", "name": "Mayuri" },
+      "areaServed": { "@type": "Country", "name": "India" },
+      "currenciesAccepted": "INR",
+      "knowsAbout": ["Crochet", "Handmade hair accessories", "Crochet flowers", "Amigurumi charms"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mayurisyarntales.online/#website",
+      "name": "Mayuri'z",
+      "url": "https://mayurisyarntales.online/",
+      "inLanguage": "en-IN",
+      "publisher": { "@id": "https://mayurisyarntales.online/#store" }
+    }
+  ]
+}
+</script>
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B6%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
