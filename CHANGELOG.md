@@ -4,6 +4,10 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-08
 
+- **A real site icon:** the pink flower from the top of the page now shows
+  in browser tabs, on phone home screens and (once Google picks it up) next
+  to the shop in Google results. Replaces the yarn emoji.
+
 - **Clearer page title for Google:** "Handmade Crochet Scrunchies, Hair
   Clips, Bows & Roses | Mayuri'z". The line under the big heading now says
   "crochet" and "in India" too, so searches for those words find the shop.
