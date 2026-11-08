@@ -1,4 +1,4 @@
-# Mayuri'z — Brand Guidelines
+# Mayuri's Yarn Tales — Brand Guidelines
 
 The mark is a crochet hook through a ball of yarn: what Mayuri makes, by hand.
 Three flat colours, no gradients. Wordmark is Caveat (handwritten), turned into
@@ -6,14 +6,26 @@ outlines so the SVGs look right without the font installed.
 
 ## Logo Files
 
-### 1. Full Logo (icon + wordmark)
+### 1a. Full logo: "Mayuri's Yarn Tales" (main logo)
+Tagline: *handmade crochet · made to order in India*. Matches the web address
+(mayurisyarntales.online). Use for posters, packaging, share images.
+
 | File | Usage |
 |------|-------|
 | `logo-full-light.svg` | Primary — light backgrounds |
 | `logo-full-dark.svg` | Dark backgrounds |
-| `logo-full-800w.png` / `400w.png` | README header, presentations |
+| `logo-full-800w.png` / `400w.png` | Quick use in chats, documents |
 | `logo-full-mono-black.svg` | Single-color printing |
 | `logo-full-mono-white.svg` | Single-color on dark |
+
+### 1b. Short logo: "Mayuri'z"
+Tagline: *handmade crochet*. Same as the website header. Use where space is tight.
+
+| File | Usage |
+|------|-------|
+| `logo-short-light.svg` / `logo-short-dark.svg` | Light / dark backgrounds |
+| `logo-short-800w.png` / `400w.png` | Quick use |
+| `logo-short-mono-black.svg` / `logo-short-mono-white.svg` | Single colour |
 
 ### 2. Icon Only (avatar, favicon, app icon)
 | File | Usage |

@@ -4,6 +4,10 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-08
 
+- **Logo now spells out "Mayuri's Yarn Tales"** (same as the web address),
+  with the line "handmade crochet · made to order in India". The shorter
+  "Mayuri'z" version stays for small spaces. Both are in `media/brand/`.
+
 - **New Mayuri'z logo:** a crochet hook through a ball of pink yarn, with the
   name in handwriting. It now shows beside the name at the top and bottom of
   the page, in browser tabs and on phone home screens. Every version (light,
