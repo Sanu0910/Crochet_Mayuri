@@ -4,6 +4,10 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-08
 
+- **Clearer page title for Google:** "Handmade Crochet Scrunchies, Hair
+  Clips, Bows & Roses | Mayuri'z". The line under the big heading now says
+  "crochet" and "in India" too, so searches for those words find the shop.
+
 - **Google now gets shop details in a form it reads directly** (structured
   data): the shop name, what it makes, the contact email and that it ships
   across India. Product prices join it once prices go on the site.
