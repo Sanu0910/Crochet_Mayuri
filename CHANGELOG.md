@@ -4,6 +4,11 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-08
 
+- **The website shows the new logo:** the top of the page now has the yarn
+  ball and crochet hook (animated), "Mayuri's Yarn Tales" and the line
+  "handmade crochet · made to order in India". The header and footer say
+  "Mayuri's Yarn Tales" too. Fixed the icons, which sat off-centre.
+
 - **Logo now spells out "Mayuri's Yarn Tales"** (same as the web address),
   with the line "handmade crochet · made to order in India". The shorter
   "Mayuri'z" version stays for small spaces. Both are in `media/brand/`.

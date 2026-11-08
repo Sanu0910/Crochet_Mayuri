@@ -288,11 +288,21 @@
     animation:petalPop .5s var(--ease-spring) 1.75s forwards;
   }
   @keyframes petalPop{to{opacity:1; transform:scale(1);}}
+  /* logo mark in the hero */
+  .brand-mark{max-width:120px; overflow:visible;}
+  .mark-strand{stroke-dasharray:24; stroke-dashoffset:24; animation:threadDraw .6s var(--ease-out) 1.05s forwards;}
+  .mark-hook{opacity:0; transform:translate(-16px,16px); animation:hookIn .7s var(--ease-spring) .65s forwards;}
+  @keyframes hookIn{to{opacity:1; transform:translate(0,0);}}
+  .brand-tagline{
+    font-family:'Caveat',cursive; font-weight:600; font-size:1.25rem; line-height:1.2;
+    color:var(--accent); margin:4px 0 0; opacity:0; transform:translateY(10px);
+    animation:rise .6s var(--ease-out) 1.45s forwards;
+  }
   .brand-name{
     font-family:'Caveat',cursive; font-weight:700;
     font-size:2.1rem; line-height:1; color:var(--ink);
     margin:12px 0 0; opacity:0; transform:translateY(10px);
-    animation:rise .6s var(--ease-out) 2.25s forwards;
+    animation:rise .6s var(--ease-out) 1.3s forwards;
   }
 
   /* ---------- VALUE PROPS ---------- */
@@ -893,7 +903,7 @@
 
 <header>
   <div class="header-bar">
-    <a href="#top" class="logo"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri'z</a>
+    <a href="#top" class="logo"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri's Yarn Tales</a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
   <div class="nav-overlay" id="navOverlay"></div>
@@ -910,18 +920,26 @@
 <section class="hero" id="top">
   <div class="hero-inner">
     <div class="stitch-wrap">
-      <svg class="brand-flower-svg" viewBox="0 0 400 400" aria-hidden="true">
-        <path class="thread-path" d="M -40,205 C 40,150 110,255 168,202" style="animation-delay:0s"></path>
-        <path class="thread-path" d="M 440,205 C 360,150 290,255 232,202" style="animation-delay:.05s"></path>
-        <g transform="rotate(0 200 200)"><g class="petal" style="animation-delay:.85s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:#f2b8c6"></ellipse></g></g>
-        <g transform="rotate(180 200 200)"><g class="petal" style="animation-delay:.95s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:#f2b8c6"></ellipse></g></g>
-        <g transform="rotate(60 200 200)"><g class="petal" style="animation-delay:1.05s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:#e58fa3"></ellipse></g></g>
-        <g transform="rotate(120 200 200)"><g class="petal" style="animation-delay:1.15s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:#e58fa3"></ellipse></g></g>
-        <g transform="rotate(300 200 200)"><g class="petal" style="animation-delay:1.25s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:#f2b8c6"></ellipse></g></g>
-        <g transform="rotate(240 200 200)"><g class="petal" style="animation-delay:1.35s"><ellipse cx="200" cy="130" rx="34" ry="62" style="fill:#f2b8c6"></ellipse></g></g>
-        <circle class="flower-center" cx="200" cy="200" r="28" style="fill:#e8b23d"></circle>
+      <!-- The logo mark (media/brand/icon-light.svg), animated: the yarn ball
+           pops in, the hook slides through it, the loose strand draws. -->
+      <svg class="brand-flower-svg brand-mark" viewBox="-7 -2 86 86" aria-hidden="true">
+        <defs><mask id="hero-cut" maskUnits="userSpaceOnUse" x="-10" y="-10" width="100" height="100">
+          <rect x="-10" y="-10" width="100" height="100" fill="#fff"/>
+          <path d="M12 30 Q 36 30 50 66" fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M22 18 Q 50 26 62 52" fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M8 46 Q 26 48 34 72" fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M17 71 L66 14" fill="none" stroke="#000" stroke-width="15" stroke-linecap="round"/>
+        </mask></defs>
+        <path class="mark-strand" d="M14 64 Q 6 72 2 78" fill="none" stroke="#e58fa3" stroke-width="4.5" stroke-linecap="round"/>
+        <g class="petal" style="animation-delay:.3s"><circle cx="38" cy="44" r="31" fill="#e58fa3" mask="url(#hero-cut)"/></g>
+        <g class="mark-hook">
+          <path d="M40 43 L66 14" fill="none" stroke="#c8564a" stroke-width="5" stroke-linecap="round"/>
+          <path d="M66 14 q 4 -6 -1 -8 q -4 -1 -5 3" fill="none" stroke="#c8564a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M17 71 L40 43" fill="none" stroke="#c8564a" stroke-width="9" stroke-linecap="round"/>
+        </g>
       </svg>
-      <p class="brand-name">Mayuri'z</p>
+      <p class="brand-name">Mayuri's Yarn Tales</p>
+      <p class="brand-tagline">handmade crochet · made to order in India</p>
     </div>
 
     <h1 class="display">Handmade.<br>In every sense of the word.</h1>
@@ -1189,7 +1207,7 @@
 <a href="#order" class="float-cta" id="floatCta">Order Now</a>
 
 <footer>
-  <a href="#top" class="logo" style="display:inline-flex;"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri'z</a>
+  <a href="#top" class="logo" style="display:inline-flex;"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri's Yarn Tales</a>
   <div class="footer-links">
     <a href="#gallery">Shop</a>
     <a href="#about">About</a>

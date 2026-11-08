@@ -2,7 +2,7 @@
 // when offline. Always tries the live site first, so new products (pushed by
 // the Telegram bot) show up straight away; saved copies are only a fallback.
 // Bump VERSION to drop old saved copies.
-const VERSION = 'mz-v1';
+const VERSION = 'mz-v2';
 const START = ['/', '/media/icon.svg', '/media/icon-192.png', '/manifest.webmanifest'];
 
 self.addEventListener('install', e => {
