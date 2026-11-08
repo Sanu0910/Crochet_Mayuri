@@ -2,6 +2,12 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-08
+
+- **Google now gets shop details in a form it reads directly** (structured
+  data): the shop name, what it makes, the contact email and that it ships
+  across India. Product prices join it once prices go on the site.
+
 ## 2026-11-07
 
 - **A welcome popup with the two newest pieces** and a "Notify me" box so
