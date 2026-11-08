@@ -58,13 +58,20 @@
 }
 </script>
 
-<!-- Site icon: the hero flower. Real files (not an emoji) because Google
-     only shows a site icon in search results from a fetchable image.
-     Made by drawing the hero SVG's petals; keep the colours in step. -->
+<!-- Site icon: the Mayuri'z logo mark (crochet hook through a ball of yarn).
+     Real files (not an emoji) because Google only shows a site icon in
+     search results from a fetchable image. Full brand kit: media/brand/. -->
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/media/icon.svg" type="image/svg+xml">
 <link rel="icon" href="/media/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Installable app (Add to Home Screen): manifest + service worker (sw.js). -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Mayuri'z">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -194,6 +201,7 @@
     width:9px;height:9px;border-radius:50%;
     background:var(--accent); flex-shrink:0;
   }
+  .logo .mark{width:26px; height:26px; flex-shrink:0; display:block;}
   nav{position:absolute; top:0; right:max(22px,5vw); height:48px; display:flex; align-items:center;}
   nav ul{display:flex; gap:30px; list-style:none; margin:0; padding:0;}
   nav a{
@@ -885,7 +893,7 @@
 
 <header>
   <div class="header-bar">
-    <a href="#top" class="logo"><span class="dot"></span>Mayuri'z</a>
+    <a href="#top" class="logo"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri'z</a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
   <div class="nav-overlay" id="navOverlay"></div>
@@ -1181,7 +1189,7 @@
 <a href="#order" class="float-cta" id="floatCta">Order Now</a>
 
 <footer>
-  <a href="#top" class="logo" style="display:inline-flex;"><span class="dot"></span>Mayuri'z</a>
+  <a href="#top" class="logo" style="display:inline-flex;"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri'z</a>
   <div class="footer-links">
     <a href="#gallery">Shop</a>
     <a href="#about">About</a>
@@ -2544,6 +2552,15 @@
     if (lightbox.classList.contains('open')) return;
     openWelcome();
   }, 2500);
+</script>
+
+<script>
+  // Makes the site installable as an app and usable offline (see sw.js).
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
 </script>
 
 </body>

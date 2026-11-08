@@ -4,6 +4,17 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-08
 
+- **New Mayuri'z logo:** a crochet hook through a ball of pink yarn, with the
+  name in handwriting. It now shows beside the name at the top and bottom of
+  the page, in browser tabs and on phone home screens. Every version (light,
+  dark, black-and-white, all sizes, social images) is in `media/brand/`, with
+  colours and rules in `media/brand/BRAND.md`. Made with LogoLoom.
+
+- **The shop is now an app:** on Android, Chrome offers "Install app"; on
+  iPhone, tap Share then "Add to Home Screen". It opens full screen with the
+  new icon, and the last-seen page still opens with no internet. New products
+  still show up straight away.
+
 - **A real site icon:** the pink flower from the top of the page now shows
   in browser tabs, on phone home screens and (once Google picks it up) next
   to the shop in Google results. Replaces the yarn emoji.
