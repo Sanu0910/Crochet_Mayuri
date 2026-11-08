@@ -14,12 +14,15 @@ No separate product list to keep in step.
 ## Build (Windows, this PC)
 
 Flutter is in `E:\dev\flutter`, the Android SDK in `E:\dev\android-sdk`
-(both on the user PATH; `ANDROID_HOME` is set). Needs Java 17.
+(both on the user PATH; `ANDROID_HOME` is set). Java 17 is the portable
+zip in `E:\dev\jdk-17.0.21.0.2+1` (`flutter config --jdk-dir` points at it).
 
 ```
 cd app
 flutter test                 # product reader checks
-flutter build apk --release  # -> build/app/outputs/flutter-apk/app-release.apk
+flutter build apk --release --split-per-abi   # one small APK per phone type
+# app-arm64-v8a-release.apk (~17 MB) fits almost every phone;
+# armeabi-v7a is for old 32-bit phones. Plain --release makes one 47 MB APK.
 ```
 
 Refresh the bundled snapshot now and then: copy `../index.html` to
