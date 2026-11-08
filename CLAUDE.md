@@ -21,10 +21,11 @@ in `images/`, no build step.
 | On GitHub (public) | Only on the PC (never commit) |
 |---|---|
 | the site: `index.html`, `images/`, `media/`, `CNAME`, `robots.txt`, `sitemap.xml` | Telegram token: `%USERPROFILE%\.mayuriz\bot.env` |
-| bot code `bot/`, film `video/`, scripts `tools/`, docs | GitHub login: Windows Credential Manager |
+| bot code `bot/`, film `video/`, Android app `app/` (Flutter, see `app/README.md`), scripts `tools/`, docs | GitHub login: Windows Credential Manager |
 | workflows `.github/` (film render; Telegram uploader is **disabled** while the PC runs the bot) | filled price list `*.xlsx` (costs, profit), kept outside the repo |
 | | bot's working clone + log: `%LOCALAPPDATA%\MayurizBot\` |
 | | `video/node_modules`, rendered `video/out/` |
+| | Flutter SDK `E:\devlutter`, Android SDK `E:\devndroid-sdk`, `app/build/` |
 
 The Telegram bot runs on this PC (`tools/run-bot.ps1`, started at logon by
 `tools/install-bot.ps1`), not on GitHub. See `bot/README.md`.
@@ -34,7 +35,8 @@ The Telegram bot runs on this PC (`tools/run-bot.ps1`, started at logon by
 All products live in the `PRODUCTS` array in `index.html`, between the
 `/* PRODUCTS:START */` and `/* PRODUCTS:END */` markers. **Never remove or
 rename those markers**: the bot edits between them. `video/src/theme.ts` holds a
-matching list (same markers) for the promo film; keep both in step.
+matching list (same markers) for the promo film; keep both in step. The app
+(`app/`) reads this list from the live site, so it needs no edits.
 
 Each entry:
 

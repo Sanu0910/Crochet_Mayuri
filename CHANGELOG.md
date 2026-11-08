@@ -4,6 +4,14 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-08
 
+- **Mayuri'z Android app (first version):** shows the whole collection,
+  "Just in" and categories, read live from the website so new products
+  appear automatically. "Order this" opens the website's order form with the
+  piece already filled in. Code in `app/`.
+
+- **Order links:** `mayurisyarntales.online/?order=<product>` opens the
+  order form with that piece filled in (used by the app).
+
 - **The website shows the new logo:** the top of the page now has the yarn
   ball and crochet hook (animated), "Mayuri's Yarn Tales" and the line
   "handmade crochet · made to order in India". The header and footer say

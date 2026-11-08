@@ -2222,6 +2222,19 @@
     }
   });
 
+  // A link like /?order=<product id>#order (used by the Mayuri'z app's
+  // "Order this" button) opens the form with that piece already filled in.
+  const linkedOrder = new URLSearchParams(location.search).get('order');
+  const linkedProduct = linkedOrder && PRODUCTS.find(p => p.id === linkedOrder);
+  // Wait for the whole page script: the form text checks the launch offer,
+  // which is set up further down.
+  if (linkedProduct) {
+    window.addEventListener('load', () => {
+      fillOrderContext(linkedProduct);
+      document.getElementById('order').scrollIntoView();
+    });
+  }
+
   clearOrderContext.addEventListener('click', () => {
     orderTypeField.value = 'Custom enquiry';
     productNameField.value = '';
