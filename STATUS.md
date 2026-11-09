@@ -1,23 +1,24 @@
 # Health check
 
-Last checked: **2026-11-07**. Overall: **everything working** ✅
+Last checked: **2026-11-09**. Overall: **everything working** ✅
 
 | Check | Result |
 |---|---|
-| Live site https://mayurisyarntales.online/ | ✅ 200 OK, serves the same `index.html` as `main` |
-| `robots.txt`, `sitemap.xml` | ✅ 200 OK |
-| Repo | ✅ `main` up to date with GitHub, no uncommitted changes |
+| Live site https://mayurisyarntales.online/ | ✅ 200 OK; `manifest.webmanifest`, `sw.js`, `sitemap.xml` 200 OK |
+| Repo | ✅ `main` pulled from GitHub (bot had added 2 pieces) |
 | `bot/test_site_edit.py` | ✅ all passed |
 | `bot/test_publish.py` | ✅ all passed (every photo has exactly one card) |
-| Products | 81 products, 81 photos in `images/`, 51 marked "Just in" (the row shows the first 10) |
-| Telegram bot (`@YarnTales_bot`, runs on the PC) | ✅ scheduled task "Mayuriz Telegram bot" running, last restart 19:39 |
+| Products | 83 products, no duplicate codes |
+| Telegram bot (`@YarnTales_bot`, runs on the PC) | ✅ running, restarted 23:29 and sent its report |
+| Android app | ✅ APKs built 2026-11-08 (`app-arm64-v8a-release.apk` 16.9 MB) |
 
 ## Notes
 
-- The bot log shows a short internet outage at 15:30 (`No such host is known`).
-  The bot came back on its own by 19:30.
-- `gh` (GitHub CLI) isn't installed on the PC, so this check couldn't look at
-  GitHub Actions runs. Check them on the repo's **Actions** tab if needed.
+- Two photos came in from Telegram without a caption ("New Piece", no
+  category). They were named by hand: Daisy Key Ring and Flower Bookmarks.
+  Tip: add a name and `#category` to the photo caption so this isn't needed.
+- The bot log shows GitHub/Telegram errors (502, timeouts) around 18:25.
+  The bot recovered on its own and was restarted at 23:29.
 
 ## How to re-run this check
 

@@ -2,6 +2,12 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-09
+
+- **Two new pieces named:** the Daisy Key Ring (`MZ-KEY-007`) and Flower
+  Bookmarks (`MZ-BMK-004`). They came in from Telegram with no caption, so they
+  showed as "New Piece". Codes `MZ-NEW-001`/`002` are retired.
+
 ## 2026-11-08
 
 - **Mayuri'z Android app (first version):** shows the whole collection,
