@@ -45,6 +45,7 @@ export type Product = {
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
+  { image: "new-piece-3.jpg", name: "New Piece", tag: "New" },
   { image: "new-piece-2.jpg", name: "Flower Bookmarks", tag: "Bookmarks" },
   { image: "new-piece.jpg", name: "Daisy Key Ring", tag: "Keychains" },
   { image: "flower-bookmark-set.jpg", name: "Flower Bookmark Set of 4", tag: "Bookmarks" },
