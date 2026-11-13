@@ -2,6 +2,14 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-14
+
+- **"Just in" row slides by itself:** it glides to the next new piece every
+  few seconds and loops, with a story-style progress bar underneath (tap a
+  segment to jump). The front photo drifts slowly closer, and the cards spring
+  in (anime.js) when the row first appears. It waits while you touch, hover or
+  open a photo, and stays still for people who turn off animations.
+
 ## 2026-11-13
 
 - **Visitor count** in the footer ("👀 1,234 visits"). Counts each visitor

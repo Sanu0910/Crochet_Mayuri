@@ -359,6 +359,24 @@
   .justin-item .card-badge{position:absolute; top:10px; left:10px;}
   .justin-name{display:block; margin-top:10px; font-size:.95rem; font-weight:600; line-height:1.25; color:var(--ink);}
   .justin-tag{display:block; font-size:.8rem; color:var(--ink-soft); margin-top:2px;}
+  /* Auto-slide: the row glides to the next piece on its own, with a story-style
+     progress bar underneath. The photo at the front drifts slowly closer. */
+  .justin-row{position:relative;}
+  .justin-item.is-active img:not(.justin-fill){transform:scale(1.07); transition:transform 4.2s cubic-bezier(.25,.1,.25,1);}
+  .justin-progress{display:flex; gap:6px; justify-content:center; padding:12px clamp(16px,4vw,32px) 0;}
+  .justin-progress[hidden]{display:none;}
+  .justin-progress button{appearance:none; border:0; background:none; padding:10px 0; width:22px; cursor:var(--pointer); transition:width .45s var(--ease-out);}
+  .justin-progress button.run{width:46px;}
+  .justin-progress span{display:block; position:relative; height:3px; border-radius:3px; background:var(--hairline); overflow:hidden;}
+  .justin-progress span::after{content:''; position:absolute; inset:0; background:var(--ink); border-radius:inherit; transform:scaleX(0); transform-origin:left;}
+  .justin-progress button.done span::after{transform:scaleX(1); opacity:.35;}
+  .justin-progress button.run span::after{animation:justinFill var(--justin-dur,3.6s) linear forwards;}
+  .justin-progress.paused button.run span::after{animation-play-state:paused;}
+  @keyframes justinFill{to{transform:scaleX(1);}}
+  @media (prefers-reduced-motion:reduce){
+    .justin-item.is-active img:not(.justin-fill){transform:none;}
+    .justin-progress button.run span::after{animation:none; transform:scaleX(1);}
+  }
   @media (max-width:760px){
     .justin-row{grid-auto-columns:42%;}
     .justin-head .link{font-size:.88rem;}
@@ -1242,6 +1260,8 @@
 
 <!-- EmailJS: powers automatic order/enquiry email notifications. See SETUP.md -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- anime.js: springy entrance for the "Just in" row (optional; the row works without it) -->
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -2231,6 +2251,130 @@
     const item = e.target.closest('.justin-item');
     if (item) openLightbox(item.dataset.product, item, JUST_IN.map(p => p.id));
   });
+  /* Auto-slide for the "Just in" row. It moves on by itself and loops, and
+     waits while someone is touching, hovering, using the keyboard, looking at
+     a photo full size, or has scrolled away. The progress bar's fill
+     animation is the timer, so pausing the bar pauses the slides. Cards
+     spring in with anime.js the first time the row comes into view. */
+  (function justInMotion() {
+    const row = justInRow;
+    const section = document.getElementById('just-in');
+    const items = [...row.children];
+    if (items.length < 2) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const bar = document.createElement('div');
+    bar.className = 'justin-progress';
+    bar.setAttribute('role', 'group');
+    bar.setAttribute('aria-label', 'New pieces');
+    bar.style.setProperty('--justin-dur', '3600ms');
+    row.after(bar);
+
+    let stops = [];
+    let cur = -1;
+    const why = new Set();
+    const pause = (reason, on) => {
+      if (on) why.add(reason); else why.delete(reason);
+      bar.classList.toggle('paused', why.size > 0);
+    };
+    const xOf = it => it.offsetLeft - items[0].offsetLeft;
+    const nearestItem = x => {
+      let best = 0;
+      items.forEach((it, i) => { if (Math.abs(xOf(it) - x) < Math.abs(xOf(items[best]) - x)) best = i; });
+      return best;
+    };
+    const nearestStop = () => {
+      let best = 0;
+      stops.forEach((s, k) => { if (Math.abs(s.x - row.scrollLeft) < Math.abs(stops[best].x - row.scrollLeft)) best = k; });
+      return best;
+    };
+
+    function setActive(k) {
+      if (k === cur || !stops[k]) return;
+      cur = k;
+      [...bar.children].forEach((b, j) => {
+        b.classList.remove('run');
+        b.classList.toggle('done', j < k);
+        b.setAttribute('aria-current', j === k ? 'true' : 'false');
+      });
+      const b = bar.children[k];
+      void b.offsetWidth;            // restart the fill animation
+      b.classList.add('run');
+      items.forEach((it, j) => it.classList.toggle('is-active', j === stops[k].i));
+    }
+
+    function go(k) {
+      row.scrollTo({ left: stops[k].x, behavior: reduce ? 'auto' : 'smooth' });
+      setActive(k);
+    }
+
+    function measure() {
+      const max = row.scrollWidth - row.clientWidth;
+      stops = [];
+      if (max > 2) {
+        items.forEach((it, i) => { if (xOf(it) <= max + 2) stops.push({ x: xOf(it), i }); });
+        if (stops[stops.length - 1].x < max - 2) stops.push({ x: max, i: nearestItem(max) });
+      }
+      bar.hidden = stops.length < 2;
+      bar.innerHTML = stops.map(s =>
+        `<button type="button" aria-label="Show ${items[s.i].querySelector('.justin-name').textContent}"><span></span></button>`
+      ).join('');
+      cur = -1;
+      if (stops.length > 1) setActive(nearestStop());
+      else items.forEach(it => it.classList.remove('is-active'));
+    }
+
+    bar.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (b) go([...bar.children].indexOf(b));
+    });
+    bar.addEventListener('animationend', e => {
+      if (e.animationName !== 'justinFill' || stops.length < 2) return;
+      if (lightbox.classList.contains('open')) { const k = cur; cur = -1; setActive(k); return; }
+      go((cur + 1) % stops.length);
+    });
+
+    let scrollTimer;
+    row.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => setActive(nearestStop()), 120);
+    }, { passive: true });
+
+    let touchTimer;
+    row.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') pause('hover', true); });
+    row.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') pause('hover', false); });
+    row.addEventListener('touchstart', () => { clearTimeout(touchTimer); pause('touch', true); }, { passive: true });
+    row.addEventListener('touchend', () => { touchTimer = setTimeout(() => pause('touch', false), 2500); }, { passive: true });
+    section.addEventListener('focusin', e => { if (e.target.matches(':focus-visible')) pause('focus', true); });
+    section.addEventListener('focusout', () => setTimeout(() => pause('focus', section.contains(document.activeElement)), 0));
+    document.addEventListener('visibilitychange', () => pause('hidden', document.hidden));
+
+    let resizeTimer;
+    window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(measure, 200); });
+
+    const springIn = !reduce && typeof window.anime === 'function';
+    if (springIn) items.forEach(it => { it.style.opacity = 0; });
+    let shown = false;
+    pause('offscreen', true);
+    new IntersectionObserver(([entry]) => {
+      pause('offscreen', !entry.isIntersecting);
+      if (entry.isIntersecting && !shown) {
+        shown = true;
+        if (springIn) {
+          anime({
+            targets: items, opacity: [0, 1], translateY: [34, 0], scale: [0.92, 1],
+            delay: anime.stagger(70), easing: 'spring(1, 90, 14, 0)'
+          });
+          anime({
+            targets: bar.children, opacity: [0, 1], translateY: [8, 0],
+            delay: anime.stagger(35, { start: 350 }), easing: 'easeOutCubic', duration: 500
+          });
+        }
+      }
+    }, { threshold: 0.25 }).observe(row);
+
+    requestAnimationFrame(measure);
+  })();
+
   document.getElementById('justInAll').addEventListener('click', () => {
     const fresh = document.querySelector('.filter-btn[data-filter="fresh"]');
     if (fresh) fresh.click();
