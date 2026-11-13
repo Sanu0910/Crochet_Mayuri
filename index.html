@@ -687,6 +687,7 @@
   .footer-links{display:flex; gap:26px; justify-content:center; margin:0 0 16px; flex-wrap:wrap;}
   .footer-links a{color:var(--ink-soft); font-size:0.82rem;}
   .footer-links a:hover{color:var(--ink);}
+  footer .visits{margin-top:6px; font-size:0.78rem; color:var(--ink-faint);}
 
   /* ---------- SCROLL REVEAL ---------- */
   .reveal{opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease-out), transform .8s var(--ease-out);}
@@ -1215,7 +1216,28 @@
     <a href="mailto:mayurighoshblg@gmail.com">mayurighoshblg@gmail.com</a>
   </div>
   <p>© <span id="year"></span> Mayuri'z · Handmade Crochet. Made with 🧶 and a lot of patience.</p>
+  <p class="visits" id="visits" hidden>👀 <span id="visitCount"></span> visits</p>
 </footer>
+<script>
+  // Visitor count (free Abacus counter, no sign-up). Counts once per browser
+  // session, never on localhost, and stays hidden if the service is down.
+  (function () {
+    const el = document.getElementById('visits');
+    const local = /^(localhost|127\.|\[::1\])/.test(location.hostname);
+    let seen = false;
+    try { seen = sessionStorage.getItem('mz-visit') === '1'; } catch (e) {}
+    const op = (local || seen) ? 'get' : 'hit';
+    fetch('https://abacus.jasoncameron.dev/' + op + '/mayurisyarntales/visits')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => {
+        if (typeof d.value !== 'number') return;
+        try { sessionStorage.setItem('mz-visit', '1'); } catch (e) {}
+        document.getElementById('visitCount').textContent = d.value.toLocaleString('en-IN');
+        el.hidden = false;
+      })
+      .catch(() => {});
+  })();
+</script>
 
 <!-- EmailJS: powers automatic order/enquiry email notifications. See SETUP.md -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -1232,42 +1254,42 @@
     /* PRODUCTS:START */
     {
       id: 'new-piece-7',
-      sku: 'MZ-NEW-005',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
+      sku: 'MZ-ROS-009',
+      name: 'Mini Rose Bouquet',
+      cat: 'flowers', tag: 'Roses', badge: 'Just in', fresh: true,
+      desc: 'A single red rose wrapped in cream or black and tied with a red bow. Small bouquet, big love.',
       image: 'images/new-piece-7.jpg'
     },
     {
       id: 'new-piece-6',
-      sku: 'MZ-NEW-004',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
+      sku: 'MZ-KEY-010',
+      name: 'Daisy Bouquet Key Ring',
+      cat: 'keychains', tag: 'Keychains', badge: 'Just in', fresh: true,
+      desc: 'A tiny daisy bouquet wrapped in brown and tied with a bow. A little bunch of happiness, always with you.',
       image: 'images/new-piece-6.jpg'
     },
     {
       id: 'new-piece-5',
-      sku: 'MZ-NEW-003',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
+      sku: 'MZ-HPN-003',
+      name: 'Flower Hair Bun Stick',
+      cat: 'clips', tag: 'Hair Pins', badge: 'Just in', fresh: true,
+      desc: 'A ring of pink puff flowers with a matching stick to hold your bun in place. Handmade charm for your hairstyle.',
       image: 'images/new-piece-5.jpg'
     },
     {
       id: 'new-piece-4',
-      sku: 'MZ-NEW-002',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
+      sku: 'MZ-KEY-009',
+      name: 'Lily Pad Key Ring',
+      cat: 'keychains', tag: 'Keychains', badge: 'Just in', fresh: true,
+      desc: 'A green lily pad with a pink blossom and a pearl centre, on a silver key ring.',
       image: 'images/new-piece-4.jpg'
     },
     {
       id: 'new-piece-3',
-      sku: 'MZ-NEW-001',
-      name: 'New Piece',
-      cat: 'new', tag: 'New', badge: 'Just in', fresh: true,
-      desc: 'New Piece — handmade to order, in any colour you like.',
+      sku: 'MZ-KEY-008',
+      name: 'Puff Flower Key Rings',
+      cat: 'keychains', tag: 'Keychains', badge: 'Just in', fresh: true,
+      desc: 'Plump puff-stitch flowers on gold key rings, in every colour of the rainbow. A little handmade happiness, always with you.',
       image: 'images/new-piece-3.jpg'
     },
     {

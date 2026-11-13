@@ -1,24 +1,26 @@
 # Health check
 
-Last checked: **2026-11-09**. Overall: **everything working** ✅
+Last checked: **2026-11-13**. Overall: **everything working** ✅
 
 | Check | Result |
 |---|---|
-| Live site https://mayurisyarntales.online/ | ✅ 200 OK; `manifest.webmanifest`, `sw.js`, `sitemap.xml` 200 OK |
-| Repo | ✅ `main` pulled from GitHub (bot had added 2 pieces) |
+| Live site https://mayurisyarntales.online/ | ✅ 200 OK; `manifest.webmanifest`, `sw.js`, `sitemap.xml`, `robots.txt` 200 OK |
+| Repo | ✅ `main` pulled from GitHub (bot had added 5 pieces) |
 | `bot/test_site_edit.py` | ✅ all passed |
 | `bot/test_publish.py` | ✅ all passed (every photo has exactly one card) |
-| Products | 83 products, no duplicate codes |
-| Telegram bot (`@YarnTales_bot`, runs on the PC) | ✅ running, restarted 23:29 and sent its report |
-| Android app | ✅ APKs built 2026-11-08 (`app-arm64-v8a-release.apk` 16.9 MB) |
+| Products | 88 products, no duplicate codes, none left as "New" |
+| Telegram bot (`@YarnTales_bot`, runs on the PC) | ✅ scheduled task running |
+| Visitor count | ✅ new, in the footer (Abacus counter, key `mayurisyarntales/visits`) |
 
 ## Notes
 
-- Two photos came in from Telegram without a caption ("New Piece", no
-  category). They were named by hand: Daisy Key Ring and Flower Bookmarks.
-  Tip: add a name and `#category` to the photo caption so this isn't needed.
-- The bot log shows GitHub/Telegram errors (502, timeouts) around 18:25.
-  The bot recovered on its own and was restarted at 23:29.
+- Five photos came in without a caption again and were named by hand.
+  Tip: add a name and `#category` to the photo caption.
+- The bot reused `MZ-NEW-001`/`002` (retired on 11-09), because it picks the
+  next number from what's on the site. Harmless here (all five now have real
+  codes), but retired codes aren't remembered anywhere yet.
+- The bot log shows short daily GitHub/Telegram errors (502, timeouts,
+  "unreachable network"), mostly around 06:42. It recovers on its own.
 
 ## How to re-run this check
 

@@ -2,6 +2,16 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-13
+
+- **Visitor count** in the footer ("👀 1,234 visits"). Counts each visitor
+  once per browser session, using the free Abacus counter. Hidden if the
+  counter service is down.
+- **Five new pieces named:** Puff Flower Key Rings (`MZ-KEY-008`), Lily Pad
+  Key Ring (`MZ-KEY-009`), Flower Hair Bun Stick (`MZ-HPN-003`), Daisy Bouquet
+  Key Ring (`MZ-KEY-010`), Mini Rose Bouquet (`MZ-ROS-009`). They came in from
+  Telegram with no caption.
+
 ## 2026-11-09
 
 - **Two new pieces named:** the Daisy Key Ring (`MZ-KEY-007`) and Flower
