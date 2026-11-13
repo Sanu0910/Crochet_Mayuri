@@ -1216,7 +1216,7 @@
     <a href="mailto:mayurighoshblg@gmail.com">mayurighoshblg@gmail.com</a>
   </div>
   <p>© <span id="year"></span> Mayuri'z · Handmade Crochet. Made with 🧶 and a lot of patience.</p>
-  <p class="visits" id="visits" hidden>👀 <span id="visitCount"></span> visits</p>
+  <p class="visits" id="visits" hidden>👀 <span id="visitCount"></span> <span id="visitWord">visits</span></p>
 </footer>
 <script>
   // Visitor count (free Abacus counter, no sign-up). Counts once per browser
@@ -1233,6 +1233,7 @@
         if (typeof d.value !== 'number') return;
         try { sessionStorage.setItem('mz-visit', '1'); } catch (e) {}
         document.getElementById('visitCount').textContent = d.value.toLocaleString('en-IN');
+        document.getElementById('visitWord').textContent = d.value === 1 ? 'visit' : 'visits';
         el.hidden = false;
       })
       .catch(() => {});
