@@ -49,6 +49,8 @@ Tagline: *handmade crochet*. Same as the website header. Use where space is tigh
 |------|------|-------|
 | `og-image.png` | 1200×630 | Facebook, LinkedIn, default share |
 | `twitter-header.png` | 1500×500 | Twitter/X profile header |
+| `profile-picture-name.png` | 1080×1080 | Instagram / Facebook profile picture: mark + "Mayuri'z" (recommended) |
+| `profile-picture-mark.png` | 1080×1080 | Profile picture, mark only (boldest at tiny sizes) |
 
 ## Colors
 
