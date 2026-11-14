@@ -1,0 +1,81 @@
+{
+  "id": "mzShopAutopost1",
+  "name": "Mayuriz auto-post (site -> Facebook + Instagram)",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "all"
+  },
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Every 15 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "t2",
+      "name": "Test run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "c1",
+      "name": "Post new pieces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// Mayuri'z auto-post: new pieces on the live site -> Facebook Page + Instagram.\n// Keys come from environment variables set by tools/run-n8n.ps1 (never stored here).\nconst SITE = 'https://mayurisyarntales.online/';\nconst G = 'https://graph.facebook.com/v23.0/';\nconst WAIT_MIN = 30;          // give the team time for /rename and /caption\nconst MAX_PER_RUN = 3;        // spread a big upload over several runs\nconst MAX_TRIES = 3;\nconst CHAT = $env.MZ_NOTE_CHAT || '-1003843804840';\nconst PAGE_ID = $env.META_PAGE_ID, PAGE_TOKEN = $env.META_PAGE_TOKEN, IG_ID = $env.META_IG_ID || '';\nconst DRY = $env.MZ_AUTOPOST_DRY === '1';\nconst http = this.helpers.httpRequest.bind(this.helpers);\nconst S = $getWorkflowStaticData('global');\nS.seen = S.seen || {}; S.pending = S.pending || {}; S.tries = S.tries || {};\nconst now = Date.now();\nconst log = [];\n\nconst tag2hash = {\n  Scrunchies: '#scrunchies #hairaccessories', Bows: '#crochetbow #hairbow', 'Claw Clips': '#clawclip #hairaccessories',\n  'Hair Clips': '#hairclips #hairaccessories', 'Hair Pins': '#hairpins #hairaccessories', 'Hair Bands': '#hairband #hairaccessories',\n  Roses: '#crochetrose #foreverflowers', Flowers: '#crochetflowers #foreverflowers', Garlands: '#crochetgarland #homedecor',\n  Keychains: '#keychain #crochetkeychain', Charms: '#bagcharm #crochetcharm', Hearts: '#crochetheart #giftideas',\n  Bookmarks: '#bookmark #booklover', Coasters: '#coasters #homedecor', Bangles: '#bangles #crochetjewellery', Bags: '#crochetbag #handmadebag',\n};\n\nasync function note(text) {\n  if (!$env.TELEGRAM_TOKEN) return;\n  try {\n    await http({ method: 'POST', url: `https://api.telegram.org/bot${$env.TELEGRAM_TOKEN}/sendMessage`, json: true,\n      body: { chat_id: CHAT, text, parse_mode: 'HTML', disable_web_page_preview: true } });\n  } catch (e) { log.push('telegram note failed'); }\n}\nconst esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst graphErr = e => e?.response?.body?.error?.message || e?.cause?.response?.data?.error?.message || e?.message || String(e);\nasync function graph(path, body) {\n  return http({ method: 'POST', url: G + path, json: true, body: { ...body, access_token: PAGE_TOKEN } });\n}\n\n// Read  key: 'value'  from one product entry (handles \\' inside the value).\nfunction field(s, k) {\n  const start = s.indexOf(k + \": '\");\n  if (start < 0) return '';\n  let out = '';\n  for (let i = start + k.length + 3; i < s.length; i++) {\n    const ch = s[i];\n    if (ch === '\\\\') { out += s[i + 1] || ''; i++; continue; }\n    if (ch === \"'\") return out;\n    out += ch;\n  }\n  return out;\n}\n\n// 1. read the product list from the live site\nconst html = String(await http({ url: `${SITE}index.html?t=${now}`, json: false }));\nconst block = html.split('/* PRODUCTS:START */')[1]?.split('/* PRODUCTS:END */')[0];\nif (!block) throw new Error('PRODUCTS markers not found on the live site');\nconst products = block.split('{').slice(1).map(s => s.split('}')[0]).map(s => ({\n  id: field(s, 'id'), sku: field(s, 'sku'), name: field(s, 'name'), tag: field(s, 'tag'), desc: field(s, 'desc'), image: field(s, 'image'),\n})).filter(p => p.id && p.image);\nif (products.length < 5) throw new Error(`Only ${products.length} products parsed - refusing to continue`);\n\n// 2. first run: remember everything already in the shop, post nothing\nif (!S.seeded) {\n  for (const p of products) S.seen[p.id] = now;\n  S.seeded = true;\n  if (!DRY) await note(`🤖 <b>Auto-post is on</b>\\nWatching ${products.length} pieces. New ones go to Facebook${IG_ID ? ' + Instagram' : ''} ${WAIT_MIN} min after they appear.`);\n  return [{ json: { seeded: products.length, dry: DRY, first: products[0] } }];\n}\n\n// 3. new pieces that are named and have waited long enough\nlet posted = 0;\nfor (const p of products) {\n  if (S.seen[p.id]) continue;\n  if (p.name.toLowerCase().startsWith('new piece') || p.sku.includes('-NEW-')) { log.push(`${p.id}: waiting for a name`); continue; }\n  if (!S.pending[p.id]) { S.pending[p.id] = now; log.push(`${p.id}: spotted, posting in ${WAIT_MIN} min`); continue; }\n  if (now - S.pending[p.id] < WAIT_MIN * 60000) { log.push(`${p.id}: waiting`); continue; }\n  if (posted >= MAX_PER_RUN) { log.push(`${p.id}: next run`); continue; }\n\n  const img = SITE + p.image;\n  const fbText = `${p.name}\\n\\n${p.desc}\\n\\nHandmade by Mayuri 🧶 Order: ${SITE}`;\n  const igText = `${p.name} 🧶\\n\\n${p.desc}\\n\\nHandmade by Mayuri. Order through the link in our bio.\\n\\n#crochet #handmade #mayuriz ${tag2hash[p.tag] || '#crochetlove'}`;\n  if (DRY) { log.push(`DRY ${p.id}: would post ${img}`); posted++; continue; }\n\n  const done = [], failed = [];\n  try { await graph(`${PAGE_ID}/photos`, { url: img, message: fbText }); done.push('Facebook'); }\n  catch (e) { failed.push(`Facebook: ${graphErr(e)}`); }\n  if (IG_ID) {\n    try {\n      const c = await graph(`${IG_ID}/media`, { image_url: img, caption: igText });\n      let pub;\n      for (let i = 0; i < 6 && !pub; i++) {\n        await new Promise(r => setTimeout(r, 5000));\n        try { pub = await graph(`${IG_ID}/media_publish`, { creation_id: c.id }); } catch (e) { if (i === 5) throw e; }\n      }\n      done.push('Instagram');\n    } catch (e) { failed.push(`Instagram: ${graphErr(e)}`); }\n  }\n  posted++;\n  S.tries[p.id] = (S.tries[p.id] || 0) + 1;\n  // Stop once anything went out (never double-post) or after MAX_TRIES failures.\n  if (done.length || S.tries[p.id] >= MAX_TRIES) {\n    S.seen[p.id] = now; delete S.pending[p.id]; delete S.tries[p.id];\n  }\n  if (done.length) await note(`📣 <b>Posted:</b> ${esc(p.name)}\\n${done.join(' + ')} ✅`);\n  if (failed.length) await note(`⚠️ <b>Couldn't post</b> ${esc(p.name)}\\n${failed.map(esc).join('\\n')}${S.seen[p.id] ? '' : '\\nWill retry.'}`);\n  log.push(`${p.id}: ${done.join('+') || 'none'}${failed.length ? ' | ' + failed.join('; ') : ''}`);\n}\nreturn [{ json: { checked: products.length, posted, dry: DRY, log } }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "Every 15 minutes": {
+      "main": [
+        [
+          {
+            "node": "Post new pieces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test run": {
+      "main": [
+        [
+          {
+            "node": "Post new pieces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -26,6 +26,7 @@ in `images/`, no build step.
 | | bot's working clone + log: `%LOCALAPPDATA%\MayurizBot\` |
 | | `video/node_modules`, rendered `video/out/` |
 | | Flutter SDK `E:\dev\flutter`, Android SDK `E:\dev\android-sdk`, `app/build/` |
+| auto-post workflow `tools/n8n/` (see its README) | Meta keys: `%USERPROFILE%\.mayuriz\meta.env`; n8n `E:\dev\n8n` + Node 24 `E:\dev\node24`; n8n data `%USERPROFILE%\.n8n` |
 
 The Telegram bot runs on this PC (`tools/run-bot.ps1`, started at logon by
 `tools/install-bot.ps1`), not on GitHub. See `bot/README.md`.
