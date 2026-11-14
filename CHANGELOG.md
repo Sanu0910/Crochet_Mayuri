@@ -4,6 +4,11 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-14
 
+- **Privacy page:** a short privacy policy at `/privacy.html` (what the order
+  form and sign-up collect, how to ask for deletion), linked in the footer.
+  Facebook needs it before the shop's posting app can go Live.
+- **Instagram + Facebook:** new pieces post themselves to both; first post (an
+  intro carousel) is live.
 - **"Just in" row slides by itself:** it glides to the next new piece every
   few seconds and loops, with a story-style progress bar underneath (tap a
   segment to jump). The front photo drifts slowly closer, and the cards spring
