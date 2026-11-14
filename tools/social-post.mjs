@@ -16,12 +16,16 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const [planPath, postId, base, flag] = process.argv.slice(2);
+const args = process.argv.slice(2);
+const flags = args.filter(a => a.startsWith('--'));
+const [planPath, postId, base] = args.filter(a => !a.startsWith('--'));
 if (!planPath || !postId || !base) {
-  console.error('usage: node tools/social-post.mjs <plan.json> <post-id> <public-base-url> [--dry-run]');
+  console.error('usage: node tools/social-post.mjs <plan.json> <post-id> <public-base-url> [--dry-run] [--only=facebook|instagram]');
   process.exit(2);
 }
-const DRY = flag === '--dry-run';
+const DRY = flags.includes('--dry-run');
+const ONLY = (flags.find(f => f.startsWith('--only=')) || '').slice(7);
+const doIG = !ONLY || ONLY === 'instagram', doFB = !ONLY || ONLY === 'facebook';
 const G = 'https://graph.facebook.com/v23.0/';
 
 const env = {};
@@ -73,7 +77,7 @@ if (DRY) { console.log('dry run: nothing posted'); process.exit(0); }
 const result = { post: postId, at: new Date().toISOString() };
 
 // Instagram
-try {
+if (doIG) try {
   const IG = env.META_IG_ID, T = env.META_IG_TOKEN;
   let creation;
   if (urls.length === 1) {
@@ -96,7 +100,7 @@ try {
 } catch (e) { result.instagramError = e.message; console.log(`Instagram FAILED: ${e.message}`); }
 
 // Facebook Page
-try {
+if (doFB) try {
   const P = env.META_PAGE_ID, T = env.META_PAGE_TOKEN;
   let id;
   if (urls.length === 1) {
@@ -115,4 +119,4 @@ const logFile = path.join(path.dirname(planPath), 'posted.json');
 const log = fs.existsSync(logFile) ? JSON.parse(fs.readFileSync(logFile, 'utf8')) : [];
 log.push(result);
 fs.writeFileSync(logFile, JSON.stringify(log, null, 2) + '\n');
-process.exit(result.instagram && result.facebook ? 0 : 1);
+process.exit((!doIG || result.instagram) && (!doFB || result.facebook) ? 0 : 1);
