@@ -43,8 +43,8 @@ pwsh tools/run-n8n.ps1 -Import     # re-import shop-autopost.json after editing 
 API Explorer, app "Mayuriz Poster", Development mode) and, written by
 `meta-setup.mjs`, `META_PAGE_ID`, `META_PAGE_TOKEN` (never expires) and `META_IG_ID`.
 
-To add Instagram: give the app the `instagram_basic` and
-`instagram_content_publish` permissions, generate a new Explorer token with
-the Instagram account ticked, paste it as `META_USER_TOKEN`, run
-`node tools/meta-setup.mjs`, then restart the task
-(`pwsh tools/install-n8n.ps1`).
+Instagram (@mayurisyarntales) uses its own token: `META_IG_TOKEN`, a
+system-user token ("MayuriZ System User", never expires) with
+`instagram_content_publish`, and `META_IG_ID` = the Instagram account id.
+`meta-setup.mjs` only handles the Facebook Page token. After changing any key,
+restart the task (`pwsh tools/install-n8n.ps1`).
