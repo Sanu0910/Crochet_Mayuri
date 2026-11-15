@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 const siteUrl = 'https://mayurisyarntales.online';
-const shopEmail = 'mayurighoshblg@gmail.com';
+const shopEmail = 'hello@mayurisyarntales.online';
 
 class Product {
   final String id, sku, name, cat, tag, badge, desc, image;

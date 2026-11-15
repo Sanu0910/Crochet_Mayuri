@@ -144,7 +144,7 @@ export const Outro: React.FC = () => {
             color: COLORS.accent,
           }}
         >
-          mayurighoshblg@gmail.com
+          hello@mayurisyarntales.online
         </div>
       </Interactive.Div>
     </AbsoluteFill>
