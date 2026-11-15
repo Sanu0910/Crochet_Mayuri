@@ -195,6 +195,64 @@ def dispatch_film_render() -> str:
     return f"⚠️ GitHub wouldn't start the render (HTTP {response.status_code})."
 
 
+# Videos don't go on the website (one photo per product), but the team sends
+# them for social posts. Keep them on the PC, outside the repo, with the
+# caption and who sent it, so they can be posted later.
+VIDEO_INBOX = Path(os.environ.get(
+    "MAYURIZ_VIDEO_INBOX",
+    Path(os.environ.get("LOCALAPPDATA", Path.home())) / "MayurizBot" / "inbox"))
+BOT_DOWNLOAD_LIMIT = 20 * 1024 * 1024  # Telegram bots can't fetch bigger files
+
+
+def video_of(message: dict) -> dict | None:
+    """The video in a message: a normal video, a GIF-style animation, a round
+    video note, or a video file sent as a document."""
+    for key in ("video", "animation", "video_note"):
+        if message.get(key):
+            return message[key]
+    doc = message.get("document") or {}
+    return doc if str(doc.get("mime_type", "")).startswith("video/") else None
+
+
+def handle_video(tg: Telegram, message: dict) -> None:
+    import time
+    video = video_of(message)
+    chat_id, msg_id = message["chat"]["id"], message["message_id"]
+    if (video.get("file_size") or 0) > BOT_DOWNLOAD_LIMIT:
+        mb = video["file_size"] / 1024 / 1024
+        tg.send(chat_id,
+                f"🎬 This video is {mb:.0f} MB. Telegram only lets bots download up to "
+                "20 MB. Please send a shorter or lower-quality copy (in Telegram: "
+                "tap the quality setting before sending).",
+                reply_to=msg_id)
+        return
+    raw = tg.download(video["file_id"])
+    stamp = time.strftime("%Y%m%d-%H%M%S", time.localtime(message.get("date") or time.time()))
+    caption = (message.get("caption") or "").strip()
+    name = Path(video.get("file_name") or "video.mp4")
+    stem = slugify(caption.splitlines()[0][:40]) if caption else slugify(name.stem) or "video"
+    VIDEO_INBOX.mkdir(parents=True, exist_ok=True)
+    dst = VIDEO_INBOX / f"{stamp}-{stem}{name.suffix or '.mp4'}"
+    dst.write_bytes(raw)
+    sender = message.get("from", {})
+    dst.with_suffix(".json").write_text(json.dumps({
+        "caption": caption,
+        "from": sender.get("first_name") or sender.get("username"),
+        "from_id": sender.get("id"),
+        "chat": message["chat"].get("title"),
+        "message_id": msg_id,
+        "date": stamp,
+        "duration_s": video.get("duration"),
+        "size": [video.get("width"), video.get("height")],
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    log.info("saved video %s (%d KB)", dst.name, len(raw) // 1024)
+    tg.react(chat_id, msg_id, "👍")
+    tg.send(chat_id,
+            "🎬 Got the video. It's saved on the PC for social posts "
+            "(videos don't go on the website: only photos do).",
+            reply_to=msg_id)
+
+
 def handle_photo(tg: Telegram, message: dict, added: list[str],
                  notices: list[dict]) -> None:
     chat_id = message["chat"]["id"]
@@ -319,7 +377,8 @@ def main() -> int:
                 sender = message.get("from", {})
                 chat = message["chat"]
                 body = text or (message.get("caption") or "").strip()
-                kind = "photo" if message.get("photo") else "document" if message.get("document") else "text"
+                kind = ("photo" if message.get("photo") else "video" if video_of(message)
+                        else "document" if message.get("document") else "text")
                 log.info(
                     "message from %s (%s) in %s: %s %s",
                     sender.get("first_name") or sender.get("username") or "?", user_id,
@@ -404,6 +463,8 @@ def main() -> int:
                                     reply_to=message["message_id"])
                 elif text.startswith("/film"):
                     tg.send(chat_id, dispatch_film_render(), reply_to=message["message_id"])
+                elif video_of(message):
+                    handle_video(tg, message)
                 elif message.get("photo"):
                     handle_photo(tg, message, added, notices)
             finally:
