@@ -2,6 +2,13 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-15
+
+- **New shop email:** hello@mayurisyarntales.online on the site footer, privacy
+  page, order form, app and film (it forwards to Mayuri's Gmail).
+- **Daily posts:** a poster of one piece goes to Instagram and Facebook every
+  day at 1 PM and 8 PM, newest pieces first (`tools/social_daily.py`).
+
 ## 2026-11-14
 
 - **Privacy page:** a short privacy policy at `/privacy.html` (what the order
