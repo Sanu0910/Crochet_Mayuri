@@ -1,0 +1,98 @@
+{
+  "_about": "Music the weekly ads (tools/weekly_video.py) may use. Files live on the PC in MUSIC_DIR (default %USERPROFILE%\\Music\\Copyright Free Music), never in this public repo. Only tracks under 'approved' are ever picked. Licence checked 2026-11-15 from each track's own description/source. A shop ad is commercial use: 'free for personal use' or 'non-monetised only' is NOT enough.",
+  "approved": [
+    {
+      "id": "vadodara",
+      "file": "21 - Serious Indian Background Instrumental ｜ Royalty Free Music.mp3",
+      "title": "Big Mojo - Vadodara",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Big Mojo - Vadodara\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["showcase"],
+      "mood": "Indian fusion, builds then a full-band drop: elegant reveal"
+    },
+    {
+      "id": "life-of-riley",
+      "file": "Kevin MacLeod CC-BY/Life of Riley.mp3",
+      "title": "Life of Riley",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Life of Riley\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["creative"],
+      "mood": "bright, bouncy, cheerful: fast product montage"
+    },
+    {
+      "id": "cheery-monday",
+      "file": "Kevin MacLeod CC-BY/Cheery Monday.mp3",
+      "title": "Cheery Monday",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Cheery Monday\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["creative"],
+      "mood": "light, happy, steady pulse"
+    },
+    {
+      "id": "carefree",
+      "file": "Kevin MacLeod CC-BY/Carefree.mp3",
+      "title": "Carefree",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Carefree\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["creative", "showcase"],
+      "mood": "easy, sunny, gentle swing"
+    },
+    {
+      "id": "wallpaper",
+      "file": "Kevin MacLeod CC-BY/Wallpaper.mp3",
+      "title": "Wallpaper",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Wallpaper\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["showcase", "creative"],
+      "mood": "modern, punchy, lifestyle"
+    },
+    {
+      "id": "inspired",
+      "file": "Kevin MacLeod CC-BY/Inspired.mp3",
+      "title": "Inspired",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Inspired\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["showcase"],
+      "mood": "warm, emotional piano: craftsmanship"
+    },
+    {
+      "id": "bossa-antigua",
+      "file": "Kevin MacLeod CC-BY/Bossa Antigua.mp3",
+      "title": "Bossa Antigua",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Bossa Antigua\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["showcase"],
+      "mood": "elegant bossa: boutique feel"
+    },
+    {
+      "id": "funkorama",
+      "file": "Kevin MacLeod CC-BY/Funkorama.mp3",
+      "title": "Funkorama",
+      "artist": "Kevin MacLeod",
+      "licence": "CC BY 4.0",
+      "credit": "Music: \"Funkorama\" by Kevin MacLeod (incompetech.com), licensed under CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "styles": ["creative"],
+      "mood": "funky groove"
+    }
+  ],
+  "rejected": [
+    {"files": "01, 02, 04, 26 (Alec Koff Label)", "reason": "No usage licence stated in the description. Best beats of the set: buy a licence, then add here."},
+    {"files": "03 (MusicWavePro)", "reason": "Free only in NON-monetised videos; commercial use needs an Envato licence."},
+    {"files": "05, 07, 09, 10, 12, 13, 15, 17, 18, 19 (Yellow Tunes)", "reason": "Licence must be bought from yellowtunes.net first."},
+    {"files": "06, 08 (AShamaluevMusic)", "reason": "Personal use only; commercial needs a paid / Patreon licence."},
+    {"files": "14 (Peaceful Official Shorts)", "reason": "No licence information."},
+    {"files": "16 (Shayar Qalaam)", "reason": "Vague 'one can use, credit us'; weak beat. Usable only with credit if ever needed."},
+    {"files": "20", "reason": "CC BY-ND: syncing music to video is an adaptation, which ND forbids."},
+    {"files": "22, 23, 24", "reason": "Sound effects, not music."},
+    {"files": "25 (Mattia Cupelli)", "reason": "Needs a (free) licence file from gum.co first; sad piano, poor fit."},
+    {"files": "27 (Kevin D'Costa)", "reason": "Royalty-free 'for short-film makers'; commercial ad use not stated."},
+    {"files": "28", "reason": "Re-upload of someone else's track (Inova - Desert); uploader can't grant rights."}
+  ]
+}

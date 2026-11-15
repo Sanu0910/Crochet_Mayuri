@@ -1,0 +1,4 @@
+{
+  "_about": "Hand-set focus points (0..1 of the photo) for the weekly video close-ups, used instead of auto-detection. Needed for photos that are finished posters with text, so the zoom lands on the crochet, not the lettering. First point: main close-up; second: the other detail.",
+  "new-piece-7": [{"x": 0.52, "y": 0.52}, {"x": 0.79, "y": 0.42}]
+}

@@ -8,3 +8,8 @@ out
 
 # Product photos are copied in from ../images by `npm run sync-assets`.
 public/images
+
+# Weekly ads: staged by tools/weekly_video.py (music must never be committed)
+public/weekly
+public/music
+public/brand

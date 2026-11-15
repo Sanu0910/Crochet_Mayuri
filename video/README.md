@@ -63,3 +63,48 @@ scrubbed and timed on its own.
   them from `../images/`.
 - Rendering needs a Chrome/Chromium build. If Remotion can't find one, pass
   `--browser-executable=/path/to/chrome-headless-shell`.
+
+## Weekly promo ads (9:16, with music)
+
+Two vertical 1080×1920 ads a week, made by `tools/weekly_video.py`:
+
+- **AdShowcase** (Video 1, midweek): one hero piece. A hook over a blurred
+  macro, the product card whipping in on the music's drop, two close-ups,
+  "handmade by Mayuri" lines, the full logo with the tagline, then the call to
+  action with the website.
+- **AdCreative** (Video 2, weekend): a fast gift edit. Kinetic hook words on
+  the beat, up to 6 polaroid cards whipping in, a gift collage, the brand
+  sting and a red call to action.
+- **AdCover**: the Reel cover still.
+
+The Python script does the planning. It picks the products (newest, never
+featured before), picks a licence-approved track from `tools/video_music.json`,
+finds its beats and drop, and snaps every scene to a beat. The components in
+`src/ads/` only draw that plan, which arrives as `--props`. The script also
+writes `content.md` for each week: storyboard, captions (Instagram, Facebook,
+YouTube Shorts), hashtags, links and the schedule.
+
+```powershell
+# once: Python venv for the beat analysis
+py -m venv $env:LOCALAPPDATA\MayurizVideo\venv
+& $env:LOCALAPPDATA\MayurizVideo\venv\Scripts\python.exe -m pip install numpy pillow
+winget install Gyan.FFmpeg          # full ffmpeg (Remotion's bundled one can't output raw audio)
+
+# each week (or let tools/install-weekly-video.ps1 do it every Sunday)
+& $env:LOCALAPPDATA\MayurizVideo\venv\Scripts\python.exe -X utf8 tools\weekly_video.py
+#   --plan-only  plan + captions, no render   --week 2026-W48   --hero <id>   --products id,id,...
+```
+
+Output goes to `%USERPROFILE%\Videos\Mayuriz Weekly\<week>\`. Nothing is
+posted automatically.
+
+- **Music is never committed.** It lives in `%USERPROFILE%\Music\Copyright Free Music`.
+  Only tracks under `approved` in `tools/video_music.json` are used, each with
+  its CC BY credit line, which goes into every caption. A shop ad is commercial
+  use, so "free for personal / non-monetised use" tracks are listed under `rejected`.
+- **Photos that are finished posters** (text on the image) need a hand-set
+  focus in `tools/video_focus.json`, so the close-ups land on the crochet and
+  not the lettering.
+- **This PC has 8 GB of RAM.** Renders use `--concurrency=2`, backdrops are
+  pre-blurred and the grain is a static image. Live CSS blur on big photos
+  crashed Chrome ("Page crashed!"). Run one render at a time.
