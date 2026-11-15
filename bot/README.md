@@ -49,6 +49,15 @@ are what the gallery, the film and any existing link already point at.
 
 The always-on version also has `/recent` and `/undo`.
 
+### Videos
+
+A video sent to the group (normal video, GIF, round video note, or a video
+file) doesn't go on the website, since products have one photo each. The PC bot
+saves it for social posts in `%LOCALAPPDATA%\MayurizBot\inbox\` (outside the
+repo) next to a `.json` file with the caption and who sent it, then replies 🎬.
+Telegram lets bots download only up to **20 MB**. For a bigger video the bot
+asks for a smaller copy.
+
 ### It reacts
 
 The photo you sent gets a reaction as it goes: 👀 picked up, 🎉 published,
