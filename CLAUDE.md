@@ -28,6 +28,7 @@ in `images/`, no build step.
 | | Flutter SDK `E:\dev\flutter`, Android SDK `E:\dev\android-sdk`, `app/build/` |
 | daily posts `tools/social_daily.py` + `tools/install-social.ps1` (13:00/20:00, Instagram via Graph API, Facebook via WoopSocial; brand sheet `media/social/brand.md`) | WoopSocial key `%USERPROFILE%\.mayuriz\woopsocial.env`; state/log `%LOCALAPPDATA%\MayurizSocial\` |
 | weekly promo videos `tools/weekly_video.py` + `video/src/ads/` (2 × 9:16 ads + covers + captions, Sundays via `tools/install-weekly-video.ps1`; approved music `tools/video_music.json`; see `video/README.md`) | music `%USERPROFILE%\Music\Copyright Free Music` (never commit); output `%USERPROFILE%\Videos\Mayuriz Weekly\`; venv + state `%LOCALAPPDATA%\MayurizVideo\` |
+| daily product reel `tools/daily_reel.py` (~17 s animated 9:16 reel of one piece, Instagram + Facebook at 18:00 via `tools/install-daily-reel.ps1`; reuses the weekly ad + `post_video.py`) | output `%USERPROFILE%\Videos\Mayuriz Weekly\daily\`; state + log `%LOCALAPPDATA%\MayurizVideo\daily_state.json`, `daily.log` |
 | one-off video Reels `tools/post_video.py` (Instagram + Facebook, scheduled) | videos the team sends to the bot: `%LOCALAPPDATA%\MayurizBot\inbox\` |
 | auto-post workflow `tools/n8n/` (PAUSED: replaced by social_daily.py) | Meta keys: `%USERPROFILE%\.mayuriz\meta.env`; n8n `E:\dev\n8n` + Node 24 `E:\dev\node24`; n8n data `%USERPROFILE%\.n8n` |
 

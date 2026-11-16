@@ -2,6 +2,12 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-16
+
+- **Daily reels:** a short animated reel of one piece goes to Instagram and
+  Facebook every day at 6 PM, with "Handmade · limited pieces" lines
+  (`tools/daily_reel.py`).
+
 ## 2026-11-15
 
 - **New shop email:** hello@mayurisyarntales.online on the site footer, privacy

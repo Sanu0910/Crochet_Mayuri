@@ -108,3 +108,21 @@ posted automatically.
 - **This PC has 8 GB of RAM.** Renders use `--concurrency=2`, backdrops are
   pre-blurred and the grain is a static image. Live CSS blur on big photos
   crashed Chrome ("Page crashed!"). Run one render at a time.
+
+## Daily product reel (9:16, posted)
+
+`tools/daily_reel.py` makes one ~17 s reel a day with the same `AdShowcase`
+composition: hook ("Handmade. Limited pieces."), the piece revealed on the
+drop, a close-up with a scarcity line, the brand, then "Limited Pieces. Order
+Yours!". One piece per day (newest first, each once before repeats, never the
+same category twice running), a different approved showcase track each day.
+If every quality check passes, `tools/post_video.py` posts it to Instagram and
+Facebook at 18:00 IST and tells the team on Telegram.
+
+```powershell
+pwsh tools\install-daily-reel.ps1          # daily: render 16:45, post 18:00
+& $env:LOCALAPPDATA\MayurizVideoenv\Scripts\python.exe -X utf8 tools\daily_reel.py --no-post   # test render
+```
+
+Selling words stay true: pieces are handmade and made to order, so only a few
+get made. Never stock counts, prices or materials.
