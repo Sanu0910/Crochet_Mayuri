@@ -216,6 +216,8 @@ function Publish-Once {
     if ($code -ne 0) { Log "poll_once.py exited with $code"; return }
     if (-not (Test-Path $CommitMsg)) { return }
 
+    # Keep the image sitemap in step with the product list (bot/sitemap.py).
+    Run-Python "sitemap.py" @{} | Out-Null
     git -C $Site add -A
     git -C $Site diff --cached --quiet
     if ($LASTEXITCODE -eq 0) { Log "A message arrived but changed nothing."; return }
@@ -228,6 +230,14 @@ function Publish-Once {
         Log "Push rejected (try $i), catching up with GitHub and retrying."
         git -C $Site pull --quiet --rebase origin $Branch 2>&1 | ForEach-Object { Log "  $_" }
         if ($LASTEXITCODE -ne 0) { git -C $Site rebase --abort 2>$null; break }
+        # The other push may have added pieces too: list both in the sitemap
+        # (.gitattributes merges sitemap.xml with "union", so it never conflicts).
+        Run-Python "sitemap.py" @{} | Out-Null
+        git -C $Site diff --quiet -- sitemap.xml
+        if ($LASTEXITCODE -ne 0) {
+            git -C $Site add sitemap.xml
+            git -C $Site commit --quiet --amend --no-edit
+        }
     }
     if (-not $pushed) { Log "Could not push. The change is NOT live; send the photo again later."; return }
 
