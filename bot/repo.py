@@ -86,6 +86,7 @@ class Repo:
 
     def commit_and_push(self, message: str) -> str:
         """Commit everything staged in the working tree and push. Returns the sha."""
+        self._refresh_sitemap()
         self._git("add", "-A")
         if not self._git("status", "--porcelain"):
             raise GitError("nothing changed — no commit made")
@@ -111,8 +112,24 @@ class Repo:
                     "couldn't merge with what's already on GitHub — "
                     f"needs a human: {self._redact(rebase.stderr).strip()}"
                 )
+            # The other push may have added pieces too: list both in the sitemap.
+            # (.gitattributes merges sitemap.xml with "union", so it never conflicts.)
+            if self._refresh_sitemap():
+                self._git("add", "sitemap.xml")
+                self._git("commit", "--amend", "--no-edit")
             sha = self._git("rev-parse", "--short", "HEAD")
         raise GitError("push kept being rejected — give it a minute and try again")
+
+    def _refresh_sitemap(self) -> bool:
+        """Rebuild sitemap.xml from the product list. Never blocks a commit."""
+        if not (self.path / "index.html").exists():
+            return False
+        try:
+            from sitemap import build
+            return build(self.path)
+        except Exception:
+            log.exception("sitemap not refreshed")
+            return False
 
     def revert_last_bot_commit(self) -> tuple[str, str]:
         """Undo the most recent commit. Returns (reverted subject, new sha)."""

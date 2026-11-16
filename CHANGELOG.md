@@ -4,6 +4,11 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-16
 
+- **11 new pieces named:** ten flower hair ties (Hair Bands) and a white
+  jasmine gajra (Garlands).
+- **SEO:** sitemap now lists all 99 product photos for Google Images (kept up
+  to date by the bot); product photos get descriptive alt text; title and
+  description mention hair ties and gajra.
 - **Daily reels:** a short animated reel of one piece goes to Instagram and
   Facebook every day at 6 PM, with "Handmade · limited pieces" lines
   (`tools/daily_reel.py`).

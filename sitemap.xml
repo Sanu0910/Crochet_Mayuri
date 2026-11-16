@@ -1,8 +1,405 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://mayurisyarntales.online/</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-11-16</lastmod>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-18.jpg</image:loc>
+      <image:title>Sky Blue Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-17.jpg</image:loc>
+      <image:title>Ocean Blue Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-16.jpg</image:loc>
+      <image:title>White Jasmine Gajra · handmade crochet garlands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-15.jpg</image:loc>
+      <image:title>Coral Pink Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-14.jpg</image:loc>
+      <image:title>Red Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-13.jpg</image:loc>
+      <image:title>Flower Hair Tie Set · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-12.jpg</image:loc>
+      <image:title>Turquoise Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-11.jpg</image:loc>
+      <image:title>Cream Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-10.jpg</image:loc>
+      <image:title>Lavender Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-9.jpg</image:loc>
+      <image:title>Sunny Yellow Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-8.jpg</image:loc>
+      <image:title>Blush Pink Flower Hair Tie · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-7.jpg</image:loc>
+      <image:title>Mini Rose Bouquet · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-6.jpg</image:loc>
+      <image:title>Daisy Bouquet Key Ring · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-5.jpg</image:loc>
+      <image:title>Flower Hair Bun Stick · handmade crochet hair pins</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-4.jpg</image:loc>
+      <image:title>Lily Pad Key Ring · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-3.jpg</image:loc>
+      <image:title>Puff Flower Key Rings · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece-2.jpg</image:loc>
+      <image:title>Flower Bookmarks · handmade crochet bookmarks</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/new-piece.jpg</image:loc>
+      <image:title>Daisy Key Ring · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/flower-bookmark-set.jpg</image:loc>
+      <image:title>Flower Bookmark Set of 4 · handmade crochet bookmarks</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/white-daisy-bookmark.jpg</image:loc>
+      <image:title>White Daisy Bookmark · handmade crochet bookmarks</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pink-flower-bookmark-pair.jpg</image:loc>
+      <image:title>Pink Flower Bookmark Pair · handmade crochet bookmarks</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/maroon-yellow-bobble-coaster.jpg</image:loc>
+      <image:title>Maroon &amp; Yellow Bobble Coaster · handmade crochet coasters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/daisy-chain-hair-band.jpg</image:loc>
+      <image:title>Daisy Chain Hair Band · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-hair-band.jpg</image:loc>
+      <image:title>Sunflower Hair Band · handmade crochet hair bands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-coaster.jpg</image:loc>
+      <image:title>Sunflower Coaster · handmade crochet coasters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/green-white-scalloped-bangles.jpg</image:loc>
+      <image:title>Green &amp; White Scalloped Bangles · handmade crochet bangles</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/rose-hair-pins.jpg</image:loc>
+      <image:title>Rose Hair Pins · handmade crochet hair pins</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/heart-coaster-pair.jpg</image:loc>
+      <image:title>Heart Coaster Pair · handmade crochet coasters</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/lotus-hair-clip.jpg</image:loc>
+      <image:title>Lotus Hair Clip · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/evil-eye-hanging-charm-styled.jpg</image:loc>
+      <image:title>Evil Eye Hanging Charm · handmade crochet charms</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/black-red-ruffle-scrunchie.jpg</image:loc>
+      <image:title>Black &amp; Red Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/blue-white-bloom-claw-clip.jpg</image:loc>
+      <image:title>Blue &amp; White Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/blue-puff-flower-snap-clips.jpg</image:loc>
+      <image:title>Blue Puff Flower Snap Clips · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/royal-blue-petal-flower.jpg</image:loc>
+      <image:title>Royal Blue Petal Flower · handmade crochet flowers</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pink-rose-bun-pin.jpg</image:loc>
+      <image:title>Pink Rose Bun Pin · handmade crochet hair pins</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/azure-white-ruffle-scrunchie.jpg</image:loc>
+      <image:title>Azure &amp; White Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/yellow-white-daisy-claw-clip.jpg</image:loc>
+      <image:title>Yellow &amp; White Daisy Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/red-white-bloom-claw-clip.jpg</image:loc>
+      <image:title>Red &amp; White Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/lilac-white-bloom-claw-clip.jpg</image:loc>
+      <image:title>Lilac &amp; White Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/maroon-cream-bloom-claw-clip.jpg</image:loc>
+      <image:title>Maroon &amp; Cream Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pink-sage-bloom-claw-clip.jpg</image:loc>
+      <image:title>Pink &amp; Sage Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/lime-white-bloom-claw-clip.jpg</image:loc>
+      <image:title>Lime &amp; White Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/green-bloom-claw-clip.jpg</image:loc>
+      <image:title>Green Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/periwinkle-bloom-claw-clip.jpg</image:loc>
+      <image:title>Periwinkle Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/purple-bloom-hair-clip.jpg</image:loc>
+      <image:title>Purple Bloom Hair Clip · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/red-cream-heart-clips.jpg</image:loc>
+      <image:title>Red &amp; Cream Heart Clips · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pearl-heart-clips.jpg</image:loc>
+      <image:title>Pearl Heart Clips · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pink-maroon-ruffle-scrunchie.jpg</image:loc>
+      <image:title>Pink &amp; Maroon Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/marigold-ruffle-scrunchie.jpg</image:loc>
+      <image:title>Marigold Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/lavender-white-scrunchie.jpg</image:loc>
+      <image:title>Lavender &amp; White Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/peach-puff-scrunchie.jpg</image:loc>
+      <image:title>Peach Puff Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pink-frost-scrunchie.jpg</image:loc>
+      <image:title>Pink Frost Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunshine-scrunchie.jpg</image:loc>
+      <image:title>Sunshine Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sky-blue-cream-scrunchie.jpg</image:loc>
+      <image:title>Sky Blue &amp; Cream Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/caramel-chocolate-scrunchie.jpg</image:loc>
+      <image:title>Caramel &amp; Chocolate Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/royal-blue-ruffle-scrunchie.jpg</image:loc>
+      <image:title>Royal Blue Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/cream-maroon-scrunchie.jpg</image:loc>
+      <image:title>Cream &amp; Maroon Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/red-white-ruffle-scrunchie.jpg</image:loc>
+      <image:title>Red &amp; White Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/cherry-red-frill-scrunchie.jpg</image:loc>
+      <image:title>Cherry Red Frill Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/classic-red-bow.jpg</image:loc>
+      <image:title>Classic Red Bow · handmade crochet bows</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/mixed-rose-bouquet.jpg</image:loc>
+      <image:title>Mixed Rose Bouquet · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/red-rose-bloom.jpg</image:loc>
+      <image:title>Red Rose Bloom · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/white-rose-stem.jpg</image:loc>
+      <image:title>White Rose Stem · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/mini-rose-trio.jpg</image:loc>
+      <image:title>Mini Rose Trio · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/violet-puff-daisy.jpg</image:loc>
+      <image:title>Violet Puff Daisy · handmade crochet flowers</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/red-rose-hanging-charm.jpg</image:loc>
+      <image:title>Red Rose Hanging Charm · handmade crochet charms</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-square-keychain.jpg</image:loc>
+      <image:title>Sunflower Square Keychain · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/heart-keychain-pair.jpg</image:loc>
+      <image:title>Heart Keychain Pair · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pearl-flower-keychains.jpg</image:loc>
+      <image:title>Pearl Flower Keychains · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-hair-clips.jpg</image:loc>
+      <image:title>Sunflower Hair Clip Pair · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-hair-clips-alt.jpg</image:loc>
+      <image:title>Sunflower Clips — Clip Detail · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/daisy-snap-clips.jpg</image:loc>
+      <image:title>Daisy Snap Clip Pair · handmade crochet hair clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/pink-bloom-claw-clip.jpg</image:loc>
+      <image:title>Pink Bloom Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/rose-claw-clip.jpg</image:loc>
+      <image:title>Blush Rose Claw Clip · handmade crochet claw clips</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-keychain.jpg</image:loc>
+      <image:title>Sunflower Bloom Keychain · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-keychain-alt.jpg</image:loc>
+      <image:title>Sunflower Keychain, Gift Tagged · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/daisy-hanging-charm.jpg</image:loc>
+      <image:title>Daisy Hanging Charm · handmade crochet charms</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-hanging-charm.jpg</image:loc>
+      <image:title>Sunflower Hanging Charm · handmade crochet charms</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sunflower-bag-charm.jpg</image:loc>
+      <image:title>Sunflower Bag Charm · handmade crochet charms</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/rose-keychain.jpg</image:loc>
+      <image:title>Rose Keychain · handmade crochet keychains</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/peach-blossom-scrunchie.jpg</image:loc>
+      <image:title>Peach Blossom Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/cocoa-cream-scrunchie.jpg</image:loc>
+      <image:title>Cocoa &amp; Cream Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/ocean-blue-scrunchie.jpg</image:loc>
+      <image:title>Ocean Blue Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/blue-blossom-scrunchie.jpg</image:loc>
+      <image:title>Blue Blossom Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/tricolour-scrunchie.jpg</image:loc>
+      <image:title>Tricolour Ruffle Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/sage-cream-scrunchie.jpg</image:loc>
+      <image:title>Sage Bloom Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/ruby-rose-scrunchie.jpg</image:loc>
+      <image:title>Ruby Rose Scrunchie · handmade crochet scrunchies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/golden-sunflower.jpg</image:loc>
+      <image:title>Golden Sunflower · handmade crochet flowers</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/rose-duo-red-pink.jpg</image:loc>
+      <image:title>Red &amp; Pink Rose Duo · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/coral-rose-stem.jpg</image:loc>
+      <image:title>Coral Rose Stem · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/red-rose-stem.jpg</image:loc>
+      <image:title>Red Rose Stem · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/rose-bouquet.jpg</image:loc>
+      <image:title>Red Rose Bouquet · handmade crochet roses</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/caramel-cream-bow.jpg</image:loc>
+      <image:title>Caramel &amp; Cream Bow · handmade crochet bows</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/classic-maroon-bow.jpg</image:loc>
+      <image:title>Classic Maroon &amp; Cream Bow · handmade crochet bows</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/classic-maroon-bow-alt.jpg</image:loc>
+      <image:title>Maroon Scallop Bow · handmade crochet bows</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/cream-bow.jpg</image:loc>
+      <image:title>Simple Cream Bow · handmade crochet bows</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/ruby-bow-handbag.jpg</image:loc>
+      <image:title>Ruby Bow Handbag · handmade crochet bags</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/flower-vine-garland.jpg</image:loc>
+      <image:title>Yellow Flower Vine Set · handmade crochet garlands</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://mayurisyarntales.online/images/mini-hearts-set.jpg</image:loc>
+      <image:title>Sweetheart Mini Set · handmade crochet hearts</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://mayurisyarntales.online/privacy.html</loc>

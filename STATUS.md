@@ -1,26 +1,25 @@
 # Health check
 
-Last checked: **2026-11-13**. Overall: **everything working** ✅
+Last checked: **2026-11-16**. Overall: **everything working** ✅
 
 | Check | Result |
 |---|---|
-| Live site https://mayurisyarntales.online/ | ✅ 200 OK; `manifest.webmanifest`, `sw.js`, `sitemap.xml`, `robots.txt` 200 OK |
-| Repo | ✅ `main` pulled from GitHub (bot had added 5 pieces) |
+| Live site https://mayurisyarntales.online/ | ✅ 200 OK (0.4 s) |
+| Repo | ✅ `main` pulled (bot had added 11 pieces) |
 | `bot/test_site_edit.py` | ✅ all passed |
 | `bot/test_publish.py` | ✅ all passed (every photo has exactly one card) |
-| Products | 88 products, no duplicate codes, none left as "New" |
-| Telegram bot (`@YarnTales_bot`, runs on the PC) | ✅ scheduled task running |
-| Visitor count | ✅ new, in the footer (Abacus counter, key `mayurisyarntales/visits`) |
+| Products | 99 products, 99 unique codes, none left as "New" |
+| Sitemap | ✅ valid, 2 pages + 99 product images (`bot/sitemap.py`, refreshed on every bot commit) |
+| Daily reel | ✅ `Mayuriz daily reel` task installed; first reel posts 18:00 today |
 
 ## Notes
 
-- Five photos came in without a caption again and were named by hand.
-  Tip: add a name and `#category` to the photo caption.
-- The bot reused `MZ-NEW-001`/`002` (retired on 11-09), because it picks the
-  next number from what's on the site. Harmless here (all five now have real
-  codes), but retired codes aren't remembered anywhere yet.
-- The bot log shows short daily GitHub/Telegram errors (502, timeouts,
-  "unreachable network"), mostly around 06:42. It recovers on its own.
+- 11 photos came in without a caption and were named by hand (10 flower hair
+  ties, 1 gajra). Tip: add a name and `#category` to the photo caption.
+- `new-piece-12` (Turquoise) and `new-piece-18` (Sky Blue) hair ties look
+  alike; if they're the same piece, remove one with `/remove`.
+- Owner step for SEO: submit `https://mayurisyarntales.online/sitemap.xml` in
+  Google Search Console (Sitemaps).
 
 ## How to re-run this check
 
