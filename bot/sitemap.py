@@ -46,7 +46,7 @@ def build(root: Path) -> bool:
     today = dt.date.today().isoformat()
     pages = category_pages.build(root)          # {slug: changed}
     path = root / "sitemap.xml"
-    old = path.read_text(encoding="utf-8") if path.exists() else ""
+    old = path.read_text(encoding="utf-8").replace("\r\n", "\n") if path.exists() else ""  # CRLF-safe
     old_mods = dict(re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>", old))
 
     mods = {SITE: old_mods.get(SITE, today)}

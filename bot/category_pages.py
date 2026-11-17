@@ -195,7 +195,8 @@ def build(root: Path) -> dict[str, bool]:
                 path.parent.rmdir()
             continue
         new = render(page, items, nav)
-        old = path.read_text(encoding="utf-8") if path.exists() else ""
+        # the bot's clone checks files out with CRLF; compare content, not line endings
+        old = path.read_text(encoding="utf-8").replace("\r\n", "\n") if path.exists() else ""
         out[page[0]] = new != old
         if new != old:
             path.parent.mkdir(exist_ok=True)
