@@ -15,7 +15,8 @@ Last checked: **2026-11-16**. Overall: **everything working** ✅
 
 ## Notes
 
-- **17 Nov: Facebook posting is down.** WoopSocial shows the Facebook Page as
+- **17 Nov: Facebook posting was down, fixed 22:25.** New WoopSocial key saved; Page CONNECTED again.
+  Was: WoopSocial shows the Facebook Page as
   DISCONNECTED ("socialAccountId is not connected for publishing"). The owner
   must reconnect it at app.woopsocial.com (Facebook login). Instagram works.
   Today's reel was skipped because a Facebook error used to stop the Instagram
