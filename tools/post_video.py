@@ -20,6 +20,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.parse
 from pathlib import Path
 
@@ -89,17 +90,30 @@ def main() -> int:
     req = {"content": [{"text": fb_text, "media": [{"type": "MEDIA_LIBRARY", "mediaId": media_id}]}],
            "schedule": schedule,
            "socialAccounts": [{"platform": "FACEBOOK", "socialAccountId": s.FB_ACCOUNT, "postType": "REEL"}]}
-    v = woop.tool("posts_validate_simple", {"requestJson": json.dumps(req)})
-    if isinstance(v, dict) and not v.get("isValid", True):
-        raise SystemExit(f"WoopSocial rejected the Facebook reel: {v.get('errors')}")
-    fb_post = woop.tool("posts_create_simple", {"requestJson": json.dumps(req)})
-    s.log(f"Facebook reel {'scheduled' if when else 'posted'}: {fb_post.get('id')}")
+    # A Facebook problem (e.g. the Page disconnected in WoopSocial) must not stop
+    # the Instagram reel: note it, carry on, and tell the team at the end.
+    fb_error = None
+    try:
+        v = woop.tool("posts_validate_simple", {"requestJson": json.dumps(req)})
+        if isinstance(v, dict) and not v.get("isValid", True):
+            raise RuntimeError(f"WoopSocial rejected the Facebook reel: {v.get('errors')}")
+        fb_post = woop.tool("posts_create_simple", {"requestJson": json.dumps(req)})
+        s.log(f"Facebook reel {'scheduled' if when else 'posted'}: {fb_post.get('id')}")
+    except Exception as exc:
+        fb_error = str(exc)
+        s.log(f"Facebook reel NOT posted: {fb_error}")
 
     # Instagram: create the container now, publish at the time.
     meta = s.env_file("meta.env")
     ig_id, token = meta["META_IG_ID"], meta["META_IG_TOKEN"]
-    container = graph(f"{ig_id}/media", {"media_type": "REELS", "video_url": video_url,
-                                         "caption": ig_text, "share_to_feed": "true"}, token)["id"]
+    try:
+        container = graph(f"{ig_id}/media", {"media_type": "REELS", "video_url": video_url,
+                                             "caption": ig_text, "share_to_feed": "true"}, token)["id"]
+    except urllib.error.HTTPError as exc:
+        reason = exc.read().decode("utf-8", "replace")[:300]
+        s.telegram(f"🎬 Reel NOT posted. Instagram: HTTP {exc.code} {s.esc(reason)}"
+                   + (f"\nFacebook: {s.esc(fb_error)}" if fb_error else ""))
+        raise SystemExit(f"Instagram rejected the reel: HTTP {exc.code} {reason}")
     for _ in range(60):  # up to ~10 minutes of processing
         st = graph_get(container, "status_code,status", token)
         if st.get("status_code") == "FINISHED":
@@ -116,8 +130,10 @@ def main() -> int:
     pub = graph(f"{ig_id}/media_publish", {"creation_id": container}, token)["id"]
     link = graph_get(pub, "permalink", token).get("permalink", pub)
     s.log(f"Instagram reel live: {link}")
-    s.telegram(f"🎬 Reel posted.\nInstagram: {link}\nFacebook: WoopSocial, "
-               f"{(when or dt.datetime.now(s.IST)).astimezone(s.IST).strftime('%H:%M')}")
+    fb_line = (f"Facebook: ❌ not posted ({s.esc(fb_error)}). Reconnect the Page in WoopSocial."
+               if fb_error else
+               f"Facebook: WoopSocial, {(when or dt.datetime.now(s.IST)).astimezone(s.IST).strftime('%H:%M')}")
+    s.telegram(f"🎬 Reel posted.\nInstagram: {link}\n{fb_line}")
     return 0
 
 

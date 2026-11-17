@@ -15,6 +15,11 @@ Last checked: **2026-11-16**. Overall: **everything working** ✅
 
 ## Notes
 
+- **17 Nov: Facebook posting is down.** WoopSocial shows the Facebook Page as
+  DISCONNECTED ("socialAccountId is not connected for publishing"). The owner
+  must reconnect it at app.woopsocial.com (Facebook login). Instagram works.
+  Today's reel was skipped because a Facebook error used to stop the Instagram
+  reel too; fixed, so reels now still go to Instagram.
 - 11 photos came in without a caption and were named by hand (10 flower hair
   ties, 1 gajra). Tip: add a name and `#category` to the photo caption.
 - `new-piece-12` (Turquoise) and `new-piece-18` (Sky Blue) hair ties look

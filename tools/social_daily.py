@@ -263,8 +263,18 @@ class Woop:
 # ---------------------------------------------------------------- Instagram (Graph API)
 def post_instagram(ig_id: str, token: str, image_url: str, caption: str) -> str:
     def call(path, params):
-        raw, _ = post_json(GRAPH + path, {**params, "access_token": token})
-        return json.loads(raw)
+        # Instagram sometimes answers 400 when it can't fetch a fresh CDN upload yet:
+        # retry once after a pause, and keep Meta's own reason for the log.
+        for attempt in (1, 2):
+            try:
+                raw, _ = post_json(GRAPH + path, {**params, "access_token": token})
+                return json.loads(raw)
+            except urllib.error.HTTPError as e:
+                reason = e.read().decode("utf-8", "replace")[:300]
+                if attempt == 2:
+                    raise RuntimeError(f"HTTP {e.code}: {reason}") from None
+                log(f"Instagram {path.rsplit('/', 1)[-1]}: HTTP {e.code}, retrying in 30 s ({reason})")
+                time.sleep(30)
     c = call(f"{ig_id}/media", {"image_url": image_url, "caption": caption})["id"]
     for _ in range(20):
         raw, _ = http(f"{GRAPH}{c}?fields=status_code&access_token={urllib.parse.quote(token)}")
