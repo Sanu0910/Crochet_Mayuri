@@ -10,6 +10,7 @@ Last checked: **2026-11-16**. Overall: **everything working** ✅
 | `bot/test_publish.py` | ✅ all passed (every photo has exactly one card) |
 | Products | 99 products, 99 unique codes, none left as "New" |
 | Sitemap | ✅ valid, 2 pages + 99 product images (`bot/sitemap.py`, refreshed on every bot commit) |
+| Category pages | ✅ 11 `crochet-*/` pages, 99 pieces, valid JSON-LD; in sitemap (13 URLs) |
 | Daily reel | ✅ `Mayuriz daily reel` task installed; first reel posts 18:00 today |
 
 ## Notes

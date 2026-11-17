@@ -2,6 +2,13 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-17
+
+- **Shop-by-kind pages for Google:** 11 pages such as `/crochet-scrunchies/`,
+  `/crochet-hair-ties/` and `/crochet-gajra-garlands/`, each with its own
+  title and the pieces as plain HTML, linked from the footer and the sitemap.
+  The bot rebuilds them whenever pieces change (`bot/category_pages.py`).
+
 ## 2026-11-16
 
 - **11 new pieces named:** ten flower hair ties (Hair Bands) and a white

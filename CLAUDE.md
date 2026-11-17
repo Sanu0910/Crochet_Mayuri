@@ -20,7 +20,7 @@ in `images/`, no build step.
 
 | On GitHub (public) | Only on the PC (never commit) |
 |---|---|
-| the site: `index.html`, `images/`, `media/`, `CNAME`, `robots.txt`, `sitemap.xml` | Telegram token: `%USERPROFILE%\.mayuriz\bot.env` |
+| the site: `index.html`, `images/`, `media/`, `CNAME`, `robots.txt`; generated `sitemap.xml` + category pages `crochet-*/` (from `bot/sitemap.py` / `bot/category_pages.py`, rebuilt by the bot, never edit by hand) | Telegram token: `%USERPROFILE%\.mayuriz\bot.env` |
 | bot code `bot/`, film `video/`, Android app `app/` (Flutter, see `app/README.md`), scripts `tools/`, docs | GitHub login: Windows Credential Manager |
 | workflows `.github/` (film render; Telegram uploader is **disabled** while the PC runs the bot) | filled price list `*.xlsx` (costs, profit), kept outside the repo |
 | | bot's working clone + log: `%LOCALAPPDATA%\MayurizBot\` |

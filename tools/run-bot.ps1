@@ -230,12 +230,12 @@ function Publish-Once {
         Log "Push rejected (try $i), catching up with GitHub and retrying."
         git -C $Site pull --quiet --rebase origin $Branch 2>&1 | ForEach-Object { Log "  $_" }
         if ($LASTEXITCODE -ne 0) { git -C $Site rebase --abort 2>$null; break }
-        # The other push may have added pieces too: list both in the sitemap
-        # (.gitattributes merges sitemap.xml with "union", so it never conflicts).
+        # The other push may have added pieces too: rebuild the sitemap and the
+        # category pages from the merged list (.gitattributes merges those files
+        # with "union", so they never conflict; this rebuild tidies the result).
         Run-Python "sitemap.py" @{} | Out-Null
-        git -C $Site diff --quiet -- sitemap.xml
-        if ($LASTEXITCODE -ne 0) {
-            git -C $Site add sitemap.xml
+        if (git -C $Site status --porcelain) {
+            git -C $Site add -A
             git -C $Site commit --quiet --amend --no-edit
         }
     }

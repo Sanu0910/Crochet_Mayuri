@@ -112,16 +112,16 @@ class Repo:
                     "couldn't merge with what's already on GitHub — "
                     f"needs a human: {self._redact(rebase.stderr).strip()}"
                 )
-            # The other push may have added pieces too: list both in the sitemap.
-            # (.gitattributes merges sitemap.xml with "union", so it never conflicts.)
-            if self._refresh_sitemap():
-                self._git("add", "sitemap.xml")
+            # The other push may have added pieces too: rebuild sitemap + category
+            # pages ("union" merge in .gitattributes, so they never conflict).
+            if self._refresh_sitemap() and self._git("status", "--porcelain"):
+                self._git("add", "-A")
                 self._git("commit", "--amend", "--no-edit")
             sha = self._git("rev-parse", "--short", "HEAD")
         raise GitError("push kept being rejected — give it a minute and try again")
 
     def _refresh_sitemap(self) -> bool:
-        """Rebuild sitemap.xml from the product list. Never blocks a commit."""
+        """Rebuild sitemap.xml + category pages from the product list. Never blocks a commit."""
         if not (self.path / "index.html").exists():
             return False
         try:

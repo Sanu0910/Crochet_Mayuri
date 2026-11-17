@@ -1,1 +1,2 @@
 sitemap.xml merge=union
+crochet-*/index.html merge=union

@@ -1,12 +1,13 @@
-"""sitemap.xml with every product photo, so Google Images can find them.
+"""sitemap.xml with every page and every product photo, for Google.
 
 The gallery is drawn by JavaScript, so the photos aren't in the page's HTML.
-An image sitemap lists each one with its name. It's rebuilt from the PRODUCTS
-list whenever the bot commits (repo.Repo.commit_and_push) and can be run by hand:
+An image sitemap lists each one with its name. This also (re)builds the
+category pages (bot/category_pages.py) and lists them. It runs whenever the
+bot commits (tools/run-bot.ps1, repo.Repo.commit_and_push) and by hand:
 
     py bot/sitemap.py            # from the repo root
 
-`lastmod` only moves when the list of photos actually changes.
+Each page's `lastmod` only moves when that page actually changes.
 """
 from __future__ import annotations
 
@@ -16,55 +17,53 @@ import sys
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import category_pages  # noqa: E402
+
 SITE = "https://mayurisyarntales.online/"
 PRIVACY_LASTMOD = "2026-11-14"
+IMG_RE = re.compile(r"<image:image>.*?</image:image>", re.S)
 
 
-def products(index_html: str) -> list[tuple[str, str, str]]:
-    block = index_html.split("/* PRODUCTS:START */")[1].split("/* PRODUCTS:END */")[0]
-    out = []
-    for entry in block.split("{")[1:]:
-        entry = entry.split("}")[0]
-
-        def field(k: str) -> str:
-            m = re.search(k + r":\s*'((?:[^'\\]|\\.)*)'", entry)
-            return re.sub(r"\\(.)", r"\1", m.group(1)) if m else ""
-        if field("image"):
-            out.append((field("image"), field("name"), field("tag")))
-    return out
-
-
-def render(root: Path, home_lastmod: str, privacy_lastmod: str) -> str:
-    items = products((root / "index.html").read_text(encoding="utf-8"))
+def render(root: Path, lastmods: dict[str, str]) -> str:
+    """lastmods: {page url: YYYY-MM-DD}; the home page carries the photos."""
+    items = category_pages.products((root / "index.html").read_text(encoding="utf-8"))
     imgs = []
-    for img, name, tag in items:
-        title = name + (f" · handmade crochet {tag.lower()}" if tag and tag != "New" else "")
-        imgs.append(f"    <image:image>\n      <image:loc>{escape(SITE + img)}</image:loc>\n"
+    for p in items:
+        title = p["name"] + (f" · handmade crochet {p['tag'].lower()}" if p["tag"] and p["tag"] != "New" else "")
+        imgs.append(f"    <image:image>\n      <image:loc>{escape(SITE + p['image'])}</image:loc>\n"
                     f"      <image:title>{escape(title)}</image:title>\n    </image:image>\n")
+    urls = [f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{mod}</lastmod>\n"
+            f"{''.join(imgs) if loc == SITE else ''}  </url>\n" for loc, mod in lastmods.items()]
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
             '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
-            f"  <url>\n    <loc>{SITE}</loc>\n    <lastmod>{home_lastmod}</lastmod>\n{''.join(imgs)}  </url>\n"
-            f"  <url>\n    <loc>{SITE}privacy.html</loc>\n    <lastmod>{privacy_lastmod}</lastmod>\n  </url>\n"
-            "</urlset>\n")
+            + "".join(urls) + "</urlset>\n")
 
 
 def build(root: Path) -> bool:
-    """Rewrite sitemap.xml if the photo list changed. Returns True if it did."""
+    """Rebuild the category pages and sitemap.xml. Returns True if anything changed."""
+    today = dt.date.today().isoformat()
+    pages = category_pages.build(root)          # {slug: changed}
     path = root / "sitemap.xml"
     old = path.read_text(encoding="utf-8") if path.exists() else ""
-    dates = re.findall(r"<lastmod>([\d-]+)</lastmod>", old)
-    home = dates[0] if dates else ""
-    privacy = dates[1] if len(dates) > 1 else PRIVACY_LASTMOD
+    old_mods = dict(re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>", old))
 
-    def strip(x: str) -> str:
-        return re.sub(r"<lastmod>[^<]*</lastmod>", "", x)
-    if old and strip(render(root, home, privacy)) == strip(old):
-        return False
-    path.write_text(render(root, dt.date.today().isoformat(), privacy), encoding="utf-8", newline="\n")
+    mods = {SITE: old_mods.get(SITE, today)}
+    for slug, changed in pages.items():
+        loc = f"{SITE}{slug}/"
+        mods[loc] = today if changed or loc not in old_mods else old_mods[loc]
+    mods[f"{SITE}privacy.html"] = old_mods.get(f"{SITE}privacy.html", PRIVACY_LASTMOD)
+    new = render(root, mods)
+    if IMG_RE.findall(new) != IMG_RE.findall(old):   # photo list changed -> home changed
+        mods[SITE] = today
+        new = render(root, mods)
+    if new == old:
+        return any(pages.values())
+    path.write_text(new, encoding="utf-8", newline="\n")
     return True
 
 
 if __name__ == "__main__":
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent
-    print("sitemap.xml updated" if build(root) else "sitemap.xml already up to date")
+    print("sitemap + category pages updated" if build(root) else "already up to date")
