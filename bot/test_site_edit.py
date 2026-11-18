@@ -210,6 +210,27 @@ def main() -> int:
         except SiteEditError:
             check(True, "removing something absent is refused")
 
+        # Regression (18 Nov 2026): the page's script has indented "{" lines above
+        # the list; removing the TOP piece once wiped ~1,300 lines + the START marker.
+        index7, theme7 = tmp / "index7.html", tmp / "theme7.ts"
+        index7.write_text(
+            "<script>\n  const X =\n    {\n      a: 1\n    };\n  const PRODUCTS = [\n"
+            "    /* PRODUCTS:START */\n"
+            "    {\n      id: 'top-piece',\n      sku: 'MZ-BOW-009',\n      name: 'Top Piece',\n"
+            "      image: 'images/top.jpg'\n    },\n"
+            "    {\n      id: 'second',\n      sku: 'MZ-BOW-010',\n      name: 'Second',\n"
+            "      image: 'images/second.jpg'\n    },\n"
+            "    /* PRODUCTS:END */\n  ];\n</script>\n", encoding="utf-8")
+        theme7.write_text("", encoding="utf-8")
+        name7, _ = remove_product(index7, theme7, images, "top-piece")
+        text7 = index7.read_text(encoding="utf-8")
+        check(name7 == "Top Piece", "the top piece can be removed")
+        check("PRODUCTS:START" in text7 and "PRODUCTS:END" in text7, "removing the top piece keeps both markers")
+        check("const X" in text7 and "a: 1" in text7, "nothing above the list is touched")
+        check("id: 'second'" in text7, "the other piece stays")
+        name8, _ = remove_product(index7, theme7, images, "mz-bow-010")
+        check(name8 == "Second", "a piece can be removed by its product code")
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} failed")

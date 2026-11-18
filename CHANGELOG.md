@@ -4,6 +4,11 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-18
 
+- **Removed** Ocean Blue Flower Hair Tie (MZ-HBD-011) and the old Mogra Gajra photo
+  (MZ-GAR-003); the new gajra photo is Mogra Gajra (MZ-GAR-004).
+- **Telegram bot:** command Menu; remove/rename/caption by product code; plain
+  "remove MZ-…" messages; editing a photo's caption (or replying to it) updates
+  the piece. Fixed a bug where removing the top piece could wipe the product list.
 - **Order form:** optional delivery PIN code; typing it shows the town and state
   (free India Post PIN API, Zippopotam backup) and adds it to the order message.
 - **QR code** for packaging and cards: `media/brand/qr-website.png` / `.svg`

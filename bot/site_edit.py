@@ -47,6 +47,22 @@ def _marker_span(text: str, path: Path) -> tuple[int, int]:
     return text.index("\n", start) + 1, text.rindex("\n", 0, end) + 1
 
 
+def _entries(text: str, path: Path) -> list[tuple[str, str, str, str]]:
+    """(entry text, id, name, image) for every product, searched ONLY between
+    the PRODUCTS markers. Searching the whole page once let a stray indented
+    "{" in the page's script start a "match" far above the list, so removing
+    the top piece deleted ~1,300 lines including the START marker."""
+    lo, hi = _marker_span(text, path)
+    out = []
+    for entry in re.findall(r"    \{\n(?:.*\n)*?    \},?\n", text[lo:hi]):
+        product_id = re.search(r"id: '([^']+)'", entry)
+        name = re.search(r"name: '([^']+)'", entry)
+        image = re.search(r"image: 'images/([^']+)'", entry)
+        if product_id and name and image:
+            out.append((entry, product_id.group(1), name.group(1), image.group(1)))
+    return out
+
+
 def product_ids(index_html: str) -> list[str]:
     return re.findall(r"^\s*id: '([^']+)'", index_html, re.MULTILINE)
 
@@ -114,21 +130,21 @@ def remove_product(
     "priced" must not quietly match "Unpriced Bow".
     """
     text = index_path.read_text(encoding="utf-8")
-    entries = re.findall(r"    \{\n(?:.*\n)*?    \},\n", text)
-
-    found = []
-    for entry in entries:
-        product_id = re.search(r"id: '([^']+)'", entry)
-        name = re.search(r"name: '([^']+)'", entry)
-        image = re.search(r"image: 'images/([^']+)'", entry)
-        if product_id and name and image:
-            found.append((entry, product_id.group(1), name.group(1), image.group(1)))
+    found = _entries(text, index_path)
 
     needle = " ".join(query.split()).lower()
+    # A product code (MZ-GAR-003) is unique, so an exact code match wins outright.
+    by_sku = [f for f in found
+              if (m := re.search(r"sku: '([^']+)'", f[0])) and m.group(1).lower() == needle]
     exact = [f for f in found if needle in (f[1].lower(), f[2].lower())]
     partial = [f for f in found if needle in f[2].lower() or needle in f[1].lower()]
 
-    if exact:
+    by_id = [f for f in found if f[1].lower() == needle]
+    if by_id:                      # an exact id is the most specific of all
+        matches = by_id
+    elif by_sku:
+        matches = by_sku
+    elif exact:
         matches = exact
     elif len(partial) > 1:
         names = ", ".join(f"\u201c{f[2]}\u201d" for f in partial[:5])
@@ -163,19 +179,19 @@ def remove_product(
 
 def _find_entry(text: str, query: str) -> tuple[str, str, str, str]:
     """Locate one product entry. Same cautious matching as remove_product."""
-    entries = re.findall(r"    \{\n(?:.*\n)*?    \},\n", text)
-    found = []
-    for entry in entries:
-        product_id = re.search(r"id: '([^']+)'", entry)
-        name = re.search(r"name: '([^']+)'", entry)
-        image = re.search(r"image: 'images/([^']+)'", entry)
-        if product_id and name and image:
-            found.append((entry, product_id.group(1), name.group(1), image.group(1)))
+    found = _entries(text, Path("index.html"))
 
     needle = " ".join(query.split()).lower()
+    by_sku = [f for f in found
+              if (m := re.search(r"sku: '([^']+)'", f[0])) and m.group(1).lower() == needle]
     exact = [f for f in found if needle in (f[1].lower(), f[2].lower())]
     partial = [f for f in found if needle in f[2].lower() or needle in f[1].lower()]
 
+    by_id = [f for f in found if f[1].lower() == needle]
+    if by_id:
+        return by_id[0]
+    if by_sku:
+        return by_sku[0]
     if exact:
         return exact[0]
     if len(partial) > 1:

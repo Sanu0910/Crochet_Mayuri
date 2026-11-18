@@ -64,15 +64,109 @@ ALLOWED = {
 TAGS = " ".join(f"#{c.key}" for c in CATEGORIES)
 
 HELP = (
-    "<b>Mayuri'z uploader</b>\n\n"
-    "Send a photo. First line of the caption is the name, and put a category "
-    "hashtag anywhere in it:\n\n"
+    "🧶 <b>Mayuri's Yarn Tales · Shop bot</b>\n"
+    "I keep mayurisyarntales.online up to date. Tap <b>Menu</b> for every command.\n\n"
+    "➕ <b>Add a piece</b>\n"
+    "Send a photo. Caption: name on line 1, a #category anywhere, a short line about it:\n"
     "<code>Ocean Blue Ruffle Scrunchie #scrunchies\n"
-    "Deep teal ruffles on a soft white band.</code>\n\n"
-    f"<b>Categories:</b> {TAGS}\n\n"
-    "<b>Commands:</b> /help · /whoami · /film\n\n"
-    "<i>I check for new photos every few minutes, so give me a moment.</i>"
+    "Deep teal ruffles on a soft white band.</code>\n"
+    f"Categories: {TAGS}\n\n"
+    "✏️ <b>Fix a piece you just sent</b>\n"
+    "• Edit the photo's caption in Telegram: the site follows.\n"
+    "• Or reply to the photo with <code>/rename New name</code> or <code>/caption new words</code>.\n"
+    "• Any piece: <code>/rename MZ-SCR-004 | New name</code>, <code>/caption MZ-SCR-004 | New words</code>\n\n"
+    "🗑 <b>Remove a piece</b>\n"
+    "<code>/remove MZ-GAR-003</code> or just type <code>remove MZ-GAR-003</code>, "
+    "or reply to its photo with <code>/remove</code>\n"
+    "(the code is on each card on the website; a name works too)\n\n"
+    "📋 <b>Check the shop</b>\n"
+    "/list every piece with its code · /status site health\n\n"
+    "🎬 <b>Videos</b>\n"
+    "Send a video to save it for social posts · /film re-make the website film\n\n"
+    "ℹ️ /whoami your ID · /help this menu\n\n"
+    "<i>I check for messages every minute or so.</i>"
 )
+KNOWN_COMMANDS = ("/start", "/help", "/whoami", "/list", "/caption", "/rename",
+                  "/status", "/remove", "/film")
+
+# "remove MZ-GAR-003", "MZ-HBD-011 remove", "delete mz-gar-3" … typed without a slash.
+SKU_RE = re.compile(r"\bMZ-([A-Z]{3})-0*(\d{1,3})\b", re.IGNORECASE)
+REMOVE_RE = re.compile(r"\b(remove|delete|hatao|hata do|take (?:it )?off)\b", re.IGNORECASE)
+
+# Which Telegram photo message became which piece, so a later caption edit or a
+# reply to that photo can change the right piece. Kept on the PC (the bot's
+# clone is reset every round), last 500 only.
+MSG_MAP = Path(os.environ.get("LOCALAPPDATA", Path.home())) / "MayurizBot" / "photo_messages.json"
+
+
+def _msg_map() -> dict:
+    try:
+        return json.loads(MSG_MAP.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def remember_photo(chat_id: int, message_id: int, product_id: str) -> None:
+    m = _msg_map()
+    m[f"{chat_id}:{message_id}"] = product_id
+    m = dict(list(m.items())[-500:])
+    MSG_MAP.parent.mkdir(parents=True, exist_ok=True)
+    MSG_MAP.write_text(json.dumps(m), encoding="utf-8")
+
+
+def piece_for(chat_id: int, message_id: int) -> str | None:
+    return _msg_map().get(f"{chat_id}:{message_id}")
+
+
+def handle_caption_edit(tg, msg: dict, edited: list, chats_touched: set) -> None:
+    """A photo's caption was edited in Telegram: rename / re-describe its piece."""
+    chat_id, message_id = msg["chat"]["id"], msg["message_id"]
+    piece = piece_for(chat_id, message_id)
+    if not piece:
+        return                                  # not a photo the bot turned into a piece
+    _, name, desc, _ = parse_caption((msg.get("caption") or "").strip())
+    if not name:
+        return
+    try:
+        was, now = update_product(REPO_ROOT / "index.html", REPO_ROOT / "video/src/theme.ts",
+                                  piece, name=name, desc=desc)
+    except SiteEditError as exc:
+        tg.send(chat_id, f"⚠️ {html.escape(str(exc))}", reply_to=message_id)
+        return
+    edited.append(f"{was}" + (f" → {now}" if was != now else ""))
+    chats_touched.add(chat_id)
+    tg.react(chat_id, message_id, "✍")
+    tg.send(chat_id, f"✏️ Caption change noted: <b>{html.escape(now)}</b>"
+            + (" (new description too)" if desc else "") + ". Live in a minute or two.",
+            reply_to=message_id)
+
+
+def replied_piece(message: dict) -> str | None:
+    """The piece behind the photo this message replies to, if any."""
+    r = message.get("reply_to_message")
+    return piece_for(r["chat"]["id"], r["message_id"]) if r else None
+
+
+def sku_in(text: str) -> str | None:
+    """The first product code in a message, normalised to MZ-ABC-001."""
+    m = SKU_RE.search(text or "")
+    return f"MZ-{m.group(1).upper()}-{int(m.group(2)):03d}" if m else None
+
+
+def do_remove(tg, chat_id: int, message_id: int, query: str,
+              removed: list, chats_touched: set) -> None:
+    try:
+        gone, _ = remove_product(REPO_ROOT / "index.html", REPO_ROOT / "video/src/theme.ts",
+                                 REPO_ROOT / "images", query)
+        removed.append(gone)
+        chats_touched.add(chat_id)
+        tg.react(chat_id, message_id, "👍")
+        tg.send(chat_id, f"🗑 Removed <b>{html.escape(gone)}</b> ({html.escape(query)}) and its photo. "
+                "Gone from the site in a minute or two.", reply_to=message_id)
+    except SiteEditError as exc:
+        tg.react(chat_id, message_id, "🤔")
+        tg.send(chat_id, f"⚠️ {html.escape(str(exc))}\nSee /list for every piece and its code.",
+                reply_to=message_id)
 
 
 # Each upload gets one message that updates through these stages, rather than
@@ -123,13 +217,13 @@ def parse_caption(caption: str) -> tuple[str | None, str, str | None, str | None
 def shop_list() -> str:
     """Every piece, by category — the names /remove and /caption expect."""
     index = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-    entries = re.findall(r"name: '([^']+)',\n      cat: '([a-z]+)'", index)
+    entries = re.findall(r"sku: '([^']+)',\n      name: '((?:[^'\\]|\\.)*)',\n      cat: '([a-z]+)'", index)
     if not entries:
         return "Nothing on the site yet."
 
     by_cat: dict[str, list[str]] = {}
-    for name, cat in entries:
-        by_cat.setdefault(cat, []).append(name.replace("\\'", "'"))
+    for sku, name, cat in entries:
+        by_cat.setdefault(cat, []).append(f"{name.replace(chr(92) + chr(39), chr(39))} · {sku}")
 
     out = [f"🧶 <b>{len(entries)} pieces</b>", ""]
     for key in (c.key for c in CATEGORIES):
@@ -137,7 +231,7 @@ def shop_list() -> str:
             out.append(f"<b>{html.escape(BY_KEY[key].button)}</b>")
             out += [f"  \u2022 {html.escape(n)}" for n in by_cat[key]]
             out.append("")
-    out.append("<i>/remove or /caption take any of these names.</i>")
+    out.append("<i>/remove, /rename and /caption take a name or a code, e.g. /remove MZ-GAR-003</i>")
     return "\n".join(out)
 
 
@@ -297,6 +391,7 @@ def handle_photo(tg: Telegram, message: dict, added: list[str],
 
         insert_into_index(REPO_ROOT / "index.html", product_id=slug, name=name,
                           cat=category_key, desc=desc, image=filename)
+        remember_photo(chat_id, message_id, slug)   # for later caption edits / replies
         total = len(list(images_dir.glob("*.jpg")))
         step("gallery", f"{total} pieces now", "film")
 
@@ -365,6 +460,13 @@ def main() -> int:
         for update in updates:
             message = update.get("message") or update.get("channel_post")
             try:
+                edit_msg = update.get("edited_message") or update.get("edited_channel_post")
+                if edit_msg:
+                    # The caption of a photo that already became a piece was changed
+                    # in Telegram: make the site say the same.
+                    if edit_msg.get("photo") and edit_msg.get("from", {}).get("id") in ALLOWED:
+                        handle_caption_edit(tg, edit_msg, edited, chats_touched)
+                    continue
                 if not message:
                     continue
 
@@ -389,7 +491,7 @@ def main() -> int:
                 if user_id not in ALLOWED:
                     # Tell them their id so the allow-list is easy to fill in,
                     # but only when they actually addressed the bot.
-                    if text.startswith("/") or message.get("photo"):
+                    if text.startswith("/") or message.get("photo") or sku_in(body):
                         tg.send(
                             chat_id,
                             "You're not on this bot's list, so I can't publish "
@@ -397,6 +499,25 @@ def main() -> int:
                             f"This chat: <code>{chat_id}</code>",
                             reply_to=message["message_id"],
                         )
+                    continue
+
+                # Plain-language remove by product code, with or without a photo
+                # (people send a screenshot of the card with "remove MZ-GAR-003").
+                # A caption that is a product code is never a new piece's name.
+                code = sku_in(body)
+                if code and not text.startswith("/"):
+                    if REMOVE_RE.search(body):
+                        do_remove(tg, chat_id, message["message_id"], code, removed, chats_touched)
+                    else:
+                        tg.send(chat_id,
+                                f"Do you want to remove <b>{code}</b>? Send "
+                                f"<code>remove {code}</code>. To add a new piece, send its photo "
+                                "with the piece's <b>name</b> as the caption. /help",
+                                reply_to=message["message_id"])
+                    continue
+                if text.startswith("/") and not text.startswith(KNOWN_COMMANDS):
+                    tg.send(chat_id, "I don't know that one. Here's what I can do:\n\n" + HELP,
+                            reply_to=message["message_id"])
                     continue
 
                 if text.startswith(("/start", "/help")):
@@ -411,6 +532,11 @@ def main() -> int:
                 elif text.startswith(("/caption", "/rename")):
                     verb = "/caption" if text.startswith("/caption") else "/rename"
                     rest = text[len(verb):].strip()
+                    if rest.startswith("@"):            # /rename@YarnTales_bot …
+                        rest = rest.split(" ", 1)[1] if " " in rest else ""
+                    if "|" not in rest and rest and replied_piece(message):
+                        # replying to the piece's photo: no need to name it
+                        rest = f"{replied_piece(message)} | {rest}"
                     if "|" not in rest:
                         tg.send(chat_id,
                                 f"Use <code>{verb} piece name | new "
@@ -418,6 +544,7 @@ def main() -> int:
                                 reply_to=message["message_id"])
                     else:
                         target, value = (part.strip() for part in rest.split("|", 1))
+                        target = sku_in(target) or target
                         try:
                             field = {"desc": value} if verb == "/caption" else {"name": value}
                             was, now = update_product(
@@ -440,27 +567,17 @@ def main() -> int:
                     tg.send(chat_id, shop_status(), reply_to=message["message_id"])
                 elif text.startswith("/remove"):
                     query = text[len("/remove"):].strip()
+                    if query.startswith("@"):           # /remove@YarnTales_bot …
+                        query = query.split(" ", 1)[1].strip() if " " in query else ""
+                    query = query or replied_piece(message) or ""
                     if not query:
                         tg.send(chat_id,
-                                "Which one? <code>/remove Ocean Blue Ruffle Scrunchie</code>",
+                                "Which one? <code>/remove MZ-GAR-003</code> or "
+                                "<code>/remove Ocean Blue Ruffle Scrunchie</code>. /list shows them all.",
                                 reply_to=message["message_id"])
                     else:
-                        try:
-                            gone, image = remove_product(
-                                REPO_ROOT / "index.html",
-                                REPO_ROOT / "video/src/theme.ts",
-                                REPO_ROOT / "images",
-                                query,
-                            )
-                            removed.append(gone)
-                            chats_touched.add(chat_id)
-                            tg.send(chat_id,
-                                    f"🗑 Removed <b>{html.escape(gone)}</b> and its photo. "
-                                    "Gone from the site in a minute or two.",
-                                    reply_to=message["message_id"])
-                        except SiteEditError as exc:
-                            tg.send(chat_id, f"⚠️ {html.escape(str(exc))}",
-                                    reply_to=message["message_id"])
+                        do_remove(tg, chat_id, message["message_id"], sku_in(query) or query,
+                                  removed, chats_touched)
                 elif text.startswith("/film"):
                     tg.send(chat_id, dispatch_film_render(), reply_to=message["message_id"])
                 elif video_of(message):

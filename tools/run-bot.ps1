@@ -98,6 +98,25 @@ try {
         Log "Telegram webhook removed (was the Cloudflare Worker); this PC now handles the bot."
     }
     $me = Invoke-RestMethod "https://api.telegram.org/bot$Token/getMe"
+    # The "Menu" button in Telegram: every command with a one-line description.
+    $menu = @(
+        @{ command = "help";    description = "How to add, fix and remove pieces" },
+        @{ command = "list";    description = "Every piece with its code" },
+        @{ command = "status";  description = "Website health and piece count" },
+        @{ command = "remove";  description = "Remove a piece: /remove MZ-GAR-003" },
+        @{ command = "rename";  description = "Rename: /rename MZ-SCR-004 | New name" },
+        @{ command = "caption"; description = "New description: /caption MZ-SCR-004 | Words" },
+        @{ command = "film";    description = "Re-make the website film" },
+        @{ command = "whoami";  description = "Your Telegram ID" }
+    )
+    try {
+        Invoke-RestMethod -Method Post -ContentType "application/json; charset=utf-8" `
+            -Uri "https://api.telegram.org/bot$Token/setMyCommands" `
+            -Body ([Text.Encoding]::UTF8.GetBytes((@{ commands = $menu } | ConvertTo-Json -Depth 4))) | Out-Null
+        Invoke-RestMethod -Method Post -ContentType "application/json" `
+            -Uri "https://api.telegram.org/bot$Token/setChatMenuButton" `
+            -Body '{"menu_button":{"type":"commands"}}' | Out-Null
+    } catch { Log "Couldn't set the command menu: $($_.Exception.Message)" }
     Log "Running as @$($me.result.username), pushing to $Repo@$Branch."
 } catch {
     Log "Can't reach Telegram with that token: $($_.Exception.Message)"

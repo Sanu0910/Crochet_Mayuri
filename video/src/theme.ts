@@ -45,17 +45,13 @@ export type Product = {
 /** Mirrors the PRODUCTS list in index.html — every photo gets its own scene. */
 export const PRODUCTS: readonly Product[] = [
   /* PRODUCTS:START */
-  { image: "mz-hbd-011.jpg", name: "MZ-HBD-011", tag: "New" },
-  { image: "remove-mz-gar-003.jpg", name: "Remove MZ-GAR-003", tag: "New" },
-  { image: "new-piece-25.jpg", name: "New Piece", tag: "New" },
+  { image: "new-piece-25.jpg", name: "Mogra Gajra", tag: "Garlands" },
   { image: "new-piece-24.jpg", name: "Evil Eye Earphone Cover", tag: "Bags" },
-  { image: "new-piece-23.jpg", name: "Mogra Gajra", tag: "Garlands" },
   { image: "new-piece-22.jpg", name: "Black Flower Hair Clips", tag: "Hair Clips" },
   { image: "new-piece-21.jpg", name: "Sunflower & Daisy Key Rings", tag: "Keychains" },
   { image: "new-piece-20.jpg", name: "Evil Eye Earbuds Case", tag: "Bags" },
   { image: "new-piece-19.jpg", name: "Sunflower Bouquet Keychain", tag: "Keychains" },
   { image: "new-piece-18.jpg", name: "Sky Blue Flower Hair Tie", tag: "Hair Bands" },
-  { image: "new-piece-17.jpg", name: "Ocean Blue Flower Hair Tie", tag: "Hair Bands" },
   { image: "new-piece-16.jpg", name: "White Jasmine Gajra", tag: "Garlands" },
   { image: "new-piece-15.jpg", name: "Coral Pink Flower Hair Tie", tag: "Hair Bands" },
   { image: "new-piece-14.jpg", name: "Red Flower Hair Tie", tag: "Hair Bands" },
