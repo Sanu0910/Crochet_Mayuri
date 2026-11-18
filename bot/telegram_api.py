@@ -71,7 +71,25 @@ class Telegram:
             params["reply_to_message_id"] = reply_to
             params["allow_sending_without_reply"] = True
         try:
-            return self._call("sendMessage", **params)["message_id"]
+            # Telegram caps a message at 4096 characters (/list with 100+ pieces is
+            # longer): send it in parts, split at line breaks, buttons on the last.
+            parts, chunk = [], ""
+            for line in text.split("\n"):
+                if chunk and len(chunk) + len(line) + 1 > 3900:
+                    parts.append(chunk)
+                    chunk = ""
+                chunk = f"{chunk}\n{line}" if chunk else line
+            parts.append(chunk)
+            first_id = None
+            for i, part in enumerate(parts):
+                p = dict(params, text=part)
+                if i < len(parts) - 1:
+                    p.pop("reply_markup", None)
+                if i:
+                    p.pop("reply_to_message_id", None)
+                mid = self._call("sendMessage", **p)["message_id"]
+                first_id = first_id or mid
+            return first_id
         except Exception:
             # A reply failing must never cost us the upload that succeeded.
             log.exception("could not send a reply to chat %s", chat_id)
