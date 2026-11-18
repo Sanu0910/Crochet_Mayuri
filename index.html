@@ -656,6 +656,9 @@
   .submit-btn:active:not(:disabled){transform:scale(0.97);}
   .submit-btn:disabled{opacity:0.5; cursor:not-allowed;}
   .form-note{font-size:0.8rem; color:var(--ink-faint); margin-top:12px; text-align:center;}
+  .pin-place{display:block; min-height:1.2em; margin-top:6px; font-size:0.82rem; color:var(--ink-soft);}
+  .pin-place.ok{color:var(--ink);}
+  .pin-place.err{color:var(--accent);}
   .form-status{
     margin-top:14px; padding:12px 15px; border-radius:12px;
     font-size:0.9rem; font-weight:500; display:none;
@@ -1207,6 +1210,14 @@
             <option>Heart appliqué</option>
             <option>Something else</option>
           </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="pincode">Delivery PIN code (optional)</label>
+          <input type="text" id="pincode" name="pincode" inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6"
+                 placeholder="e.g. 700001" autocomplete="postal-code" aria-describedby="pincodePlace">
+          <small class="pin-place" id="pincodePlace" aria-live="polite"></small>
         </div>
       </div>
       <div class="field">
@@ -2754,6 +2765,53 @@
     setTimeout(() => burst.remove(), 1800);
   }
 
+  // ---------- delivery PIN code -> town, state ----------
+  // Free, keyless lookups (found via github.com/public-apis/public-apis):
+  // India Post's PIN directory first, Zippopotam as a backup. Purely a
+  // helper: if both are down the PIN is still sent as typed.
+  const pinInput = document.getElementById('pincode');
+  const pinPlace = document.getElementById('pincodePlace');
+  async function lookupPin(pin) {
+    try {
+      const r = await fetch('https://api.postalpincode.in/pincode/' + pin);
+      const d = (await r.json())[0];
+      if (d && d.Status === 'Success' && d.PostOffice && d.PostOffice.length) {
+        const po = d.PostOffice[0];
+        return po.District + ', ' + po.State;
+      }
+      if (d && d.Status === 'Error') return null;          // not a real PIN
+    } catch (e) {}
+    try {
+      const r = await fetch('https://api.zippopotam.us/in/' + pin);
+      if (r.status === 404) return null;
+      const d = await r.json();
+      const pl = d.places && d.places[0];
+      if (pl) return pl['place name'] + ', ' + pl.state;
+    } catch (e) {}
+    return undefined;                                       // couldn't check
+  }
+  pinInput.addEventListener('input', async function () {
+    pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 6);
+    pinPlace.textContent = '';
+    pinPlace.className = 'pin-place';
+    delete pinPlace.dataset.place;
+    const pin = pinInput.value;
+    if (!/^[1-9]\d{5}$/.test(pin)) return;
+    pinPlace.textContent = 'Checking…';
+    const place = await lookupPin(pin);
+    if (pinInput.value !== pin) return;                     // typed on meanwhile
+    if (place) {
+      pinPlace.textContent = '📍 ' + place;
+      pinPlace.dataset.place = place;
+      pinPlace.classList.add('ok');
+    } else if (place === null) {
+      pinPlace.textContent = "Hmm, that PIN code doesn't look right.";
+      pinPlace.classList.add('err');
+    } else {
+      pinPlace.textContent = '';
+    }
+  });
+
   orderForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     formStatus.className = 'form-status';
@@ -2761,6 +2819,11 @@
     submitBtn.textContent = '🧶 Sending...';
 
     const formData = new FormData(orderForm);
+    // Delivery PIN (+ the town it resolved to) rides along inside the details,
+    // so the EmailJS template needs no new field.
+    const pin = (formData.get('pincode') || '').trim();
+    if (pin) formData.set('details', formData.get('details') +
+      '\n\nDelivery PIN: ' + pin + (pinPlace.dataset.place ? ' (' + pinPlace.dataset.place + ')' : ''));
     const params = {
       from_name: formData.get('name'),
       from_email: formData.get('email'),

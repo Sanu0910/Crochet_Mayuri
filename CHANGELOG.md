@@ -2,6 +2,13 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-18
+
+- **Order form:** optional delivery PIN code; typing it shows the town and state
+  (free India Post PIN API, Zippopotam backup) and adds it to the order message.
+- **QR code** for packaging and cards: `media/brand/qr-website.png` / `.svg`
+  (links to the site, tagged `utm_source=qr`).
+
 ## 2026-11-17
 
 - **Shop-by-kind pages for Google:** 11 pages such as `/crochet-scrunchies/`,

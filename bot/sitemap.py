@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import category_pages  # noqa: E402
 
 SITE = "https://mayurisyarntales.online/"
-PRIVACY_LASTMOD = "2026-11-14"
+PRIVACY_LASTMOD = "2026-11-18"
 IMG_RE = re.compile(r"<image:image>.*?</image:image>", re.S)
 
 
