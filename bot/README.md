@@ -36,13 +36,27 @@ in `catalogue.py`.
 
 | | |
 |---|---|
-| `/list` | every piece, by category — the names the other commands expect |
+| `/list` | every piece, by category, with its code (MZ-SCR-004) |
 | `/status` | how many pieces, whether the film still matches, the last change |
-| `/caption <name> \| <new wording>` | reword a piece without touching the code |
-| `/rename <name> \| <new name>` | fix a name |
-| `/remove <name>` | take a piece and its photo down |
+| `/caption <name or code> \| <new wording>` | reword a piece without touching the code |
+| `/rename <name or code> \| <new name>` | fix a name |
+| `/remove <name or code>` | take a piece and its photo down |
 | `/film` | re-render the video |
 | `/whoami`, `/help` | |
+
+These show in Telegram's **Menu** button (set by `tools/run-bot.ps1` at start-up).
+
+**Plain words work too.** `remove MZ-GAR-003`, `MZ-HBD-011 remove`, `delete mz-gar-3`
+(with or without a screenshot) remove that piece. A photo whose caption is just a
+product code is never added as a new piece: the bot asks what was meant.
+
+**Editing what you sent.** Edit a photo's caption in Telegram and the piece follows
+(name from line 1, description from the rest). Or reply to the photo with
+`/rename New name`, `/caption new words` or `/remove`: no need to name the piece.
+The photo-to-piece map lives on the PC: `%LOCALAPPDATA%\MayurizBot\photo_messages.json`.
+
+Matching order: exact id, then exact code, then exact name, then a partial name
+that picks out exactly one piece. All edits stay between the PRODUCTS markers.
 
 `/caption` and `/rename` leave the id and the photo file alone, since those
 are what the gallery, the film and any existing link already point at.
