@@ -56,13 +56,17 @@ class Telegram:
 
     # -- writing ----------------------------------------------------------
 
-    def send(self, chat_id: int, text: str, reply_to: int | None = None) -> int | None:
+    def send(self, chat_id: int, text: str, reply_to: int | None = None,
+             buttons: dict | None = None) -> int | None:
+        """`buttons`: an optional Telegram reply_markup (e.g. MENU_KEYBOARD)."""
         params: dict[str, Any] = {
             "chat_id": chat_id,
             "text": text,
             "parse_mode": "HTML",
             "disable_web_page_preview": True,
         }
+        if buttons:
+            params["reply_markup"] = buttons
         if reply_to is not None:
             params["reply_to_message_id"] = reply_to
             params["allow_sending_without_reply"] = True

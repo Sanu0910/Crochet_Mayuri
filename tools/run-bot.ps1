@@ -100,6 +100,7 @@ try {
     $me = Invoke-RestMethod "https://api.telegram.org/bot$Token/getMe"
     # The "Menu" button in Telegram: every command with a one-line description.
     $menu = @(
+        @{ command = "menu";    description = "Show the button menu" },
         @{ command = "help";    description = "How to add, fix and remove pieces" },
         @{ command = "list";    description = "Every piece with its code" },
         @{ command = "status";  description = "Website health and piece count" },

@@ -86,8 +86,20 @@ HELP = (
     "ℹ️ /whoami your ID · /help this menu\n\n"
     "<i>I check for messages every minute or so.</i>"
 )
-KNOWN_COMMANDS = ("/start", "/help", "/whoami", "/list", "/caption", "/rename",
+KNOWN_COMMANDS = ("/start", "/help", "/menu", "/whoami", "/list", "/caption", "/rename",
                   "/status", "/remove", "/film")
+
+# Telegram only shows its blue "Menu" button in private chats. In the team group
+# this keyboard of buttons stays under the message box instead (/menu brings it back).
+MENU_KEYBOARD = {
+    "keyboard": [
+        [{"text": "/list"}, {"text": "/status"}],
+        [{"text": "/help"}, {"text": "/film"}],
+    ],
+    "resize_keyboard": True,
+    "is_persistent": True,
+    "input_field_placeholder": "Photo + caption to add · remove MZ-… to remove",
+}
 
 # "remove MZ-GAR-003", "MZ-HBD-011 remove", "delete mz-gar-3" … typed without a slash.
 SKU_RE = re.compile(r"\bMZ-([A-Z]{3})-0*(\d{1,3})\b", re.IGNORECASE)
@@ -520,8 +532,8 @@ def main() -> int:
                             reply_to=message["message_id"])
                     continue
 
-                if text.startswith(("/start", "/help")):
-                    tg.send(chat_id, HELP, reply_to=message["message_id"])
+                if text.startswith(("/start", "/help", "/menu")):
+                    tg.send(chat_id, HELP, reply_to=message["message_id"], buttons=MENU_KEYBOARD)
                 elif text.startswith("/whoami"):
                     tg.send(chat_id,
                             f"Your user ID: <code>{user_id}</code>\n"
