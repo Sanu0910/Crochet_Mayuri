@@ -1269,6 +1269,7 @@
         <label for="details">Tell me about your idea</label>
         <textarea id="details" name="details" placeholder="Colours, size, occasion, reference photos, deadline..." required></textarea>
       </div>
+      <input type="checkbox" name="botcheck" class="welcome-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <input type="hidden" id="orderType" name="order_type" value="Custom enquiry">
       <input type="hidden" id="productName" name="product" value="">
       <p class="order-promo" id="orderPromo">Launch week: 20% off with code <b>LAUNCH20</b>. It&rsquo;s added to your message for you.</p>
@@ -2938,7 +2939,46 @@
       return;
     }
 
-    // Fallback while EmailJS isn't configured yet: open a pre-filled email to both inboxes.
+    // Web3Forms: the order lands straight in hello@mayurisyarntales.online,
+    // with the customer's email as reply-to, so Mayuri just presses Reply.
+    if (typeof WEB3FORMS_KEY === 'string' && !WEB3FORMS_KEY.startsWith('YOUR_')) {
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `🧶 New ${params.order_type}: ${params.product}`,
+            from_name: `${params.from_name} (website order)`,
+            email: params.from_email,
+            replyto: params.from_email,
+            'Name': params.from_name,
+            'Email': params.from_email,
+            'Phone': params.phone,
+            'Project type': params.category,
+            'Item': params.product,
+            'Details': params.details,
+            botcheck: formData.get('botcheck') ? true : false
+          })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.success === false) throw new Error(data.message || 'send failed');
+        formStatus.textContent = "Thank you! Your request has been sent — Mayuri will email you back soon. 💌";
+        formStatus.classList.add('show', 'ok');
+        orderForm.reset();
+        pinPlace.textContent = '';
+        clearOrderContext.click();
+        celebrateSuccess();
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🧶 Send my request';
+        return;
+      } catch (err) {
+        // Web3Forms unreachable: fall through to the email-app fallback below,
+        // so the order still has a way out.
+      }
+    }
+
+    // Last resort: open a pre-filled email to both inboxes.
     const subject = encodeURIComponent(`New ${params.order_type} — ${params.product}`);
     const body = encodeURIComponent(
       'Name: ' + params.from_name +
@@ -2969,7 +3009,9 @@
   // (or sooner if a newer piece has been added); never again once the
   // visitor has signed up.
   // ============================================================
-  const WEB3FORMS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+  // Public by design (Web3Forms keys only deliver form messages to the inbox that
+  // registered them: hello@mayurisyarntales.online). Used by the order form too.
+  const WEB3FORMS_KEY = "c92742bd-11ea-4570-b5fd-48d8bbfa62d6";
   const web3Ready = !WEB3FORMS_KEY.startsWith('YOUR_');
   const WELCOME_KEY = 'mz-welcome';
   const WELCOME_GAP_DAYS = 7;

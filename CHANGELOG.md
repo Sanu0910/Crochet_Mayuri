@@ -4,6 +4,9 @@ A short, dated record of updates to this site. Newest first.
 
 ## 2026-11-22
 
+- **Orders now really send.** The order form and the new-arrivals sign-up deliver straight
+  to hello@mayurisyarntales.online through Web3Forms (before, they only opened the
+  visitor's email app, so many orders were likely lost). Spam trap added to the order form.
 - **Product codes** shown as a big highlighted badge on every card and in the photo viewer.
 - **Instagram & Facebook:** icons at the top (and in the phone menu), "Message us to order"
   buttons (Instagram DM, Messenger) under the order form, follow links in the footer and

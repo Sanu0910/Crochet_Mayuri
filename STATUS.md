@@ -15,6 +15,8 @@ Last checked: **2026-11-16**. Overall: **everything working** ✅
 
 ## Notes
 
+- **22 Nov: order form + sign-up connected to Web3Forms** (key in index.html, public by design;
+  delivers to hello@). Test order sent and accepted. EmailJS placeholders left unused.
 - **17 Nov: Facebook posting was down, fixed 22:25.** New WoopSocial key saved; Page CONNECTED again.
   Was: WoopSocial shows the Facebook Page as
   DISCONNECTED ("socialAccountId is not connected for publishing"). The owner
