@@ -173,8 +173,10 @@ def render(page: tuple, items: list[dict], nav: list[tuple]) -> str:
   <ul>
 {cards}
   </ul>
-  <p class="more">Want a different colour or something custom? <a href="/#order">Tell us on the order form</a>
-  or email <a href="mailto:{EMAIL}">{EMAIL}</a>. <a href="/#gallery">See the whole collection</a>.</p>
+  <p class="more">Want a different colour or something custom? <a href="/#order">Tell us on the order form</a>,
+  message us on <a href="https://ig.me/m/mayurisyarntales" rel="noopener">Instagram</a> or
+  <a href="https://m.me/MayurisYarnTales" rel="noopener">Facebook</a>, or email <a href="mailto:{EMAIL}">{EMAIL}</a>.
+  Quote the code on the card. <a href="/#gallery">See the whole collection</a>.</p>
 </main>
 </body>
 </html>

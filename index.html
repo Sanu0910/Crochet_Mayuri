@@ -44,6 +44,7 @@
       "founder": { "@type": "Person", "name": "Mayuri" },
       "areaServed": { "@type": "Country", "name": "India" },
       "currenciesAccepted": "INR",
+      "sameAs": ["https://www.instagram.com/mayurisyarntales/", "https://www.facebook.com/MayurisYarnTales/"],
       "knowsAbout": ["Crochet", "Handmade hair accessories", "Crochet flowers", "Amigurumi charms"]
     },
     {
@@ -666,6 +667,18 @@
   .submit-btn:active:not(:disabled){transform:scale(0.97);}
   .submit-btn:disabled{opacity:0.5; cursor:not-allowed;}
   .form-note{font-size:0.8rem; color:var(--ink-faint); margin-top:12px; text-align:center;}
+  .dm-order{margin-top:28px; text-align:center;}
+  .dm-title{font-weight:600; color:var(--ink); margin:0 0 12px;}
+  .dm-buttons{display:flex; flex-wrap:wrap; gap:12px; justify-content:center;}
+  .dm-btn{display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:999px;
+          color:#fff; font-weight:600; font-size:0.95rem; text-decoration:none; transition:transform .2s var(--ease-out);}
+  .dm-btn:hover{transform:translateY(-1px);}
+  .dm-ig{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);}
+  .dm-fb{background:#0866ff;}
+  .dm-note{font-size:0.82rem; color:var(--ink-soft); margin:12px 0 0;}
+  .footer-social{display:flex; gap:18px; justify-content:center; margin:0 0 16px;}
+  .footer-social a{display:inline-flex; align-items:center; gap:6px; color:var(--ink-soft); font-size:0.82rem; text-decoration:none;}
+  .footer-social a:hover{color:var(--ink);}
   .pin-place{display:block; min-height:1.2em; margin-top:6px; font-size:0.82rem; color:var(--ink-soft);}
   .pin-place.ok{color:var(--ink);}
   .pin-place.err{color:var(--accent);}
@@ -1241,6 +1254,21 @@
       <div class="form-status" id="formStatus"></div>
       <p class="form-note">Your request goes straight to Mayuri — you'll hear back personally.</p>
     </form>
+    <!-- Order by DM: no phone number needed on either side. -->
+    <div class="dm-order reveal">
+      <p class="dm-title">Prefer to chat? Message us to order</p>
+      <div class="dm-buttons">
+        <a class="dm-btn dm-ig" href="https://ig.me/m/mayurisyarntales" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 4.8a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.2-9.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>
+          Instagram DM
+        </a>
+        <a class="dm-btn dm-fb" href="https://m.me/MayurisYarnTales" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2C6.5 2 2 6.1 2 11.3c0 2.9 1.4 5.5 3.7 7.2V22l3.4-1.9c.9.3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.2S17.5 2 12 2zm1 12.4-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.4 5.8z"/></svg>
+          Facebook Messenger
+        </a>
+      </div>
+      <p class="dm-note">Tip: send the code from the card, e.g. <b>MZ-HCL-009</b>, and we'll take it from there.</p>
+    </div>
   </div>
 </section>
 
@@ -1254,6 +1282,10 @@
     <a href="#order">Custom Order</a>
     <a href="mailto:hello@mayurisyarntales.online">hello@mayurisyarntales.online</a>
     <a href="/privacy.html">Privacy</a>
+  </div>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/mayurisyarntales/" target="_blank" rel="noopener">📸 Follow on Instagram</a>
+    <a href="https://www.facebook.com/MayurisYarnTales/" target="_blank" rel="noopener">👍 Follow on Facebook</a>
   </div>
   <!-- One page per kind of piece (made by bot/category_pages.py), for search engines and quick browsing. -->
   <!-- A div, not a <nav>: the header's "nav{position:absolute; top:0}" rule would pull it to the top. -->
