@@ -520,7 +520,17 @@
     line-height:1.45; letter-spacing:-0.008em;
   }
   .card-foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:10px;}
-  .card-sku{margin-left:8px; padding-left:8px; border-left:1px solid var(--hairline); font-variant-numeric:tabular-nums; letter-spacing:.02em;}
+  /* Product code as a big highlighted chip: customers quote it when they order
+     and the team uses it in the Telegram bot (remove MZ-GAR-003). */
+  .card-sku, .sku-chip{
+    display:inline-block; padding:4px 12px; border-radius:999px;
+    background:var(--accent-soft); color:var(--accent); border:1px solid rgba(200,86,74,0.25);
+    font-weight:800; font-size:0.95rem; line-height:1.2; letter-spacing:.05em;
+    font-variant-numeric:tabular-nums;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  .card-sku{display:table; margin:6px 0 2px;}          /* own line under the type, on every card */
+  .lb-caption .sku-chip{display:block; width:max-content; margin:10px auto 0; font-size:1.15rem; padding:6px 16px;}
   .card-note{font-size:0.76rem; color:var(--ink-faint); white-space:nowrap;}
   .card-order-btn{
     background:none; border:none; cursor:var(--pointer); padding:0;
@@ -2205,7 +2215,7 @@
         <span class="zoom-hint">🔍 View</span>
       </button>
       <div class="card-body">
-        <span class="card-tag">${p.tag}<span class="card-sku">${p.sku}</span></span>
+        <span class="card-tag">${p.tag}<span class="card-sku" title="Product code: quote it when you order">${p.sku}</span></span>
         <h3>${p.name}</h3>
         <p>${p.desc}</p>
         <div class="card-foot">
@@ -2368,7 +2378,11 @@
     if (!p) return;
     lbImage.src = p.image;
     lbImage.alt = p.name;
-    lbCaption.textContent = `${p.name} · ${p.sku}`;
+    lbCaption.textContent = p.name;
+    const chip = document.createElement('span');
+    chip.className = 'sku-chip';
+    chip.textContent = p.sku;
+    lbCaption.appendChild(chip);
     lbCounter.textContent = browseList.length > 1 ? `${activeIndex + 1} / ${browseList.length}` : '';
     lbDots.innerHTML = '';
     const many = browseList.length > 1;
