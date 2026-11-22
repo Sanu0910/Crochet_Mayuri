@@ -2,6 +2,13 @@
 
 A short, dated record of updates to this site. Newest first.
 
+## 2026-11-22
+
+- **Product codes** shown as a big highlighted badge on every card and in the photo viewer.
+- **Instagram & Facebook:** icons at the top (and in the phone menu), "Message us to order"
+  buttons (Instagram DM, Messenger) under the order form, follow links in the footer and
+  on the category pages. No phone number needed.
+
 ## 2026-11-18
 
 - **Removed** Ocean Blue Flower Hair Tie (MZ-HBD-011) and the old Mogra Gajra photo

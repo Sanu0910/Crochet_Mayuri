@@ -227,6 +227,14 @@
     background:rgba(0,0,0,0.35); opacity:0; transition:opacity .3s ease;
   }
   .nav-overlay.show{display:block; opacity:1;}
+  /* Instagram / Facebook at the top */
+  .header-social{display:none; margin-left:auto; gap:8px; align-items:center; position:relative; z-index:61;}
+  .header-social a{width:34px; height:34px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff;}
+  .hs-ig{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);}
+  .hs-fb{background:#0866ff;}
+  .nav-social a{display:inline-flex; align-items:center; gap:6px;}
+  .nav-social span{display:none;}
+  .nav-social svg{display:block;}
 
   @media (max-width:760px){
     nav ul{
@@ -242,6 +250,9 @@
     nav ul li:last-child{border-bottom:none;}
     nav .nav-cta{display:inline-block; margin-top:18px; padding:10px 20px; font-size:0.95rem;}
     .menu-btn{display:flex;}
+    .header-social{display:flex;}
+    .nav-social a{display:flex; gap:10px;}
+    .nav-social span{display:inline;}
   }
 
   /* ---------- SECTION SHELL ---------- */
@@ -949,6 +960,15 @@
 <header>
   <div class="header-bar">
     <a href="#top" class="logo"><img class="mark" src="/media/icon.svg" alt="" width="26" height="26">Mayuri's Yarn Tales</a>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-ig" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 4.8a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.2-9.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></symbol>
+      <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.6 1.6-1.6h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.3v3.2h2.8V22h3.4z"/></symbol>
+    </svg>
+    <!-- Follow us, always visible on phones (on desktop the same links sit in the nav). -->
+    <div class="header-social">
+      <a href="https://www.instagram.com/mayurisyarntales/" target="_blank" rel="noopener" aria-label="Mayuri's Yarn Tales on Instagram" class="hs-ig"><svg width="18" height="18"><use href="#i-ig"/></svg></a>
+      <a href="https://www.facebook.com/MayurisYarnTales/" target="_blank" rel="noopener" aria-label="Mayuri's Yarn Tales on Facebook" class="hs-fb"><svg width="18" height="18"><use href="#i-fb"/></svg></a>
+    </div>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
   <div class="nav-overlay" id="navOverlay"></div>
@@ -956,6 +976,8 @@
     <ul id="navList">
       <li><a href="#gallery">Shop</a></li>
       <li><a href="#about">About</a></li>
+      <li class="nav-social"><a href="https://www.instagram.com/mayurisyarntales/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16"><use href="#i-ig"/></svg><span>Instagram</span></a></li>
+      <li class="nav-social"><a href="https://www.facebook.com/MayurisYarnTales/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16"><use href="#i-fb"/></svg><span>Facebook</span></a></li>
       <li><a href="#order" class="nav-cta">Custom Order</a></li>
     </ul>
   </nav>
